@@ -1,6 +1,6 @@
-﻿using hrOT.Application.Common.Interfaces;
+﻿using LogOT.Application.Common.Interfaces;
 
-namespace hrOT.Infrastructure.Services;
+namespace LogOT.Infrastructure.Services;
 
 public class DateTimeService : IDateTime
 {

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using hrOT.Application.Common.Models;
+using LogOT.Application.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace hrOT.Application.Common.Mappings;
+namespace LogOT.Application.Common.Mappings;
 
 public static class MappingExtensions
 {

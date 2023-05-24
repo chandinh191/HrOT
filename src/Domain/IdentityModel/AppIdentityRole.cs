@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace hrOT.Domain.IdentityModel
+namespace LogOT.Domain.IdentityModel
 {
     public class AppIdentityRole : IdentityRole
     {

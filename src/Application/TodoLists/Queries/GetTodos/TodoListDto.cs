@@ -1,7 +1,7 @@
-﻿using hrOT.Application.Common.Mappings;
-using hrOT.Domain.Entities;
+﻿using LogOT.Application.Common.Mappings;
+using LogOT.Domain.Entities;
 
-namespace hrOT.Application.TodoLists.Queries.GetTodos;
+namespace LogOT.Application.TodoLists.Queries.GetTodos;
 
 public class TodoListDto : IMapFrom<TodoList>
 {
@@ -10,7 +10,7 @@ public class TodoListDto : IMapFrom<TodoList>
         Items = new List<TodoItemDto>();
     }
 
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     public string? Title { get; set; }
 

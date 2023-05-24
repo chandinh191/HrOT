@@ -1,4 +1,4 @@
-﻿namespace hrOT.Domain.Events;
+﻿namespace LogOT.Domain.Events;
 
 public class TodoItemCreatedEvent : BaseEvent
 {

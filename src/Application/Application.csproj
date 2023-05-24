@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>hrOT.Application</RootNamespace>
-        <AssemblyName>hrOT.Application</AssemblyName>
+        <RootNamespace>LogOT.Application</RootNamespace>
+        <AssemblyName>LogOT.Application</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -17,6 +17,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Auth\Commands\" />
     </ItemGroup>
 
 </Project>

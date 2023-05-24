@@ -1,4 +1,4 @@
-﻿namespace hrOT.Domain.Exceptions;
+﻿namespace LogOT.Domain.Exceptions;
 
 public class UnsupportedColourException : Exception
 {

@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using hrOT.Application.Common.Exceptions;
-using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Common.Security;
+using LogOT.Application.Common.Exceptions;
+using LogOT.Application.Common.Interfaces;
+using LogOT.Application.Common.Security;
 using MediatR;
 
-namespace hrOT.Application.Common.Behaviours;
+namespace LogOT.Application.Common.Behaviours;
 
 public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {

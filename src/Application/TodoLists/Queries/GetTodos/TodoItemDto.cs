@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using hrOT.Application.Common.Mappings;
-using hrOT.Domain.Entities;
+using LogOT.Application.Common.Mappings;
+using LogOT.Domain.Entities;
 
-namespace hrOT.Application.TodoLists.Queries.GetTodos;
+namespace LogOT.Application.TodoLists.Queries.GetTodos;
 
 public class TodoItemDto : IMapFrom<TodoItem>
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
-    public Guid ListId { get; set; }
+    public int ListId { get; set; }
 
     public string? Title { get; set; }
 

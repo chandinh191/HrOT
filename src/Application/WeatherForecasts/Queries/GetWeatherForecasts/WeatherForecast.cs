@@ -1,4 +1,4 @@
-﻿namespace hrOT.Application.WeatherForecasts.Queries.GetWeatherForecasts;
+﻿namespace LogOT.Application.WeatherForecasts.Queries.GetWeatherForecasts;
 
 public class WeatherForecast
 {

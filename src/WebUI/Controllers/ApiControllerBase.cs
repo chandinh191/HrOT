@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace hrOT.WebUI.Controllers;
+namespace LogOT.WebUI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

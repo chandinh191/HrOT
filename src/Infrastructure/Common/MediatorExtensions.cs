@@ -1,4 +1,4 @@
-﻿using hrOT.Domain.Common;
+﻿using LogOT.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace MediatR;

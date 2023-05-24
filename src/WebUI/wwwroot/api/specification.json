@@ -1,8 +1,8 @@
 {
-  "x-generator": "NSwag v13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.16.0.0 (NJsonSchema v10.7.1.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
-    "title": "hrOT API",
+    "title": "LogOT API",
     "version": "1.0.0"
   },
   "paths": {
@@ -17,8 +17,8 @@
             "name": "ListId",
             "in": "query",
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           },
@@ -52,7 +52,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -77,13 +82,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/TodoItems/{id}": {
@@ -98,8 +108,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -128,7 +138,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -141,8 +156,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -159,7 +174,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/TodoItems/UpdateItemDetails": {
@@ -173,8 +193,8 @@
             "name": "id",
             "in": "query",
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -203,7 +223,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/TodoLists": {
@@ -253,8 +278,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -279,8 +304,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -315,8 +340,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -363,8 +388,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "guid"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -450,12 +475,12 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "listId": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "title": {
             "type": "string",
@@ -471,8 +496,8 @@
         "additionalProperties": false,
         "properties": {
           "listId": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "title": {
             "type": "string",
@@ -485,8 +510,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "title": {
             "type": "string",
@@ -502,12 +527,12 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "listId": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "priority": {
             "$ref": "#/components/schemas/PriorityLevel"
@@ -571,8 +596,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "title": {
             "type": "string",
@@ -595,12 +620,12 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "listId": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "title": {
             "type": "string",
@@ -634,8 +659,8 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "format": "guid"
+            "type": "integer",
+            "format": "int32"
           },
           "title": {
             "type": "string",

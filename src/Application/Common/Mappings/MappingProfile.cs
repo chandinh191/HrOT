@@ -1,7 +1,7 @@
 using System.Reflection;
 using AutoMapper;
 
-namespace hrOT.Application.Common.Mappings;
+namespace LogOT.Application.Common.Mappings;
 
 public class MappingProfile : Profile
 {

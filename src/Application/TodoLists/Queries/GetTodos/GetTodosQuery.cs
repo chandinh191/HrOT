@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Common.Security;
-using hrOT.Domain.Enums;
+using LogOT.Application.Common.Interfaces;
+using LogOT.Application.Common.Security;
+using LogOT.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace hrOT.Application.TodoLists.Queries.GetTodos;
+namespace LogOT.Application.TodoLists.Queries.GetTodos;
 
 [Authorize]
 public record GetTodosQuery : IRequest<TodosVm>;

@@ -1,7 +1,7 @@
-﻿using hrOT.Application.Common.Models;
+﻿using LogOT.Application.Common.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace hrOT.Infrastructure.Identity;
+namespace LogOT.Infrastructure.Identity;
 
 public static class IdentityResultExtensions
 {

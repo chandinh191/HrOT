@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using hrOT.Application.Common.Behaviours;
+using LogOT.Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
 

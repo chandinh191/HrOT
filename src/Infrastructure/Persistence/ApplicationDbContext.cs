@@ -1,18 +1,21 @@
 ﻿using System.Reflection;
-using hrOT.Application.Common.Interfaces;
-using hrOT.Domain.Entities;
-using hrOT.Infrastructure.Identity;
-using hrOT.Infrastructure.Persistence.Interceptors;
+using System.Reflection.Emit;
 using Duende.IdentityServer.EntityFramework.Options;
+using LogOT.Application.Common.Interfaces;
+using LogOT.Domain.Entities;
+using LogOT.Domain.Enums;
+using LogOT.Domain.IdentityModel;
+
+//using LogOT.Infrastructure.Identity;
+using LogOT.Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using hrOT.Domain.Enums;
 
-namespace hrOT.Infrastructure.Persistence;
+namespace LogOT.Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityModel.ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -21,17 +24,18 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
         DbContextOptions<ApplicationDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         IMediator mediator,
-        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) 
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options, operationalStoreOptions)
     {
         _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
+    //=================================================================================================
+
     public DbSet<TodoList> TodoLists => Set<TodoList>();
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-    //public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
-    public DbSet<Domain.IdentityModel.ApplicationUser> ApplicationUsers => Set<Domain.IdentityModel.ApplicationUser>();
+    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
     public DbSet<Allowance> Allowances => Set<Allowance>();
     public DbSet<Company> Companies => Set<Company>();
     public DbSet<CompanyContract> CompanyContracts => Set<CompanyContract>();
@@ -54,21 +58,22 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
     public DbSet<Skill_Employee> Skill_Employees => Set<Skill_Employee>();
     public DbSet<Skill_JD> Skill_JDs => Set<Skill_JD>();
 
-    
+    //=================================================================================================
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         //Seeding database
-        builder.Entity<hrOT.Domain.IdentityModel.ApplicationUser>()
+        builder.Entity<ApplicationUser>()
             .HasData(
-            new Domain.IdentityModel.ApplicationUser
+            new ApplicationUser
             {
                 Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 Fullname = "Lewis",
                 Address = "TEST",
                 Image = "TESTIMAGE",
+                BirthDay = DateTime.Parse("9/9/9999"),
                 UserName = "test",
                 NormalizedUserName = "test",
                 Email = "test@gmail.com",
@@ -93,7 +98,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 IdentityImage = "IMGTEST",
-                BirthDay = DateTime.Parse("9/9/9999"),
                 Diploma = "TEST",
                 BankAccountNumber = "123456789",
                 BankAccountName = "LUONG THE DAN",
@@ -226,7 +230,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _mediator.DispatchDomainEvents(this);
-
         return await base.SaveChangesAsync(cancellationToken);
     }
 }

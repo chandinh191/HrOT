@@ -1,6 +1,6 @@
-﻿global using hrOT.Domain.Common;
-global using hrOT.Domain.Entities;
-global using hrOT.Domain.Enums;
-global using hrOT.Domain.Events;
-global using hrOT.Domain.Exceptions;
-global using hrOT.Domain.ValueObjects;
+﻿global using LogOT.Domain.Common;
+global using LogOT.Domain.Entities;
+global using LogOT.Domain.Enums;
+global using LogOT.Domain.Events;
+global using LogOT.Domain.Exceptions;
+global using LogOT.Domain.ValueObjects;

@@ -1,4 +1,4 @@
-﻿namespace hrOT.Application.Common.Models;
+﻿namespace LogOT.Application.Common.Models;
 
 public class Result
 {

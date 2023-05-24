@@ -1,10 +1,10 @@
-﻿using hrOT.Application.Common.Exceptions;
-using hrOT.Application.Common.Interfaces;
-using hrOT.Domain.Entities;
+﻿using LogOT.Application.Common.Exceptions;
+using LogOT.Application.Common.Interfaces;
+using LogOT.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace hrOT.Application.TodoLists.Commands.DeleteTodoList;
+namespace LogOT.Application.TodoLists.Commands.DeleteTodoList;
 
 public record DeleteTodoListCommand(Guid Id) : IRequest;
 

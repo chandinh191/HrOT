@@ -1,4 +1,4 @@
-﻿namespace hrOT.Application.Common.Exceptions;
+﻿namespace LogOT.Application.Common.Exceptions;
 
 public class NotFoundException : Exception
 {

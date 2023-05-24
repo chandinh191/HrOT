@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace hrOT.Application.TodoItems.Commands.CreateTodoItem;
+namespace LogOT.Application.TodoItems.Commands.CreateTodoItem;
 
 public class CreateTodoItemCommandValidator : AbstractValidator<CreateTodoItemCommand>
 {

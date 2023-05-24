@@ -1,7 +1,7 @@
-﻿using hrOT.Application.Common.Mappings;
-using hrOT.Domain.Entities;
+﻿using LogOT.Application.Common.Mappings;
+using LogOT.Domain.Entities;
 
-namespace hrOT.Application.TodoLists.Queries.ExportTodos;
+namespace LogOT.Application.TodoLists.Queries.ExportTodos;
 
 public class TodoItemRecord : IMapFrom<TodoItem>
 {

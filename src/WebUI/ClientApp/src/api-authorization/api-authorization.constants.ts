@@ -1,4 +1,4 @@
-export const ApplicationName = 'hrOT.WebUI';
+export const ApplicationName = 'LogOT.WebUI';
 
 export const ReturnUrlType = 'returnUrl';
 

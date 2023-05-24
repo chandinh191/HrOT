@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace hrOT.Domain.Entities;
+namespace LogOT.Domain.Entities;
 
 public class Allowance : BaseAuditableEntity
 {

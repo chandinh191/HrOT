@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using hrOT.Application.Common.Interfaces;
+using LogOT.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace hrOT.Application.TodoLists.Queries.ExportTodos;
+namespace LogOT.Application.TodoLists.Queries.ExportTodos;
 
 public record ExportTodosQuery : IRequest<ExportTodosVm>
 {

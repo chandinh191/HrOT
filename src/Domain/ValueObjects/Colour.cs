@@ -1,4 +1,4 @@
-﻿namespace hrOT.Domain.ValueObjects;
+﻿namespace LogOT.Domain.ValueObjects;
 
 public class Colour : ValueObject
 {

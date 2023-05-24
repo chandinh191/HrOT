@@ -1,4 +1,4 @@
-﻿namespace hrOT.Domain.Entities;
+﻿namespace LogOT.Domain.Entities;
 
 public class TodoList : BaseAuditableEntity
 {

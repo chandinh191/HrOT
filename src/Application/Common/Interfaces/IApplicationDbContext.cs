@@ -1,15 +1,17 @@
-﻿using hrOT.Domain.Entities;
-using hrOT.Domain.IdentityModel;
+﻿using System.Collections.Generic;
+using LogOT.Domain.Entities;
+using LogOT.Domain.Entities;
+using LogOT.Domain.IdentityModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace hrOT.Application.Common.Interfaces;
+namespace LogOT.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
     DbSet<TodoList> TodoLists { get; }
 
     DbSet<TodoItem> TodoItems { get; }
-
+    
     DbSet<ApplicationUser> ApplicationUsers { get; }
     DbSet<Allowance> Allowances { get; }
     DbSet<Company> Companies { get; }

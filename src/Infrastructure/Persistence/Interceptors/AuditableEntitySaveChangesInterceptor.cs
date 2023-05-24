@@ -1,10 +1,10 @@
-﻿using hrOT.Application.Common.Interfaces;
-using hrOT.Domain.Common;
+﻿using LogOT.Application.Common.Interfaces;
+using LogOT.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace hrOT.Infrastructure.Persistence.Interceptors;
+namespace LogOT.Infrastructure.Persistence.Interceptors;
 
 public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {

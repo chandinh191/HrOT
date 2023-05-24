@@ -1,14 +1,14 @@
-﻿using hrOT.Application.TodoLists.Commands.CreateTodoList;
-using hrOT.Application.TodoLists.Commands.DeleteTodoList;
-using hrOT.Application.TodoLists.Commands.UpdateTodoList;
-using hrOT.Application.TodoLists.Queries.ExportTodos;
-using hrOT.Application.TodoLists.Queries.GetTodos;
+﻿using LogOT.Application.TodoLists.Commands.CreateTodoList;
+using LogOT.Application.TodoLists.Commands.DeleteTodoList;
+using LogOT.Application.TodoLists.Commands.UpdateTodoList;
+using LogOT.Application.TodoLists.Queries.ExportTodos;
+using LogOT.Application.TodoLists.Queries.GetTodos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace hrOT.WebUI.Controllers;
+namespace LogOT.WebUI.Controllers;
 
-[Authorize]
+
 public class TodoListsController : ApiControllerBase
 {
     [HttpGet]
@@ -32,7 +32,7 @@ public class TodoListsController : ApiControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(Guid id, UpdateTodoListCommand command)
+    public async Task<ActionResult> Update(int id, UpdateTodoListCommand command)
     {
         if (id != command.Id)
         {

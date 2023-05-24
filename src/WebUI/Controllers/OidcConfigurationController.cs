@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Mvc;
 
-namespace hrOT.WebUI.Controllers;
+namespace LogOT.WebUI.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
 public class OidcConfigurationController : Controller

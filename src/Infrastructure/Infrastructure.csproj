@@ -2,11 +2,17 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>hrOT.Infrastructure</RootNamespace>
-        <AssemblyName>hrOT.Infrastructure</AssemblyName>
+        <RootNamespace>LogOT.Infrastructure</RootNamespace>
+        <AssemblyName>LogOT.Infrastructure</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Persistence\Migrations\**" />
+      <EmbeddedResource Remove="Persistence\Migrations\**" />
+      <None Remove="Persistence\Migrations\**" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="CsvHelper" Version="30.0.1" />

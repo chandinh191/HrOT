@@ -1,4 +1,4 @@
-﻿namespace hrOT.Application.TodoLists.Queries.ExportTodos;
+﻿namespace LogOT.Application.TodoLists.Queries.ExportTodos;
 
 public class ExportTodosVm
 {

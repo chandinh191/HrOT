@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
-using hrOT.Application.Common.Interfaces;
+using LogOT.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace hrOT.Application.Common.Behaviours;
+namespace LogOT.Application.Common.Behaviours;
 
 public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
@@ -45,7 +45,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
                 userName = await _identityService.GetUserNameAsync(userId);
             }
 
-            _logger.LogWarning("hrOT Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
+            _logger.LogWarning("LogOT Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
                 requestName, elapsedMilliseconds, userId, userName, request);
         }
 

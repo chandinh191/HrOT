@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Common.Mappings;
-using hrOT.Application.Common.Models;
+using LogOT.Application.Common.Interfaces;
+using LogOT.Application.Common.Mappings;
+using LogOT.Application.Common.Models;
 using MediatR;
 
-namespace hrOT.Application.TodoItems.Queries.GetTodoItemsWithPagination;
+namespace LogOT.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
 public record GetTodoItemsWithPaginationQuery : IRequest<PaginatedList<TodoItemBriefDto>>
 {

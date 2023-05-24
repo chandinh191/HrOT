@@ -1,9 +1,9 @@
-﻿using hrOT.Application.Common.Exceptions;
+﻿using LogOT.Application.Common.Exceptions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace hrOT.WebUI.Filters;
+namespace LogOT.WebUI.Filters;
 
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {
@@ -37,11 +37,11 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             return;
         }
 
-        if (!context.ModelState.IsValid)
-        {
-            HandleInvalidModelStateException(context);
-            return;
-        }
+        //if (!context.ModelState.IsValid)
+        //{
+        //    HandleInvalidModelStateException(context);
+        //    return;
+        //}
     }
 
     private void HandleValidationException(ExceptionContext context)
@@ -58,17 +58,17 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private void HandleInvalidModelStateException(ExceptionContext context)
-    {
-        var details = new ValidationProblemDetails(context.ModelState)
-        {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
+    //private void HandleInvalidModelStateException(ExceptionContext context)
+    //{
+    //    var details = new ValidationProblemDetails(context.ModelState)
+    //    {
+    //        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+    //    };
 
-        context.Result = new BadRequestObjectResult(details);
+    //    context.Result = new BadRequestObjectResult(details);
 
-        context.ExceptionHandled = true;
-    }
+    //    context.ExceptionHandled = true;
+    //}
 
     private void HandleNotFoundException(ExceptionContext context)
     {

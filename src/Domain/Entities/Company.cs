@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hrOT.Domain.Entities;
+namespace LogOT.Domain.Entities;
 public class Company : BaseAuditableEntity
 {
    

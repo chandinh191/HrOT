@@ -1,8 +1,8 @@
-﻿using hrOT.Domain.Events;
+﻿using LogOT.Domain.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace hrOT.Application.TodoItems.EventHandlers;
+namespace LogOT.Application.TodoItems.EventHandlers;
 
 public class TodoItemCreatedEventHandler : INotificationHandler<TodoItemCreatedEvent>
 {
@@ -15,7 +15,7 @@ public class TodoItemCreatedEventHandler : INotificationHandler<TodoItemCreatedE
 
     public Task Handle(TodoItemCreatedEvent notification, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("hrOT Domain Event: {DomainEvent}", notification.GetType().Name);
+        _logger.LogInformation("LogOT Domain Event: {DomainEvent}", notification.GetType().Name);
 
         return Task.CompletedTask;
     }

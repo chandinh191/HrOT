@@ -1,4 +1,4 @@
-using hrOT.Infrastructure.Persistence;
+using LogOT.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,10 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,7 +21,7 @@ if (app.Environment.IsDevelopment())
     {
         var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
         await initialiser.InitialiseAsync();
-        //await initialiser.SeedAsync();
+        await initialiser.SeedAsync();
     }
 }
 else
@@ -43,10 +41,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-
+app.UseNToastNotify();
 app.UseAuthentication();
-app.UseIdentityServer();
 app.UseAuthorization();
+
+
+
+
+app.UseSession();
+
+
 
 app.MapControllerRoute(
     name: "default",

@@ -1,8 +1,8 @@
-﻿using hrOT.Domain.Entities;
+﻿using LogOT.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace hrOT.Infrastructure.Persistence.Configurations;
+namespace LogOT.Infrastructure.Persistence.Configurations;
 
 public class TodoItemConfiguration : IEntityTypeConfiguration<TodoItem>
 {

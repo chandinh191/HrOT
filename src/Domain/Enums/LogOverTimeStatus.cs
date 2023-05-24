@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hrOT.Domain.Enums;
+namespace LogOT.Domain.Enums;
 public enum LogOverTimeStatus
 {
     //còn hiệu lực

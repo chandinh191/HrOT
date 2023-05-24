@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
-using ValidationException = hrOT.Application.Common.Exceptions.ValidationException;
+using ValidationException = LogOT.Application.Common.Exceptions.ValidationException;
 
-namespace hrOT.Application.Common.Behaviours;
+namespace LogOT.Application.Common.Behaviours;
 
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
      where TRequest : IRequest<TResponse>

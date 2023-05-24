@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
-using hrOT.Application.TodoLists.Queries.ExportTodos;
+using LogOT.Application.TodoLists.Queries.ExportTodos;
 using CsvHelper.Configuration;
 
-namespace hrOT.Infrastructure.Files.Maps;
+namespace LogOT.Infrastructure.Files.Maps;
 
 public class TodoItemRecordMap : ClassMap<TodoItemRecord>
 {

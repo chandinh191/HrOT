@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using hrOT.Domain.Enums;
+using LogOT.Domain.Enums;
 
-namespace hrOT.Domain.Entities;
+namespace LogOT.Domain.Entities;
 public class LeaveLog : BaseAuditableEntity
 {
     [ForeignKey("Employee")]

@@ -1,4 +1,4 @@
-﻿namespace hrOT.Application.Common.Interfaces;
+﻿namespace LogOT.Application.Common.Interfaces;
 
 public interface ICurrentUserService
 {

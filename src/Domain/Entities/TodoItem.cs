@@ -1,4 +1,6 @@
-﻿namespace hrOT.Domain.Entities;
+﻿using LogOT.Domain.Enums;
+
+namespace LogOT.Domain.Entities;
 
 public class TodoItem : BaseAuditableEntity
 {

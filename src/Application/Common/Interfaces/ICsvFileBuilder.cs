@@ -1,6 +1,6 @@
-﻿using hrOT.Application.TodoLists.Queries.ExportTodos;
+﻿using LogOT.Application.TodoLists.Queries.ExportTodos;
 
-namespace hrOT.Application.Common.Interfaces;
+namespace LogOT.Application.Common.Interfaces;
 
 public interface ICsvFileBuilder
 {
