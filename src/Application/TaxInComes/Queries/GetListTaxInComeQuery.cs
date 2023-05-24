@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hrOT.Domain.Enums;
-public enum LeaveLogStatus
+namespace CleanArchitecture.Application.TaxInComes.Queries;
+internal class GetListTaxInComeQuery
 {
-    Pending = 0,
-    Approved = 1,
-    Cancelled = 2
 }
-

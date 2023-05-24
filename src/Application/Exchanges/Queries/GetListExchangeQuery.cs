@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hrOT.Domain.Enums;
-public enum LeaveLogStatus
+namespace CleanArchitecture.Application.Exchanges.Queries;
+internal class GetListExchangeQuery
 {
-    Pending = 0,
-    Approved = 1,
-    Cancelled = 2
 }
-
