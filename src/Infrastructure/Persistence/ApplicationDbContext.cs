@@ -54,8 +54,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
     public DbSet<Skill_Employee> Skill_Employees => Set<Skill_Employee>();
     public DbSet<Skill_JD> Skill_JDs => Set<Skill_JD>();
 
-    
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

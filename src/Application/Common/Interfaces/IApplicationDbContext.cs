@@ -33,6 +33,7 @@ public interface IApplicationDbContext
     DbSet<Skill> Skills { get; }
     DbSet<Skill_Employee> Skill_Employees { get; }
     DbSet<Skill_JD> Skill_JDs { get; }
+    //IEnumerable<object> Experience { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
