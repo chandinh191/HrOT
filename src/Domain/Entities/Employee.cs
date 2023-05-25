@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using LogOT.Domain.IdentityModel;
+using hrOT.Domain.IdentityModel;
 
-namespace LogOT.Domain.Entities;
+namespace hrOT.Domain.Entities;
 
 public class Employee : BaseAuditableEntity
 {
     [ForeignKey("ApplicationUser")]
     public string ApplicationUserId { get; set; }
+
+   
+
     // Bằng cấp
     public string Diploma { get; set; }
 

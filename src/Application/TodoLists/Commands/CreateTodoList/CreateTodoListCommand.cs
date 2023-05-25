@@ -1,8 +1,8 @@
-﻿using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.Entities;
+﻿using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
 using MediatR;
 
-namespace LogOT.Application.TodoLists.Commands.CreateTodoList;
+namespace hrOT.Application.TodoLists.Commands.CreateTodoList;
 
 public record CreateTodoListCommand : IRequest<Guid>
 {

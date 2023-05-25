@@ -1,8 +1,8 @@
-﻿using LogOT.Application.Common.Interfaces;
+﻿using hrOT.Application.Common.Interfaces;
 using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
-namespace LogOT.Application.Common.Behaviours;
+namespace hrOT.Application.Common.Behaviours;
 
 public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
@@ -28,7 +28,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
             userName = await _identityService.GetUserNameAsync(userId);
         }
 
-        _logger.LogInformation("LogOT Request: {Name} {@UserId} {@UserName} {@Request}",
+        _logger.LogInformation("hrOT Request: {Name} {@UserId} {@UserName} {@Request}",
             requestName, userId, userName, request);
     }
 }

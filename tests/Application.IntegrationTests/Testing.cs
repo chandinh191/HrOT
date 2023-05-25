@@ -1,4 +1,5 @@
-﻿using hrOT.Infrastructure.Identity;
+﻿using hrOT.Domain.IdentityModel;
+using hrOT.Infrastructure.Identity;
 using hrOT.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

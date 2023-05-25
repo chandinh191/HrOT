@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace LogOT.Application.Common.Mappings;
+namespace hrOT.Application.Common.Mappings;
 
 public interface IMapFrom<T>
 {

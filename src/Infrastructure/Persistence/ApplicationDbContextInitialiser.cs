@@ -1,10 +1,11 @@
-﻿using LogOT.Domain.Entities;
-using LogOT.Domain.IdentityModel;
+﻿using hrOT.Domain.Entities;
+using hrOT.Domain.IdentityModel;
+using hrOT.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace LogOT.Infrastructure.Persistence;
+namespace hrOT.Infrastructure.Persistence;
 
 public class ApplicationDbContextInitialiser
 {
@@ -76,7 +77,7 @@ public class ApplicationDbContextInitialiser
             Fullname = "sinh",
             Email = "administrator@localhost",
             Image = "123",
-            BirthDay = DateTime.Parse("9/9/9999")
+            
         };
 
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
@@ -98,7 +99,7 @@ public class ApplicationDbContextInitialiser
             Fullname = "sinh",
             Address = "123",
             Image = "123",
-            BirthDay = DateTime.Parse("9/9/9999")
+            
         };
 
         if (_userManager.Users.All(u => u.UserName != staff.UserName))
@@ -120,7 +121,7 @@ public class ApplicationDbContextInitialiser
             Address = "123",
             Fullname = "sinh",
             Image = "123",
-            BirthDay = DateTime.Parse("9/9/9999")
+            
         };
 
         if (_userManager.Users.All(u => u.UserName != employee.UserName))

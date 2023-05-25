@@ -1,13 +1,13 @@
-﻿using LogOT.Application.Common.Mappings;
-using LogOT.Domain.Entities;
+﻿using hrOT.Application.Common.Mappings;
+using hrOT.Domain.Entities;
 
-namespace LogOT.Application.TodoItems.Queries.GetTodoItemsWithPagination;
+namespace hrOT.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
 public class TodoItemBriefDto : IMapFrom<TodoItem>
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
-    public int ListId { get; set; }
+    public Guid ListId { get; set; }
 
     public string? Title { get; set; }
 

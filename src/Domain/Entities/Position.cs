@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LogOT.Domain.Entities;
+using hrOT.Domain.Entities;
 
-namespace LogOT.Domain.Entities;
+namespace hrOT.Domain.Entities;
 
 public class Position : BaseAuditableEntity
 {

@@ -1,7 +1,7 @@
-﻿using LogOT.Application.Common.Exceptions;
-using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.Entities;
-using LogOT.Domain.IdentityModel;
+﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
+using hrOT.Domain.IdentityModel;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,7 +14,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LogOT.Application.Auth.Queries
+namespace hrOT.Application.Auth.Queries
 {
     public class Login : IRequest<ApplicationUser>
     {
@@ -79,19 +79,19 @@ namespace LogOT.Application.Auth.Queries
 
                 if (await userManager.IsInRoleAsync(user, "Manager"))
                 {
-                    httpContext.Items["SuccessMessage"] = "Signed in successfully as a Manager";
+                    string m = "Signed in successfully as a Manager";
 
                     return user;
                 }
                 else if (await userManager.IsInRoleAsync(user, "Staff"))
                 {
-                    httpContext.Items["SuccessMessage"] = "Signed in successfully as a User";
+                   string m = "Signed in successfully as a User";
 
                     return user;
                 }
                 else if (await userManager.IsInRoleAsync(user, "Employee"))
                 {
-                    httpContext.Items["SuccessMessage"] = "Signed in successfully as a User";
+                    string m = "Signed in successfully as a User";
 
                     return user;
                 }

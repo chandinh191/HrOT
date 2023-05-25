@@ -1,4 +1,4 @@
-﻿namespace LogOT.Application.Common.Exceptions;
+﻿namespace hrOT.Application.Common.Exceptions;
 
 public class ForbiddenAccessException : Exception
 {

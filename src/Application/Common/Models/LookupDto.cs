@@ -1,7 +1,7 @@
-﻿using LogOT.Application.Common.Mappings;
-using LogOT.Domain.Entities;
+﻿using hrOT.Application.Common.Mappings;
+using hrOT.Domain.Entities;
 
-namespace LogOT.Application.Common.Models;
+namespace hrOT.Application.Common.Models;
 
 // Note: This is currently just used to demonstrate applying multiple IMapFrom attributes.
 public class LookupDto : IMapFrom<TodoList>, IMapFrom<TodoItem>

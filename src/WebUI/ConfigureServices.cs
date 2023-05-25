@@ -1,10 +1,11 @@
-﻿using LogOT.Application.Common.Interfaces;
-using LogOT.Infrastructure.Persistence;
-using LogOT.WebUI.Filters;
-using LogOT.WebUI.Services;
+﻿using hrOT.Application.Common.Interfaces;
+using hrOT.Infrastructure.Persistence;
+using hrOT.WebUI.Filters;
+using hrOT.WebUI.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
+//using NSwag;
+//using NSwag.Generation.Processors.Security;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -24,16 +25,26 @@ public static class ConfigureServices
         services.AddControllersWithViews(options =>
             options.Filters.Add<ApiExceptionFilterAttribute>())
                 .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
-        services.AddControllersWithViews().AddNToastNotifyNoty(new NotyOptions
-        {
-            ProgressBar = true,
-            Timeout = 3000
-        });
+
         services.AddRazorPages();
 
         // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
+
+        //services.AddOpenApiDocument(configure =>
+        //{
+        //    configure.Title = "hrOT API";
+        //    configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+        //    {
+        //        Type = OpenApiSecuritySchemeType.ApiKey,
+        //        Name = "Authorization",
+        //        In = OpenApiSecurityApiKeyLocation.Header,
+        //        Description = "Type into the textbox: Bearer {your JWT token}."
+        //    });
+
+        //    configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+        //});
 
         return services;
     }

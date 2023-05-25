@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
 
-namespace LogOT.Domain.IdentityModel;
+namespace hrOT.Domain.IdentityModel;
 public class ApplicationUser : IdentityUser
 {
     

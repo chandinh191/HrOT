@@ -1,4 +1,4 @@
-﻿namespace LogOT.Application.TodoLists.Queries.GetTodos;
+﻿namespace hrOT.Application.TodoLists.Queries.GetTodos;
 
 public class PriorityLevelDto
 {

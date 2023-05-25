@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.Entities;
-using LogOT.Domain.IdentityModel;
+using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
+using hrOT.Domain.IdentityModel;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -13,14 +13,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 
 
-namespace LogOT.Application.Employees.Commands.Create
+namespace hrOT.Application.Employees.Commands.Create
 {
     public record CreateEmployee : IRequest<string>
     {
        
         public string IdentityImage { get; set; }
         public DateTime BirthDay { get; set; }
-        public string Diploma { get; set; }
+        public string Diploma { get; set; }//image
         public string BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LogOT.Domain.Entities;
+namespace hrOT.Domain.Entities;
 
 public class Skill : BaseAuditableEntity
 {

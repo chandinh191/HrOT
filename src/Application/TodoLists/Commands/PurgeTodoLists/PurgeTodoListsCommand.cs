@@ -1,8 +1,8 @@
-﻿using LogOT.Application.Common.Interfaces;
-using LogOT.Application.Common.Security;
+﻿using hrOT.Application.Common.Interfaces;
+using hrOT.Application.Common.Security;
 using MediatR;
 
-namespace LogOT.Application.TodoLists.Commands.PurgeTodoLists;
+namespace hrOT.Application.TodoLists.Commands.PurgeTodoLists;
 
 [Authorize(Roles = "Administrator")]
 [Authorize(Policy = "CanPurge")]

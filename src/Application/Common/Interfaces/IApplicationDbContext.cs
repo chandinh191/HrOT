@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using LogOT.Domain.Entities;
-using LogOT.Domain.Entities;
-using LogOT.Domain.IdentityModel;
+﻿using hrOT.Domain.Entities;
+using hrOT.Domain.Entities;
+using hrOT.Domain.IdentityModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace LogOT.Application.Common.Interfaces;
+namespace hrOT.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
     DbSet<TodoList> TodoLists { get; }
 
     DbSet<TodoItem> TodoItems { get; }
-    
-    DbSet<ApplicationUser> ApplicationUsers { get; }
+   DbSet<ApplicationUser> ApplicationUsers { get; }
+
     DbSet<Allowance> Allowances { get; }
     DbSet<Company> Companies { get; }
     DbSet<CompanyContract> CompanyContracts { get; }
@@ -35,6 +34,7 @@ public interface IApplicationDbContext
     DbSet<Skill> Skills { get; }
     DbSet<Skill_Employee> Skill_Employees { get; }
     DbSet<Skill_JD> Skill_JDs { get; }
+    DbSet<TaxIncome> TaxIncomes { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

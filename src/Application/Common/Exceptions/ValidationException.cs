@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace LogOT.Application.Common.Exceptions;
+namespace hrOT.Application.Common.Exceptions;
 
 public class ValidationException : Exception
 {

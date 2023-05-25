@@ -1,15 +1,15 @@
-﻿using LogOT.Application.Common.Models;
-using LogOT.Application.TodoItems.Commands.CreateTodoItem;
-using LogOT.Application.TodoItems.Commands.DeleteTodoItem;
-using LogOT.Application.TodoItems.Commands.UpdateTodoItem;
-using LogOT.Application.TodoItems.Commands.UpdateTodoItemDetail;
-using LogOT.Application.TodoItems.Queries.GetTodoItemsWithPagination;
+﻿using hrOT.Application.Common.Models;
+using hrOT.Application.TodoItems.Commands.CreateTodoItem;
+using hrOT.Application.TodoItems.Commands.DeleteTodoItem;
+using hrOT.Application.TodoItems.Commands.UpdateTodoItem;
+using hrOT.Application.TodoItems.Commands.UpdateTodoItemDetail;
+using hrOT.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LogOT.WebUI.Controllers;
+namespace hrOT.WebUI.Controllers;
 
-[Authorize]
+//[Authorize]
 public class TodoItemsController : ApiControllerBase
 {
     [HttpGet]
@@ -38,7 +38,7 @@ public class TodoItemsController : ApiControllerBase
     }
 
     [HttpPut("[action]")]
-    public async Task<ActionResult> UpdateItemDetails(int id, UpdateTodoItemDetailCommand command)
+    public async Task<ActionResult> UpdateItemDetails(Guid id, UpdateTodoItemDetailCommand command)
     {
         if (id != command.Id)
         {

@@ -1,4 +1,4 @@
-﻿namespace LogOT.Application.Common.Security;
+﻿namespace hrOT.Application.Common.Security;
 
 /// <summary>
 /// Specifies the class this attribute is applied to requires authorization.

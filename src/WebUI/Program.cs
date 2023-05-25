@@ -1,4 +1,4 @@
-using LogOT.Infrastructure.Persistence;
+using hrOT.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,17 +43,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-app.UseNToastNotify();
+
 app.UseAuthentication();
+app.UseIdentityServer();
 app.UseAuthorization();
-
-
-
-
 app.UseSession();
-
-
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");

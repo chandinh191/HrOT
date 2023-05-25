@@ -1,11 +1,10 @@
-﻿
-using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.IdentityModel;
-using LogOT.Infrastructure.Files;
-using LogOT.Infrastructure.Identity;
-using LogOT.Infrastructure.Persistence;
-using LogOT.Infrastructure.Persistence.Interceptors;
-using LogOT.Infrastructure.Services;
+﻿using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.IdentityModel;
+using hrOT.Infrastructure.Files;
+using hrOT.Infrastructure.Identity;
+using hrOT.Infrastructure.Persistence;
+using hrOT.Infrastructure.Persistence.Interceptors;
+using hrOT.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
 
 namespace Microsoft.Extensions.DependencyInjection;
 

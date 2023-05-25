@@ -1,8 +1,8 @@
-﻿using LogOT.Application.Common.Interfaces;
+﻿using hrOT.Application.Common.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace LogOT.Application.TodoLists.Commands.CreateTodoList;
+namespace hrOT.Application.TodoLists.Commands.CreateTodoList;
 
 public class CreateTodoListCommandValidator : AbstractValidator<CreateTodoListCommand>
 {

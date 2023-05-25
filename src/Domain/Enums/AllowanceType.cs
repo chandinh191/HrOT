@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogOT.Domain.Enums;
+namespace hrOT.Domain.Enums;
 public enum AllowanceType
 {
     // Ăn uống

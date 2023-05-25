@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using LogOT.Domain.Entities;
+using hrOT.Domain.Entities;
 
-namespace LogOT.Domain.Entities;
+namespace hrOT.Domain.Entities;
 
 public class Department : BaseAuditableEntity
 {

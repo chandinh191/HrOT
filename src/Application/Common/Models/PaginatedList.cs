@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace LogOT.Application.Common.Models;
+namespace hrOT.Application.Common.Models;
 
 public class PaginatedList<T>
 {

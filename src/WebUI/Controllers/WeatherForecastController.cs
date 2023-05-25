@@ -1,7 +1,7 @@
-﻿using LogOT.Application.WeatherForecasts.Queries.GetWeatherForecasts;
+﻿using hrOT.Application.WeatherForecasts.Queries.GetWeatherForecasts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LogOT.WebUI.Controllers;
+namespace hrOT.WebUI.Controllers;
 
 public class WeatherForecastController : ApiControllerBase
 {

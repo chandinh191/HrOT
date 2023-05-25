@@ -1,4 +1,4 @@
-﻿namespace LogOT.Domain.Enums;
+﻿namespace hrOT.Domain.Enums;
 
 public enum StatusOvertimeLog
 {

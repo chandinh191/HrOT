@@ -1,14 +1,14 @@
-﻿using LogOT.Application.Common.Exceptions;
-using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.Entities;
-using LogOT.Domain.Enums;
+﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
+using hrOT.Domain.Enums;
 using MediatR;
 
-namespace LogOT.Application.TodoItems.Commands.UpdateTodoItemDetail;
+namespace hrOT.Application.TodoItems.Commands.UpdateTodoItemDetail;
 
 public record UpdateTodoItemDetailCommand : IRequest
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     public Guid ListId { get; init; }
 

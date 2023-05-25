@@ -2,14 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>LogOT.Application</RootNamespace>
-        <AssemblyName>LogOT.Application</AssemblyName>
+        <RootNamespace>hrOT.Application</RootNamespace>
+        <AssemblyName>hrOT.Application</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="EPPlus" Version="6.2.4" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />

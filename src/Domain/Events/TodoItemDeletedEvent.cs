@@ -1,4 +1,4 @@
-﻿namespace LogOT.Domain.Events;
+﻿namespace hrOT.Domain.Events;
 
 public class TodoItemDeletedEvent : BaseEvent
 {

@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 
-using LogOT.Application.Common.Interfaces;
+using hrOT.Application.Common.Interfaces;
 
-namespace LogOT.WebUI.Services;
+namespace hrOT.WebUI.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

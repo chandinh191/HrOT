@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LogOT.Domain.Entities;
+namespace hrOT.Domain.Entities;
 
 public class StartDateAttribute : ValidationAttribute
 {

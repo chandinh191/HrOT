@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogOT.Domain.Entities;
+namespace hrOT.Domain.Entities;
 public class PaymentHistory : BaseAuditableEntity
 {
 

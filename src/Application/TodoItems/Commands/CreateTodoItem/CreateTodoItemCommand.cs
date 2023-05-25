@@ -1,9 +1,9 @@
-﻿using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.Entities;
-using LogOT.Domain.Events;
+﻿using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
+using hrOT.Domain.Events;
 using MediatR;
 
-namespace LogOT.Application.TodoItems.Commands.CreateTodoItem;
+namespace hrOT.Application.TodoItems.Commands.CreateTodoItem;
 
 public record CreateTodoItemCommand : IRequest<Guid>
 {

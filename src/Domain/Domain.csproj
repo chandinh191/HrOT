@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>LogOT.Domain</RootNamespace>
-        <AssemblyName>LogOT.Domain</AssemblyName>
+        <RootNamespace>hrOT.Domain</RootNamespace>
+        <AssemblyName>hrOT.Domain</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -11,7 +11,7 @@
     <ItemGroup>
       <PackageReference Include="MediatR" Version="11.1.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.3" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.2" />
     </ItemGroup>
 
 </Project>

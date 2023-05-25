@@ -1,9 +1,9 @@
-﻿using LogOT.Application.Common.Exceptions;
-using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.Entities;
+﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
 using MediatR;
 
-namespace LogOT.Application.TodoItems.Commands.UpdateTodoItem;
+namespace hrOT.Application.TodoItems.Commands.UpdateTodoItem;
 
 public record UpdateTodoItemCommand : IRequest
 {

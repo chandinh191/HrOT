@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace LogOT.Domain.Common;
+namespace hrOT.Domain.Common;
 
 public abstract class BaseEvent : INotification
 {

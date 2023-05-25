@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace LogOT.Application.Common.Behaviours;
+namespace hrOT.Application.Common.Behaviours;
 
 public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
@@ -22,7 +22,7 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
         {
             var requestName = typeof(TRequest).Name;
 
-            _logger.LogError(ex, "LogOT Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
+            _logger.LogError(ex, "hrOT Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
 
             throw;
         }

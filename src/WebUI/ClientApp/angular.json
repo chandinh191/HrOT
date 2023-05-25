@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "LogOT.WebUI": {
+    "hrOT.WebUI": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "LogOT.WebUI:build:production"
+              "browserTarget": "hrOT.WebUI:build:production"
             },
             "development": {
-              "browserTarget": "LogOT.WebUI:build:development",
+              "browserTarget": "hrOT.WebUI:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "LogOT.WebUI:build"
+            "browserTarget": "hrOT.WebUI:build"
           }
         },
         "test": {
@@ -131,5 +131,5 @@
       }
     }
   },
-  "defaultProject": "LogOT.WebUI"
+  "defaultProject": "hrOT.WebUI"
 }

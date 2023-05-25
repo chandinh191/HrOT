@@ -1,13 +1,13 @@
-﻿using LogOT.Application.Common.Exceptions;
-using LogOT.Application.Common.Interfaces;
-using LogOT.Domain.Entities;
+﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
 using MediatR;
 
-namespace LogOT.Application.TodoLists.Commands.UpdateTodoList;
+namespace hrOT.Application.TodoLists.Commands.UpdateTodoList;
 
 public record UpdateTodoListCommand : IRequest
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     public string? Title { get; init; }
 }

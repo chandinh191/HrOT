@@ -1,6 +1,6 @@
-﻿using LogOT.Application.Auth.Queries;
-using LogOT.Application.Common.Exceptions;
-using LogOT.Domain.Entities;
+﻿using hrOT.Application.Auth.Queries;
+using hrOT.Application.Common.Exceptions;
+using hrOT.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -31,19 +31,9 @@ namespace WebUI.Controllers
             {
                 var user = await _mediator.Send(new Login { Username = model.Username, Password = model.Password });         
 
+                
                 // Xử lý thành công, thực hiện các hành động khác
-                if (User.IsInRole("Manager"))
-                {
-                    return Ok("Bạn đã đăng nhập bằng tài khoản quản lý");
-                }
-                else if (User.IsInRole("Staff"))
-                {
-                    return Ok("Bạn đã đăng nhập bằng tài khoản nhân viên");
-                }
-                else if (User.IsInRole("Employee"))
-                {
-                    return Ok("Bạn đã đăng nhập bằng tài khoản người dùng");
-                }
+                
 
                 return Ok("Đăng nhập thành công");
 
@@ -68,7 +58,7 @@ namespace WebUI.Controllers
                 return Ok("Đăng nhập cả hai thất bại");
             }
 
-            return Ok("Đăng nhập thất bại");
+          
         }
 
         [HttpGet("logout")]
@@ -76,7 +66,8 @@ namespace WebUI.Controllers
         {
             await HttpContext.SignOutAsync(); // Đăng xuất người dùng
 
-            return Ok("Logout in successfully"); // Chuyển hướng người dùng đến trang đăng nhập
+            return Ok("Đăng xuát thành công"); // Chuyển hướng người dùng đến trang đăng nhập
+            
         }
     }
 }

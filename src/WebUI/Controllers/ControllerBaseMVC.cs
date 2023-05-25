@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NToastNotify;
+
 
 namespace WebUI.Controllers;
 
@@ -12,7 +12,4 @@ public class ControllerBaseMVC : Controller
     protected ISender Mediator => _mediator ??=
         HttpContext.RequestServices.GetRequiredService<ISender>();
 
-    private IToastNotification _toast = null!;
-    protected IToastNotification Toast => _toast ??=
-      HttpContext.RequestServices.GetRequiredService<IToastNotification>();
 }

@@ -1,12 +1,12 @@
 ﻿using System.Security.Claims;
-using LogOT.Application.Common.Interfaces;
-using LogOT.Application.Common.Models;
-using LogOT.Domain.IdentityModel;
+using hrOT.Application.Common.Interfaces;
+using hrOT.Application.Common.Models;
+using hrOT.Domain.IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace LogOT.Infrastructure.Identity;
+namespace hrOT.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
@@ -17,8 +17,9 @@ public class IdentityService : IIdentityService
 
     public IdentityService(
         UserManager<ApplicationUser> userManager,
-        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-        IAuthorizationService authorizationService, SignInManager<ApplicationUser> signInManager)
+        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory, 
+        SignInManager<ApplicationUser> signInManager,
+        IAuthorizationService authorizationService)
     {
         _userManager = userManager;
         _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
@@ -82,8 +83,6 @@ public class IdentityService : IIdentityService
 
         return result.ToApplicationResult();
     }
-
-
     public async Task<ClaimsPrincipal> AuthenticateAsync(string username, string password)
     {
         var user = await _userManager.FindByNameAsync(username);
