@@ -1,5 +1,6 @@
 ﻿using hrOT.Application.Common.Interfaces;
 using hrOT.Application.Common.Models;
+using hrOT.Domain.IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

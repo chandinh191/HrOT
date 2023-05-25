@@ -1,4 +1,5 @@
 ﻿using hrOT.Domain.Entities;
+using hrOT.Domain.IdentityModel;
 using hrOT.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

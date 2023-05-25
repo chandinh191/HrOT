@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using hrOT.Domain.Entities;
+
 
 namespace hrOT.Domain.Entities;
 
