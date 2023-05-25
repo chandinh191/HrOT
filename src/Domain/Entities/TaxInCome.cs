@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace hrOT.Domain.Entities;
-public class TaxIncome : BaseAuditableEntity
+
+public class TaxInCome : BaseAuditableEntity
+
 {
     public double? Muc_chiu_thue { get; set; }
     public double? Thue_suat { get; set; }

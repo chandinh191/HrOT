@@ -53,6 +53,7 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
+
         // Roles
         var roles = new List<IdentityRole>
     {
@@ -61,8 +62,11 @@ public class ApplicationDbContextInitialiser
         new IdentityRole("Employee")
     };
 
+        
+
         foreach (var role in roles)
         {
+
             if (_roleManager.Roles.All(r => r.Name != role.Name))
             {
                 await _roleManager.CreateAsync(role);
@@ -79,6 +83,8 @@ public class ApplicationDbContextInitialiser
             Image = "123",
             
         };
+
+   
 
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
