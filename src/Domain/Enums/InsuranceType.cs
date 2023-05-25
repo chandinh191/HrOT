@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace hrOT.Domain.Enums;
-public enum LeaveLogStatus
+public enum InsuranceType
 {
-    Pending = 0,
-    Approved = 1,
-    Cancelled = 2
+    Official = 0,
+    Custom = 1
 }
-
