@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace hrOT.Domain.Enums;
+
 public enum LeaveLogStatus
 {
     Pending = 0,
@@ -12,11 +13,10 @@ public enum LeaveLogStatus
     Cancelled = 2
 }
 
-public enum OvertimeLogStatus
-{
-    Pending = 0,
-    Approved = 1,
-    Cancelled = 2
+//public enum OvertimeLogStatus
+//{
+//    Pending = 0,
+//    Approved = 1,
+//    Cancelled = 2
 
-}
-
+//}
