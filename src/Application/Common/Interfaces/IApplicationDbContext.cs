@@ -34,7 +34,7 @@ public interface IApplicationDbContext
     DbSet<Skill> Skills { get; }
     DbSet<Skill_Employee> Skill_Employees { get; }
     DbSet<Skill_JD> Skill_JDs { get; }
-    DbSet<TaxIncome> TaxIncomes { get; }
+    DbSet<TaxInCome> TaxInComes { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
