@@ -1,4 +1,5 @@
 ﻿using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.IdentityModel;
 using hrOT.Infrastructure.Files;
 using hrOT.Infrastructure.Identity;
 using hrOT.Infrastructure.Persistence;
