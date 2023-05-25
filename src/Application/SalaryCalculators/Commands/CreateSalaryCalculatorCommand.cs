@@ -44,7 +44,9 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
         double? TTNCN = 0;
         double? CmpSalaryFinal = 0;
 
+
         var List_TaxInCome = await _context.TaxInComes
+
             .OrderBy(t => t.Muc_chiu_thue)
             .ToListAsync(cancellationToken);
         var List_Exchange = await _context.Exchanges
@@ -55,12 +57,14 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
         int m = List_Exchange.Count();
 
         double?[] DetailTaxInCome = new double?[n];
+
         for (int i = 1; i < n; i++)
         {
             DetailTaxInCome[i] = 0;
         }
         double?[] DetailTaxInCome_Max = new double?[n];
         for (int i = 0; i < n - 1; i++)
+
         {
             if (i == 0)
             {
@@ -137,7 +141,9 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
                     {
                         if (TNCT <= List_TaxInCome[i].Muc_chiu_thue)
                         {
+
                             TTNCN = (TNCT - List_TaxInCome[i-1].Muc_chiu_thue) * List_TaxInCome[i].Thue_suat;
+
                             for (int j = 0; j < i; j++)
                             {
                                 TTNCN += DetailTaxInCome_Max[j];
@@ -146,10 +152,12 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
                             DetailTaxInCome[i] = TTNCN;
                             break;
                         }
+
                         
                     }
                 }
             }
+
 
             //tính lương cuối
             Net = TNTT - TTNCN;
@@ -183,6 +191,7 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
             Exchange_Salary = (double)(Net - 11000000 - request.Number_Of_Dependents * 4400000);
 
             //sử dụng bảng quy đổi để tính thu nhập chịu thuế
+
             if (Exchange_Salary > 0)
             {
                 // Nếu thu nhập quy đổi nhỏ hơn mức quy đổi đầu tiên
@@ -205,6 +214,7 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
                 }
             }
          
+
             // nếu thu nhập chịu thuế > 0 thì tính thuế thu nhập cá nhân
             if (TNCT > 0)
             {
@@ -222,7 +232,9 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
                     {
                         if (TNCT <= List_TaxInCome[i].Muc_chiu_thue)
                         {
+
                             TTNCN = (TNCT - List_TaxInCome[i - 1].Muc_chiu_thue) * List_TaxInCome[i].Thue_suat;
+
                             for (int j = 0; j < i; j++)
                             {
                                 TTNCN += DetailTaxInCome_Max[j];
@@ -230,10 +242,12 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
                             }
                             DetailTaxInCome[i] = TTNCN;
                             break;
+
                         }                   
                     }
                 }
             }
+
             //tính thu nhập trước thuế bằng thu nhập + thuế thu nhập cá nhân
             TNTT = Net + TTNCN;
             //tính các loại bảo hiểm nhân viên phải trả 

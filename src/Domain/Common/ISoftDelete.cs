@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hrOT.Domain.Enums;
+namespace hrOT.Domain.Common;
 
-public enum LeaveLogStatus
+public interface ISoftDelete
 {
-    Pending = 0,
-    Approved = 1,
-    Cancelled = 2
-
+    bool IsDeleted { get; }
 }
-

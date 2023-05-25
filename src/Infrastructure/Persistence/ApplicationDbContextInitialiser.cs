@@ -53,43 +53,110 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
-        // Default roles
-        /*var administratorRole = new IdentityRole("Administrator");
 
-        if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
+        // Roles
+        var roles = new List<IdentityRole>
+    {
+        new IdentityRole("Manager"),
+        new IdentityRole("Staff"),
+        new IdentityRole("Employee")
+    };
+
+        
+
+        foreach (var role in roles)
         {
-            await _roleManager.CreateAsync(administratorRole);
-        }*/
 
-        // Default users
-        /*var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
+            if (_roleManager.Roles.All(r => r.Name != role.Name))
+            {
+                await _roleManager.CreateAsync(role);
+            }
+        }
+
+        // Manager
+        var administrator = new ApplicationUser
+        {
+            UserName = "administrator@localhost",
+            Address = "123",
+            Fullname = "sinh",
+            Email = "administrator@localhost",
+            Image = "123",
+            
+        };
+
+   
 
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
-            await _userManager.CreateAsync(administrator, "Administrator1!");
-            if (!string.IsNullOrWhiteSpace(administratorRole.Name))
-            {
-                await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
-            }
-        }*/
+            await _userManager.CreateAsync(administrator, "Aa123@");
 
-        // Default data
-        // Seed, if necessary
+            var administratorRole = roles.FirstOrDefault(r => r.Name == "Manager");
+            if (administratorRole != null)
+            {
+                await _userManager.AddToRoleAsync(administrator, administratorRole.Name);
+            }
+        }
+
+        // Staff
+        var staff = new ApplicationUser
+        {
+            UserName = "staff@localhost",
+            Email = "staff@localhost",
+            Fullname = "sinh",
+            Address = "123",
+            Image = "123",
+            
+        };
+
+        if (_userManager.Users.All(u => u.UserName != staff.UserName))
+        {
+            await _userManager.CreateAsync(staff, "Aa123@");
+
+            var staffRole = roles.FirstOrDefault(r => r.Name == "Staff");
+            if (staffRole != null)
+            {
+                await _userManager.AddToRoleAsync(staff, staffRole.Name);
+            }
+        }
+
+        // Employee
+        var employee = new ApplicationUser
+        {
+            UserName = "employee@localhost",
+            Email = "employee@localhost",
+            Address = "123",
+            Fullname = "sinh",
+            Image = "123",
+            
+        };
+
+        if (_userManager.Users.All(u => u.UserName != employee.UserName))
+        {
+            await _userManager.CreateAsync(employee, "Aa123@");
+
+            var employeeRole = roles.FirstOrDefault(r => r.Name == "Employee");
+            if (employeeRole != null)
+            {
+                await _userManager.AddToRoleAsync(employee, employeeRole.Name);
+            }
+        }
+
         if (!_context.TodoLists.Any())
         {
             _context.TodoLists.Add(new TodoList
             {
                 Title = "Todo List",
                 Items =
-                {
-                    new TodoItem { Title = "Make a todo list 📃" },
-                    new TodoItem { Title = "Check off the first item ✅" },
-                    new TodoItem { Title = "Realise you've already done two things on the list! 🤯"},
-                    new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
-                }
+            {
+                new TodoItem { Title = "Make a todo list 📃" },
+                new TodoItem { Title = "Check off the first item ✅" },
+                new TodoItem { Title = "Realise you've already done two things on the list! 🤯"},
+                new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
+            }
             });
 
             await _context.SaveChangesAsync();
         }
     }
+
 }

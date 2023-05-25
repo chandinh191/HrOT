@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using AutoMapper;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
@@ -29,4 +30,5 @@ public class GetListExchangeQueryHandler : IRequestHandler<GetListExchangeQuery,
                 .OrderBy(t => t.Muc_Quy_Doi)
                 .ToListAsync(cancellationToken);
     }
+
 }

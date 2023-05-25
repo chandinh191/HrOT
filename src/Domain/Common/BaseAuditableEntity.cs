@@ -1,6 +1,6 @@
 ﻿namespace hrOT.Domain.Common;
 
-public abstract class BaseAuditableEntity : BaseEntity
+public abstract class BaseAuditableEntity : BaseEntity, ISoftDelete
 {
     public DateTime Created { get; set; }
 

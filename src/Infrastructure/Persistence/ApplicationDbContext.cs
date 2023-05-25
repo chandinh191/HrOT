@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
-using hrOT.Infrastructure.Identity;
+//using hrOT.Infrastructure.Identity;
 using hrOT.Infrastructure.Persistence.Interceptors;
 using Duende.IdentityServer.EntityFramework.Options;
 using MediatR;
@@ -9,10 +9,11 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using hrOT.Domain.Enums;
+using hrOT.Domain.IdentityModel;
 
 namespace hrOT.Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityModel.ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -30,8 +31,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
 
     public DbSet<TodoList> TodoLists => Set<TodoList>();
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-    //public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
-    public DbSet<Domain.IdentityModel.ApplicationUser> ApplicationUsers => Set<Domain.IdentityModel.ApplicationUser>();
+  public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+
     public DbSet<Allowance> Allowances => Set<Allowance>();
     public DbSet<Company> Companies => Set<Company>();
     public DbSet<CompanyContract> CompanyContracts => Set<CompanyContract>();
@@ -53,16 +54,18 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
     public DbSet<Skill> Skills => Set<Skill>();
     public DbSet<Skill_Employee> Skill_Employees => Set<Skill_Employee>();
     public DbSet<Skill_JD> Skill_JDs => Set<Skill_JD>();
+
     public DbSet<TaxInCome> TaxInComes => Set<TaxInCome>();
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         //Seeding database
-        builder.Entity<hrOT.Domain.IdentityModel.ApplicationUser>()
+        builder.Entity<ApplicationUser>()
             .HasData(
-            new Domain.IdentityModel.ApplicationUser
+            new ApplicationUser
             {
                 Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 Fullname = "Lewis",
@@ -93,6 +96,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 IdentityImage = "IMGTEST",
+
+
                 Diploma = "TEST",
                 BankAccountNumber = "123456789",
                 BankAccountName = "LUONG THE DAN",
@@ -216,9 +221,11 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                 LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                 LastModifiedBy = "test"
             });
+
         builder.Entity<TaxInCome>()
        .HasData(
            new TaxInCome
+
            {
                Id = Guid.Parse("a279788d-0fa2-4d9e-9e8e-5d689e853972"),
                Muc_chiu_thue = 5000000,
@@ -229,7 +236,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
            },
+
            new TaxInCome
+
            {
                Id = Guid.Parse("2d6a8e64-6130-456b-9c9d-95a1bc0a11fd"),
                Muc_chiu_thue = 10000000,
@@ -240,7 +249,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
            },
+
            new TaxInCome
+
            {
                Id = Guid.Parse("e582dd24-ec47-4c64-b0a7-6f8647b488a7"),
                Muc_chiu_thue = 18000000,
@@ -251,7 +262,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
            },
+
            new TaxInCome
+
            {
                Id = Guid.Parse("c0b17a9e-ee6f-4fe0-8e6f-33d5c63640c8"),
                Muc_chiu_thue = 32000000,
@@ -262,7 +275,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
            },
+
            new TaxInCome
+
            {
                Id = Guid.Parse("f0f3e78c-67c9-4e5e-a9fc-c8d2e7c1e5f5"),
                Muc_chiu_thue = 52000000,
@@ -273,7 +288,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
            },
+
            new TaxInCome
+
            {
                Id = Guid.Parse("78a65c98-2d7a-4c57-98f0-81f5a870a915"),
                Muc_chiu_thue = 80000000,
@@ -284,7 +301,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
            },
+
            new TaxInCome
+
            {
                Id = Guid.Parse("4ae0e892-5369-4ef1-9e37-5d4e0a9a3e2e"),
                Muc_chiu_thue = double.MaxValue,
