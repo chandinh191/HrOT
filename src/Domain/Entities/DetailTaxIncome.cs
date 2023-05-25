@@ -10,6 +10,6 @@ public class DetailTaxIncome : BaseAuditableEntity
 {
     [ForeignKey("PaySlip")]
     public Guid PaySlipId { get; set; }
-    public Guid Payment { get; set; }
+    public double? Payment { get; set; }
     public virtual PaySlip PaySlip { get; set; } = null!;
 }

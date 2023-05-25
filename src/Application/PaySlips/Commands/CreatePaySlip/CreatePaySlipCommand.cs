@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Application.SalaryCalculators;
+using hrOT.Domain.Entities;
 using hrOT.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.PaySlips.Commands.CreatePaySlip;
-public record CreatePaySlipCommand(Guid EmployeeId) : IRequest<SalaryCalculatorDto>;
+public record CreatePaySlipCommand(Guid EmployeeId) : IRequest<Guid>;
 
-public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand, SalaryCalculatorDto>
+public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
 
@@ -21,11 +22,18 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
         _context = context;
     }
 
-    public async Task<SalaryCalculatorDto> Handle(CreatePaySlipCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreatePaySlipCommand request, CancellationToken cancellationToken)
     {
         //khai báo
         double? Gross = 0;
         double? Net = 0;
+        double? Salary_1Hour = 0;
+        int? Standard_Work_Hours = 240;
+        int? Actual_Work_Hours;
+        double? Ot_Hours = 0;
+        int? Leave_Hours = 0;
+        double? Bonus = 0;
+        double? Deduction = 0;
         double? Exchange_Salary = 0;
         double? BHXH_Emp = 0;
         double? BHYT_Emp = 0;
@@ -36,11 +44,12 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
         double? TNTT = 0;
         double? TNCT = 0;
         double? TTNCN = 0;
-        double? CmpSalaryFinal = 0;
+        double? SalaryFinal = 0;
 
         var EmployeeContract = await _context.EmployeeContracts
-            .Where(x => x.EmployeeId == request.EmployeeId)
+            .Where(x => x.EmployeeId == request.EmployeeId && x.Status == EmployeeContractStatus.Effective)
             .SingleOrDefaultAsync(cancellationToken);
+
         var List_TaxInCome = await _context.TaxInComes
             .OrderBy(t => t.Muc_chiu_thue)
             .ToListAsync(cancellationToken);
@@ -48,13 +57,25 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             .OrderBy(e => e.Muc_Quy_Doi)
             .ToListAsync(cancellationToken);
 
+        Salary_1Hour = EmployeeContract.Salary / Standard_Work_Hours;
+        var OvertimeLog = await _context.OvertimeLogs
+            .Where(x => x.IsDeleted == false)
+            .ToListAsync(cancellationToken);
+        var LeaveLog = await _context.LeaveLogs
+            .Where(x => x.IsDeleted == false)
+            .ToListAsync(cancellationToken);
+        Ot_Hours = OvertimeLog.Sum(x => x.TotalHours);
+        Leave_Hours = LeaveLog.Sum(x => x.LeaveHours);
+        Bonus = Ot_Hours * Salary_1Hour * 1.5;
+        Deduction = Leave_Hours * Salary_1Hour;
+
         int n = List_TaxInCome.Count();
         int m = List_Exchange.Count();
 
-        double?[] DetailTaxInCome = new double?[n];
+        double?[] DetailTaxInComes = new double?[n];
         for (int i = 1; i < n; i++)
         {
-            DetailTaxInCome[i] = 0;
+            DetailTaxInComes[i] = 0;
         }
         double?[] DetailTaxInCome_Max = new double?[n];
         for (int i = 0; i < n - 1; i++)
@@ -114,7 +135,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             }
 
             //tính thu nhập trước thuế
-            TNTT = Gross - BHXH_Emp - BHYT_Emp - BHTN_Emp;
+            TNTT = Gross - BHXH_Emp - BHYT_Emp - BHTN_Emp - Deduction;
             //tính thu nhập chịu thuế
             TNCT = (double)(TNTT - 11000000 - EmployeeContract.Number_Of_Dependents * 4400000);
             // nếu thu nhập chịu thuế > 0 thì tính thuế thu nhập cá nhân
@@ -126,7 +147,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
                     // Tính thuế cho mức thu nhập chịu thuế là TNCT
                     TTNCN = TNCT * List_TaxInCome[0].Thue_suat;
                     // Thêm giá trị TTNCN vào danh sách TTNCN_Detail
-                    DetailTaxInCome[0] = TTNCN;
+                    DetailTaxInComes[0] = TTNCN;
                 }
                 else
                 {
@@ -135,12 +156,12 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
                         if (TNCT <= List_TaxInCome[i].Muc_chiu_thue)
                         {
                             TTNCN = (TNCT - List_TaxInCome[i - 1].Muc_chiu_thue) * List_TaxInCome[i].Thue_suat;
+                            DetailTaxInComes[i] = DetailTaxInComes[i] = Math.Ceiling(TTNCN.Value);
                             for (int j = 0; j < i; j++)
                             {
                                 TTNCN += DetailTaxInCome_Max[j];
-                                DetailTaxInCome[j] = TTNCN;
+                                DetailTaxInComes[j] = DetailTaxInCome_Max[j];
                             }
-                            DetailTaxInCome[i] = TTNCN;
                             break;
                         }
 
@@ -149,7 +170,8 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             }
 
             //tính lương cuối
-            Net = TNTT - TTNCN;
+            Net = TNTT - TTNCN + Bonus;
+            SalaryFinal = Net;
 
             //tính các loại bảo hiểm công ty phải trả 
             BHXH_Cmp = Gross * 0.175;
@@ -167,15 +189,13 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             {
                 BHTN_Cmp = 884000;
             }
-            //tính lương phía công ty phải chi trả
-            CmpSalaryFinal = Gross + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp;
         }
 
         //nếu là lương GROSS
         else
         {
             //tính lương Net = thu nhập - ngày nghỉ
-            Net = EmployeeContract.Salary;
+            Net = EmployeeContract.Salary - Deduction;
             //tính lương quy đổi
             Exchange_Salary = (double)(Net - 11000000 - EmployeeContract.Number_Of_Dependents * 4400000);
 
@@ -211,7 +231,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
                     // Tính thuế cho mức thu nhập chịu thuế là TNCT
                     TTNCN = TNCT * List_TaxInCome[0].Thue_suat;
                     // Thêm giá trị TTNCN vào danh sách TTNCN_Detail
-                    DetailTaxInCome[0] = TTNCN;
+                    DetailTaxInComes[0] = TTNCN;
                 }
                 else
                 {
@@ -220,19 +240,20 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
                         if (TNCT <= List_TaxInCome[i].Muc_chiu_thue)
                         {
                             TTNCN = (TNCT - List_TaxInCome[i - 1].Muc_chiu_thue) * List_TaxInCome[i].Thue_suat;
+                            DetailTaxInComes[i] = DetailTaxInComes[i] = Math.Ceiling(TTNCN.Value);
                             for (int j = 0; j < i; j++)
                             {
                                 TTNCN += DetailTaxInCome_Max[j];
-                                DetailTaxInCome[j] = TTNCN;
+                                DetailTaxInComes[j] = DetailTaxInCome_Max[j];
                             }
-                            DetailTaxInCome[i] = TTNCN;
                             break;
                         }
+
                     }
                 }
             }
             //tính thu nhập trước thuế bằng thu nhập + thuế thu nhập cá nhân
-            TNTT = Net + TTNCN;
+            TNTT = Net + TTNCN - Deduction;
             //tính các loại bảo hiểm nhân viên phải trả 
             //tính trên lương
             if (EmployeeContract.InsuranceType == InsuranceType.Official)
@@ -276,7 +297,8 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
                 }
             }
             //tính lương cuối
-            Gross = TNTT + BHXH_Emp + BHYT_Emp + BHTN_Emp;
+            Gross = TNTT + BHXH_Emp + BHYT_Emp + BHTN_Emp + Bonus;
+            SalaryFinal = Gross;
 
             //tính các loại bảo hiểm công ty phải trả 
             BHXH_Cmp = Gross * 0.175;
@@ -294,30 +316,70 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             {
                 BHTN_Cmp = 884000;
             }
-            //tính lương phía công ty phải chi trả
-            CmpSalaryFinal = Gross + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp;
         }
-        if (TNCT < 0)
+
+        //tạo payslip
+        var payslip = new PaySlip
         {
-            TNCT = 0;
-        }
-        var Result = new SalaryCalculatorDto
-        {
-            Gross = Gross,
-            BHXH_Emp = BHXH_Emp,
-            BHYT_Emp = BHYT_Emp,
-            BHTN_Emp = BHTN_Emp,
-            TNTT = TNTT,
-            Dependent_Deduction = EmployeeContract.Number_Of_Dependents * 4400000,
-            TNCT = TNCT,
-            TTNCN = TTNCN,
-            Net = Net,
-            DetailTaxInCome = DetailTaxInCome,
-            BHXH_Comp = BHXH_Cmp,
-            BHYT_Comp = BHYT_Cmp,
-            BHTN_Comp = BHTN_Cmp,
-            Total_Cmp_Salary = CmpSalaryFinal,
+            EmployeeContractId = EmployeeContract.Id,
+            Standard_Work_Hours = Standard_Work_Hours,
+            Actual_Work_Hours = Standard_Work_Hours - Leave_Hours,
+            Ot_Hours = (int)Ot_Hours,
+            Leave_Hours = Leave_Hours,
+            Salary = Math.Ceiling(EmployeeContract.Salary.Value),
+            BHXH_Emp = Math.Ceiling(BHXH_Emp.Value),
+            BHYT_Emp = Math.Ceiling(BHYT_Emp.Value),
+            BHTN_Emp = Math.Ceiling(BHTN_Emp.Value),
+            BHXH_Comp = Math.Ceiling(BHXH_Cmp.Value),
+            BHYT_Comp = Math.Ceiling(BHYT_Cmp.Value),
+            BHTN_Comp = Math.Ceiling(BHTN_Cmp.Value),
+            Tax_In_Come = Math.Ceiling(TTNCN.Value),
+            Bonus = Math.Ceiling(Bonus.Value),
+            Deduction = Math.Ceiling(Deduction.Value),
+            Final_Salary = Math.Ceiling(SalaryFinal.Value),
+            Paid_date = DateTime.Now,
+            CreatedBy = "Admin",
+            LastModified = DateTime.Now,
+            LastModifiedBy = "Admin"
         };
-        return Result;
+        _context.PaySlips.Add(payslip);
+
+        //Lưu Detail TaxInCome
+        for (int i = 0; i < DetailTaxInComes.Length; i++)
+        {
+            var detail = new DetailTaxIncome
+            {
+                PaySlipId = payslip.Id,
+                Payment = DetailTaxInComes[i],
+                CreatedBy = "Admin",
+                LastModified = DateTime.Now,
+                LastModifiedBy = "Admin"
+            };
+            _context.DetailTaxIncomes.Add(detail);
+        }
+
+        //xóa hết overtimelog
+        foreach (var item in OvertimeLog)
+        {
+            if (item.IsDeleted == false)
+            {
+                item.IsDeleted = true;
+                item.LastModified = DateTime.Now;
+                item.LastModifiedBy = "Admin";
+            }
+        }
+        //xóa hết Leavelog
+        foreach (var item in LeaveLog)
+        {
+            if (item.IsDeleted == false)
+            {
+                item.IsDeleted = true;
+                item.LastModified = DateTime.Now;
+                item.LastModifiedBy = "Admin";
+            }
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return payslip.Id;
     }
 }
