@@ -23,6 +23,8 @@ public class Employee : BaseAuditableEntity
 
     public string BankAccountName { get; set; }
 
+    public string? CVPath { get; set; }
+
     // Relationship
     public IList<Experience> Experiences { get; private set; }
 
