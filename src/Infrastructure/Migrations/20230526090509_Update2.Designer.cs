@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hrOT.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230526090509_Update2")]
+    partial class Update2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,6 +312,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid>("CompanyContractId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -318,9 +324,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("Eligibility_Criteria")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("EmployeeContractId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -344,26 +347,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeContractId");
+                    b.HasIndex("CompanyContractId");
 
                     b.ToTable("Allowances");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
-                            Amount = 1200000m,
-                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "test",
-                            EligibilityCriteria = "test",
-                            EmployeeContractId = new Guid("42c05e21-2931-4d71-8735-1f17508621a7"),
-                            IsDeleted = false,
-                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastModifiedBy = "test",
-                            Name = "test",
-                            Requirements = "test",
-                            Type = 0
-                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Company", b =>
@@ -565,6 +551,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Diploma")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -586,6 +575,8 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Employees");
 
@@ -1383,8 +1374,7 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("EmployeeId")
-                        .IsUnique();
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Positions");
                 });
@@ -1880,7 +1870,7 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     b.HasOne("hrOT.Domain.Entities.EmployeeContract", "EmployeeContract")
                         .WithMany("Allowances")
-                        .HasForeignKey("EmployeeContractId")
+                        .HasForeignKey("CompanyContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1916,6 +1906,10 @@ namespace hrOT.Infrastructure.Migrations
                         .HasForeignKey("hrOT.Domain.Entities.Employee", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("hrOT.Domain.Entities.Department", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId");
 
                     b.Navigation("ApplicationUser");
                 });
@@ -2047,8 +2041,8 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
-                        .WithOne("Position")
-                        .HasForeignKey("hrOT.Domain.Entities.Position", "EmployeeId")
+                        .WithMany("Roles")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2145,6 +2139,8 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
+                    b.Navigation("Employees");
+
                     b.Navigation("Roles");
                 });
 
@@ -2160,8 +2156,7 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Navigation("OvertimeLogs");
 
-                    b.Navigation("Position")
-                        .IsRequired();
+                    b.Navigation("Roles");
 
                     b.Navigation("Skill_Employees");
                 });

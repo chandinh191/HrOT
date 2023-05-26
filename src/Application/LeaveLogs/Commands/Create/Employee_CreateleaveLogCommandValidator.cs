@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using hrOT.Domain.Enums;
 
-namespace hrOT.Application.OvertimeLogs.Commands.Create
+namespace hrOT.Application.LeaveLogs.Commands.Create
 {
     public class Employee_CreateLeaveLogCommandValidator : AbstractValidator<Employee_CreateLeaveLogCommand>
     {
@@ -10,9 +9,12 @@ namespace hrOT.Application.OvertimeLogs.Commands.Create
             RuleFor(x => x.EmployeeId)
                 .NotEmpty().WithMessage("Employee ID is required.");
 
+            RuleFor(x => x.LeaveHours)
+                .NotEmpty().WithMessage("Leave hours are required.")
+                .GreaterThanOrEqualTo(0).WithMessage("Leave hours must be greater than or equal to 0.");
+
             RuleFor(x => x.StartDate)
-                .NotEmpty().WithMessage("Start date is required.")
-                .LessThanOrEqualTo(x => x.EndDate).WithMessage("Start date must be less than or equal to the end date.");
+                .NotEmpty().WithMessage("Start date is required.");
 
             RuleFor(x => x.EndDate)
                 .NotEmpty().WithMessage("End date is required.")

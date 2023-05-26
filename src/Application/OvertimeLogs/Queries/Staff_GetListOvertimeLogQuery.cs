@@ -34,8 +34,8 @@ public class Staff_GetListOvertimeLogQueryHandler : IRequestHandler<Staff_GetLis
             Lists = await _context.OvertimeLogs
                 .AsNoTracking()
                 .ProjectTo<OvertimeLogDto>(_mapper.ConfigurationProvider)
-                .OrderBy(t => t.Status)
-                //.Where(o=o => o.Id == request.Id)
+                .Where(o=>o.IsDeleted==false)
+                .OrderBy(o => o.Status)
                 .ToListAsync(cancellationToken)
         };
     }

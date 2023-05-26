@@ -23,5 +23,5 @@ public class CompanyContract : BaseAuditableEntity
     public virtual Company? Company { get; set; }
     public IList<PaymentHistory>? PaymentHistories { get; set; }
 
-    public ICollection<Allowance>? Allowances { get; set; }
+    //public ICollection<Allowance>? Allowances { get; set; }
 }
