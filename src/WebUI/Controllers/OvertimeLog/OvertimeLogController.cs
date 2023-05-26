@@ -2,7 +2,6 @@
 using hrOT.Application.TodoLists.Queries.GetTodos;
 using hrOT.WebUI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using hrOT.Application.OvertimeLogs.Queries;
 using hrOT.Application.OvertimeLogs.Commands.Update;
 using hrOT.Application.TodoLists.Commands.CreateTodoList;
 using hrOT.Application.OvertimeLogs.Commands.Create;
