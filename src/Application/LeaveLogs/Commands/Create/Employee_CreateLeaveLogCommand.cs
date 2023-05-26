@@ -9,10 +9,11 @@ using hrOT.Domain.Entities;
 using hrOT.Domain.Enums;
 using MediatR;
 
-namespace hrOT.Application.OvertimeLogs.Commands.Create;
+namespace hrOT.Application.LeaveLogs.Commands.Create;
 public record Employee_CreateLeaveLogCommand : IRequest<Guid>
 {
     public Guid EmployeeId { get; init; }
+    public int LeaveHours { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
     public string Reason { get; init; }
@@ -37,7 +38,7 @@ public class Employee_CreateLeaveLogCommandHandler : IRequestHandler<Employee_Cr
         entity.EmployeeId = request.EmployeeId;
         entity.StartDate = request.StartDate;
         entity.EndDate = request.EndDate;
-        entity.LeaveHours = leaveHours;
+        entity.LeaveHours = request.LeaveHours;
         entity.Reason = request.Reason;
         entity.Status = LeaveLogStatus.Pending;
         entity.CreatedBy = "Employee";

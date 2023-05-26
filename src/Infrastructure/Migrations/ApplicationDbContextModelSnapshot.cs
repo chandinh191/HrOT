@@ -309,9 +309,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("CompanyContractId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -321,6 +318,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("Eligibility_Criteria")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EmployeeContractId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -344,9 +344,26 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyContractId");
+                    b.HasIndex("EmployeeContractId");
 
                     b.ToTable("Allowances");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
+                            Amount = 1200000m,
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            EligibilityCriteria = "test",
+                            EmployeeContractId = new Guid("42c05e21-2931-4d71-8735-1f17508621a7"),
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Name = "test",
+                            Requirements = "test",
+                            Type = 0
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Company", b =>
@@ -537,6 +554,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("BankName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CVPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
@@ -1862,13 +1882,13 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Allowance", b =>
                 {
-                    b.HasOne("hrOT.Domain.Entities.CompanyContract", "CompanyContract")
+                    b.HasOne("hrOT.Domain.Entities.EmployeeContract", "EmployeeContract")
                         .WithMany("Allowances")
-                        .HasForeignKey("CompanyContractId")
+                        .HasForeignKey("EmployeeContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CompanyContract");
+                    b.Navigation("EmployeeContract");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
@@ -2128,8 +2148,6 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
                 {
-                    b.Navigation("Allowances");
-
                     b.Navigation("PaymentHistories");
                 });
 
@@ -2159,6 +2177,8 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
                 {
+                    b.Navigation("Allowances");
+
                     b.Navigation("PaySlips");
                 });
 

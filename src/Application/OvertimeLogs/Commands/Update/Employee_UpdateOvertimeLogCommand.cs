@@ -12,21 +12,26 @@ using MediatR;
 
 namespace hrOT.Application.OvertimeLogs.Commands.Update;
 
-public record Staff_UpdateOvertimeLogCommand : IRequest
+public record Employee_UpdateOvertimeLogCommand : IRequest
 {
     public Guid Id { get; init; }
-    public OvertimeLogStatus Status { get; init; }
+    //public Guid EmployeeId { get; init; }
+
+    public DateTime StartDate { get; init; }
+
+    public DateTime EndDate { get; init; }
+   // public OvertimeLogStatus Status { get; init; }
 }
-public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_UpdateOvertimeLogCommand>
+public class Employee_UpdateOvertimeLogCommandHandler : IRequestHandler<Employee_UpdateOvertimeLogCommand>
 {
     private readonly IApplicationDbContext _context;
 
-    public Staff_UpdateOvertimeLogCommandHandler(IApplicationDbContext context)
+    public Employee_UpdateOvertimeLogCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<Unit> Handle(Staff_UpdateOvertimeLogCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(Employee_UpdateOvertimeLogCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.OvertimeLogs
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -36,9 +41,10 @@ public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_Updat
             throw new NotFoundException(nameof(OvertimeLog), request.Id);
         }
 
-        entity.Status = request.Status;
-        entity.LastModified = DateTime.Now;
-        entity.LastModifiedBy = "Staff";
+        entity.Status = OvertimeLogStatus.Pending;
+        entity.StartDate = request.StartDate;
+        entity.EndDate = request.EndDate;
+
 
         await _context.SaveChangesAsync(cancellationToken);
 

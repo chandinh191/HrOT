@@ -153,6 +153,24 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 IsDeleted = false
             }
         );
+        builder.Entity<Allowance>()
+       .HasData(
+           new Allowance
+           {
+               Id = Guid.Parse("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
+               EmployeeContractId = Guid.Parse("42c05e21-2931-4d71-8735-1f17508621a7"),
+               Name= "test",
+               Type= AllowanceType.Meal_Allowance,
+               Amount = 1200000,
+               Eligibility_Criteria = "test",
+               Requirements = "test",
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test",
+               IsDeleted = false
+           }
+       );
 
         builder.Entity<LeaveLog>()
         .HasData(

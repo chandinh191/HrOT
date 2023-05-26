@@ -12,10 +12,8 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-
-    [Migration("20230526025358_SeedingData")]
-
-    partial class SeedingData
+    [Migration("20230526090509_Update2")]
+    partial class Update2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -542,6 +540,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("BankName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CVPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
@@ -1867,13 +1868,13 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Allowance", b =>
                 {
-                    b.HasOne("hrOT.Domain.Entities.CompanyContract", "CompanyContract")
+                    b.HasOne("hrOT.Domain.Entities.EmployeeContract", "EmployeeContract")
                         .WithMany("Allowances")
                         .HasForeignKey("CompanyContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CompanyContract");
+                    b.Navigation("EmployeeContract");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
@@ -2133,8 +2134,6 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
                 {
-                    b.Navigation("Allowances");
-
                     b.Navigation("PaymentHistories");
                 });
 
@@ -2164,6 +2163,8 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
                 {
+                    b.Navigation("Allowances");
+
                     b.Navigation("PaySlips");
                 });
 
