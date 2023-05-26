@@ -12,10 +12,8 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-
-    [Migration("20230526025358_SeedingData")]
-
-    partial class SeedingData
+    [Migration("20230525135447_SecondInit")]
+    partial class SecondInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -506,14 +504,11 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Level")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("PaySlipId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double?>("Payment")
-                        .HasColumnType("float");
+                    b.Property<Guid>("Payment")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -677,7 +672,7 @@ namespace hrOT.Infrastructure.Migrations
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "test",
                             NumberOfDependents = 0.0,
-                            Salary = 20000000.0,
+                            Salary = 1.0,
                             SalaryType = 0,
                             StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 0
@@ -1228,6 +1223,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("BankName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double?>("Base_Salary")
+                        .HasColumnType("float");
+
                     b.Property<double?>("Bonus")
                         .HasColumnType("float");
 
@@ -1242,9 +1240,6 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<Guid>("EmployeeContractId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<double?>("Final_Salary")
-                        .HasColumnType("float");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -1267,13 +1262,13 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<DateTime?>("Paid_date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("Salary")
-                        .HasColumnType("float");
-
                     b.Property<int?>("Standard_Work_Hours")
                         .HasColumnType("int");
 
                     b.Property<double?>("Tax_In_Come")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Total_Salary")
                         .HasColumnType("float");
 
                     b.HasKey("Id");

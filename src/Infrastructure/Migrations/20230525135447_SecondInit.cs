@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace hrOT.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedingData : Migration
+    public partial class SecondInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -431,8 +431,7 @@ namespace hrOT.Infrastructure.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CVPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -795,7 +794,7 @@ namespace hrOT.Infrastructure.Migrations
                     ActualWorkHours = table.Column<int>(name: "Actual_Work_Hours", type: "int", nullable: true),
                     OtHours = table.Column<int>(name: "Ot_Hours", type: "int", nullable: true),
                     LeaveHours = table.Column<int>(name: "Leave_Hours", type: "int", nullable: true),
-                    Salary = table.Column<double>(type: "float", nullable: true),
+                    BaseSalary = table.Column<double>(name: "Base_Salary", type: "float", nullable: true),
                     BHXHEmp = table.Column<double>(name: "BHXH_Emp", type: "float", nullable: true),
                     BHYTEmp = table.Column<double>(name: "BHYT_Emp", type: "float", nullable: true),
                     BHTNEmp = table.Column<double>(name: "BHTN_Emp", type: "float", nullable: true),
@@ -805,7 +804,7 @@ namespace hrOT.Infrastructure.Migrations
                     TaxInCome = table.Column<double>(name: "Tax_In_Come", type: "float", nullable: true),
                     Bonus = table.Column<double>(type: "float", nullable: true),
                     Deduction = table.Column<double>(type: "float", nullable: true),
-                    FinalSalary = table.Column<double>(name: "Final_Salary", type: "float", nullable: true),
+                    TotalSalary = table.Column<double>(name: "Total_Salary", type: "float", nullable: true),
                     Paiddate = table.Column<DateTime>(name: "Paid_date", type: "datetime2", nullable: true),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BankName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -859,9 +858,7 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PaySlipId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-
-                    Level = table.Column<int>(type: "int", nullable: true),
-                    Payment = table.Column<double>(type: "float", nullable: true),
+                    Payment = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -925,9 +922,7 @@ namespace hrOT.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "EmployeeContracts",
                 columns: new[] { "Id", "ContractType", "Created", "CreatedBy", "CustomSalary", "EmployeeId", "EndDate", "File", "InsuranceType", "IsDeleted", "Job", "LastModified", "LastModifiedBy", "Number_Of_Dependents", "Salary", "SalaryType", "StartDate", "Status" },
-
-                values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, 20000000.0, 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
-
+                values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, 1.0, 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
 
             migrationBuilder.InsertData(
                 table: "Experiences",

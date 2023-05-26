@@ -33,10 +33,10 @@ namespace WebUI.Controllers
             }
            
 
-            return BadRequest();
+            return Ok("Thêm thất bại");
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command, [FromForm] IFormFile image)
+        public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
         {
             if (id != command.Id)
             {
@@ -55,8 +55,10 @@ namespace WebUI.Controllers
                 return Ok("Cập nhật thất bại");
             }
         }
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete(Guid id, DeleteEmployee command)
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Delete(Guid id, [FromForm] DeleteEmployee command)
+
         {
             if (id != command.Id)
             {
@@ -77,23 +79,30 @@ namespace WebUI.Controllers
             }
         }
         [HttpPost("CreateEx")]
-        public async Task<IActionResult> CreateEx( [FromForm] CreateEmployeeEx createModel)
+        public async Task<IActionResult> CreateEx( IFormFile file)
         {
-            if (ModelState.IsValid && createModel != null)
+            if (file != null && file.Length > 0)
             {
+                var filePath = Path.GetTempFileName(); // Tạo một tệp tạm để lưu trữ tệp Excel
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream); // Lưu tệp Excel vào tệp tạm
+                }
+
                 var command = new CreateEmployeeEx
                 {
-                    FilePath = "E:\\ASP.NET\\LogOTAPI\\src\\WebUI\\wwwroot\\Ex/employees.xlsx"
+                    FilePath = filePath
                 };
 
                 await _mediator.Send(command);
 
-
                 return Ok("Thêm thành công");
             }
 
+           
 
-            return BadRequest();
+
+            return Ok("Thêm thất bại");
         }
 
         [HttpGet("GetEmployeeById")]
