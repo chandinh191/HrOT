@@ -35,7 +35,7 @@ namespace WebUI.Controllers
                 // Xử lý thành công, thực hiện các hành động khác
                 
 
-                return Ok("Đăng nhập thành công");
+                return Ok(user);
 
               
             }

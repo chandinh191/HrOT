@@ -1,6 +1,8 @@
-﻿using hrOT.Application.Employees.Commands.Create;
+﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
+using hrOT.Application.Employees.Queries;
 using LogOT.Application.Employees.Commands.Create;
 using MediatR;
 
@@ -31,10 +33,10 @@ namespace WebUI.Controllers
             }
            
 
-            return BadRequest();
+            return Ok("Thêm thất bại");
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command, [FromForm] IFormFile image)
+        public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
         {
             if (id != command.Id)
             {
@@ -53,8 +55,10 @@ namespace WebUI.Controllers
                 return Ok("Cập nhật thất bại");
             }
         }
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete(Guid id, DeleteEmployee command)
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Delete(Guid id, [FromForm] DeleteEmployee command)
+
         {
             if (id != command.Id)
             {
@@ -75,24 +79,80 @@ namespace WebUI.Controllers
             }
         }
         [HttpPost("CreateEx")]
-        public async Task<IActionResult> CreateEx( [FromForm] CreateEmployeeEx createModel)
+        public async Task<IActionResult> CreateEx( IFormFile file)
         {
-            if (ModelState.IsValid && createModel != null)
+            if (file != null && file.Length > 0)
             {
+                var filePath = Path.GetTempFileName(); // Tạo một tệp tạm để lưu trữ tệp Excel
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream); // Lưu tệp Excel vào tệp tạm
+                }
+
                 var command = new CreateEmployeeEx
                 {
-                    FilePath = "E:\\ASP.NET\\LogOTAPI\\src\\WebUI\\wwwroot\\Ex/employees.xlsx"
+                    FilePath = filePath
                 };
 
                 await _mediator.Send(command);
 
-
                 return Ok("Thêm thành công");
             }
 
+           
 
-            return BadRequest();
+
+            return Ok("Thêm thất bại");
         }
+
+        [HttpGet("GetEmployeeById")]
+        public async Task<IActionResult> GetEmployee(Guid id)
+        {
+            try
+            {
+                var query = new Employee_GetEmployeeQuery { Id = id };
+                var employeeVm = await _mediator.Send(query);
+
+                if (employeeVm == null)
+                {
+                    return NotFound("Employee not found");
+                }
+
+                return Ok(employeeVm);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound("Employee not found");
+            }
+        }
+
+        [HttpPost("{id}/cv")]
+        public async Task<IActionResult> UploadCV(Guid id, IFormFile cvFile)
+        {
+            try
+            {
+                if (cvFile == null || cvFile.Length == 0)
+                {
+                    return BadRequest("No file uploaded");
+                }
+
+                var command = new Employee_EmployeeUploadCVCommand
+                {
+                    Id = id,
+                    CVFile = cvFile
+                };
+
+                await _mediator.Send(command);
+
+                return Ok("CV uploaded successfully");
+            }
+            catch (Exception ex)
+            {
+                // Handle and log the exception
+                return StatusCode(500, "An error occurred while uploading the CV");
+            }
+        }
+
 
 
     }

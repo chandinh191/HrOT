@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace hrOT.Application.Auth.Queries
 {
-    public class Login : IRequest<ApplicationUser>
+    public class Login : IRequest<string>
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
 
-    public class LoginHandler : IRequestHandler<Login, ApplicationUser>
+    public class LoginHandler : IRequestHandler<Login, string>
     {
 
         private readonly IIdentityService _identityService;
@@ -37,7 +37,7 @@ namespace hrOT.Application.Auth.Queries
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ApplicationUser> Handle(Login request, CancellationToken cancellationToken)
+        public async Task<string> Handle(Login request, CancellationToken cancellationToken)
         {
             var result = await _identityService.AuthenticateAsync(request.Username.Trim(), request.Password.Trim());
 
@@ -79,21 +79,21 @@ namespace hrOT.Application.Auth.Queries
 
                 if (await userManager.IsInRoleAsync(user, "Manager"))
                 {
-                    string m = "Signed in successfully as a Manager";
 
-                    return user;
+
+                    return "Đăng nhập thành công với quyền quản lý";
                 }
                 else if (await userManager.IsInRoleAsync(user, "Staff"))
                 {
-                   string m = "Signed in successfully as a User";
 
-                    return user;
+
+                    return "Đăng nhập thành công với quyền nhân viên";
                 }
                 else if (await userManager.IsInRoleAsync(user, "Employee"))
                 {
-                    string m = "Signed in successfully as a User";
 
-                    return user;
+
+                    return "Đăng nhập thành công với quyền người dùng";
                 }
             }
 

@@ -15,12 +15,12 @@ using OfficeOpenXml;
 
 namespace LogOT.Application.Employees.Commands.Create;
 
-public record CreateEmployeeEx : IRequest
+public record CreateEmployeeEx : IRequest<string>
 {
     public string FilePath { get; set; }
 }
 
-public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx>
+public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
 {
     private readonly IIdentityService _identityService;
     private readonly UserManager<ApplicationUser> userManager;
@@ -38,9 +38,10 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx>
         _signInManager = signInManager;
     }
 
-    public async Task<Unit> Handle(CreateEmployeeEx request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateEmployeeEx request, CancellationToken cancellationToken)
     {
         var filePath = request.FilePath;
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
         if (!File.Exists(filePath))
         {
@@ -56,69 +57,67 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx>
 
             for (int row = 2; row <= rowCount; row++)
             {
-                string dateString = worksheet.Cells[row, 7].Value?.ToString();
-                DateTime.TryParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime birthDay);
-
-                var user = new ApplicationUser
+                var birthDayString = worksheet.Cells[row, 3].Value?.ToString();
+                if (DateTime.TryParseExact(birthDayString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime birthDay))
                 {
-                    UserName = worksheet.Cells[row, 1].Value?.ToString(),
+                    var userName = worksheet.Cells[row, 12].Value?.ToString();
 
-                    Address = worksheet.Cells[row, 2].Value?.ToString(),
-                    Image = worksheet.Cells[row, 3].Value?.ToString(),
-                    Email = worksheet.Cells[row, 4].Value?.ToString(),
-                    Fullname = worksheet.Cells[row, 5].Value?.ToString(),
-                    PhoneNumber = worksheet.Cells[row, 6].Value?.ToString(),
+                    // Kiểm tra xem nhân viên đã tồn tại hay chưa
+                    var isEmployeeExist = await _context.Employees.AnyAsync(e => e.ApplicationUser.UserName == userName);
 
-                    BirthDay = birthDay,
-                };
-                var result = await userManager.CreateAsync(user, worksheet.Cells[row, 8].Value?.ToString());
+                    if (!isEmployeeExist)
+                    {
+                        // Thêm nhân viên vào danh sách employees
+                        var user = new ApplicationUser
+                        {
+                            UserName = userName,
+                            Address = worksheet.Cells[row, 2].Value?.ToString(),
+                            Image = worksheet.Cells[row, 8].Value?.ToString(),
+                            Email = worksheet.Cells[row, 5].Value?.ToString(),
+                            Fullname = worksheet.Cells[row, 1].Value?.ToString(),
+                            PhoneNumber = worksheet.Cells[row, 4].Value?.ToString(),
+                            BirthDay = birthDay,
+                        };
 
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, worksheet.Cells[row, 9].Value?.ToString());
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                        var result = await userManager.CreateAsync(user, worksheet.Cells[row, 13].Value?.ToString());
 
+                        if (result.Succeeded)
+                        {
+                            await userManager.AddToRoleAsync(user, worksheet.Cells[row, 14].Value?.ToString());
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+
+                            var employee = new Employee
+                            {
+                                ApplicationUserId = user.Id,
+                                IdentityImage = worksheet.Cells[row, 7].Value?.ToString(),
+                                Diploma = worksheet.Cells[row, 6].Value?.ToString(),
+                                BankName = worksheet.Cells[row, 9].Value?.ToString(),
+                                BankAccountNumber = worksheet.Cells[row, 10].Value?.ToString(),
+                                BankAccountName = worksheet.Cells[row, 11].Value?.ToString(),
+                            };
+
+                            employees.Add(employee);
+                        }
+                        else
+                        {
+                            // Xử lý khi không thể tạo người dùng mới
+                        }
+                    }
                 }
                 else
                 {
-
+                    return "Đã thêm nhân viên";
                 }
-                var employee = new Employee
-                {
-                    ApplicationUserId = user.Id,
-                    // Đọc dữ liệu từ các ô trong tệp Excel và gán vào các thuộc tính của đối tượng Employee
-                    IdentityImage = worksheet.Cells[row, 8].Value?.ToString(),
-                    Diploma = worksheet.Cells[row, 9].Value?.ToString(),
-                    BankName = worksheet.Cells[row, 10].Value?.ToString(),
-                    BankAccountNumber = worksheet.Cells[row, 11].Value?.ToString(),
-                    BankAccountName = worksheet.Cells[row, 12].Value?.ToString(),
-                    // Các thuộc tính khác
-                };
-
-                employees.Add(employee);
             }
 
             // Thêm danh sách nhân viên vào DbContext
             await _context.Employees.AddRangeAsync(employees);
             await _context.SaveChangesAsync(cancellationToken);
 
-            // Tạo tài khoản cho nhân viên và gán vào vai trò tương ứng
-            foreach (var employee in employees)
-            {
-                var user = new ApplicationUser { UserName = employee.ApplicationUser.UserName, Email = $"{employee.ApplicationUser.UserName}@example.com" };
-                await userManager.CreateAsync(user);
-
-                // Gán vai trò cho tài khoản nhân viên
-                await userManager.AddToRoleAsync(user, "Employee");
-
-                employee.ApplicationUserId = user.Id;
-            }
-
-            await _context.SaveChangesAsync(cancellationToken);
         }
-        
 
-        return Unit.Value;
+        return "Thêm thành công";
     }
+
 }
 
