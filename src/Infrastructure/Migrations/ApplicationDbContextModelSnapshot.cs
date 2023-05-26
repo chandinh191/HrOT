@@ -579,9 +579,6 @@ namespace hrOT.Infrastructure.Migrations
                             BankAccountName = "LUONG THE DAN",
                             BankAccountNumber = "123456789",
                             BankName = "TECHCOMBANK",
-
-                            BirthDay = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
                             Diploma = "TEST",
@@ -1515,9 +1512,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.ToTable("Skill_JDs");
                 });
 
-
             modelBuilder.Entity("hrOT.Domain.Entities.TaxInCome", b =>
-
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1546,9 +1541,7 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-
                     b.ToTable("TaxInComes");
-
 
                     b.HasData(
                         new

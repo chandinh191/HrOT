@@ -96,8 +96,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 IdentityImage = "IMGTEST",
-
-
                 Diploma = "TEST",
                 BankAccountNumber = "123456789",
                 BankAccountName = "LUONG THE DAN",

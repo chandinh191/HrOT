@@ -12,8 +12,8 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230525034136_firstInit")]
-    partial class firstInit
+    [Migration("20230525135447_SecondInit")]
+    partial class SecondInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -607,6 +607,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double?>("CustomSalary")
+                        .HasColumnType("float");
+
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
@@ -615,6 +618,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("File")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InsuranceType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -627,6 +633,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Number_Of_Dependents")
+                        .HasColumnType("float");
 
                     b.Property<double?>("Salary")
                         .HasColumnType("float");
@@ -653,13 +662,16 @@ namespace hrOT.Infrastructure.Migrations
                             ContractType = 1,
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "test",
+                            CustomSalary = 0.0,
                             EmployeeId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                             EndDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             File = "test",
+                            InsuranceType = 0,
                             IsDeleted = false,
                             Job = "test",
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "test",
+                            NumberOfDependents = 0.0,
                             Salary = 1.0,
                             SalaryType = 0,
                             StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1503,7 +1515,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.ToTable("Skill_JDs");
                 });
 
-            modelBuilder.Entity("hrOT.Domain.Entities.TaxIncome", b =>
+            modelBuilder.Entity("hrOT.Domain.Entities.TaxInCome", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1532,7 +1544,7 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaxIncomes");
+                    b.ToTable("TaxInComes");
 
                     b.HasData(
                         new
