@@ -15,11 +15,6 @@ namespace hrOT.Application.LeaveLogs.Commands.Update;
 public record Staff_UpdateLeaveLogCommand : IRequest
 {
     public Guid Id { get; init; }
-    //public Guid EmployeeId { get; init; }
-    public DateTime StartDate { get; init; }
-    public DateTime EndDate { get; init; }
-    public int LeaveHours { get; init; }
-    public string Reason { get; init; }
     public LeaveLogStatus Status { get; init; }
 }
 public class Staff_UpdateLeaveLogCommandHandler : IRequestHandler<Staff_UpdateLeaveLogCommand>
@@ -41,11 +36,9 @@ public class Staff_UpdateLeaveLogCommandHandler : IRequestHandler<Staff_UpdateLe
             throw new NotFoundException(nameof(LeaveLog), request.Id);
         }
 
-        entity.StartDate = request.StartDate;
-        entity.EndDate = request.EndDate;
-        entity.LeaveHours = request.LeaveHours;
-        entity.Reason = request.Reason;
         entity.Status = request.Status;
+        entity.LastModified = DateTime.Now;
+        entity.LastModifiedBy = "Employee";
 
 
         await _context.SaveChangesAsync(cancellationToken);

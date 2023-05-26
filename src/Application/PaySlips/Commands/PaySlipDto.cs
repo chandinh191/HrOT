@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using hrOT.Application.Common.Mappings;
+using hrOT.Domain.Entities;
 
-namespace hrOT.Domain.Entities;
-public class PaySlip : BaseAuditableEntity
+namespace hrOT.Application.PaySlips.Commands;
+public class PaySlipDto : IMapFrom<PaySlip>
 {
-
-    [ForeignKey("EmployeeContract")]
-    public Guid EmployeeContractId { get; set; }
     public int? Standard_Work_Hours { get; set; }
     public int? Actual_Work_Hours { get; set; }
     public int? Ot_Hours { get; set; }
@@ -26,13 +24,6 @@ public class PaySlip : BaseAuditableEntity
     public double? Bonus { get; set; }
     public double? Deduction { get; set; }
     public double? Final_Salary { get; set; }
-    public DateTime?  Paid_date { get; set; }
-    public string? Note { get; set; }
-    public string? BankName { get; set; }
-    public string? BankAcountName { get; set; }
-    public int? BankAcountNumber { get; set; }
-
-    public virtual EmployeeContract EmployeeContract { get; set; } = null!;
-
-    public ICollection<DetailTaxIncome> DetailTaxIncomes { get; set; }
+    public DateTime? Paid_date { get; set; }
+    public IList<DetailTaxInComeDto> DetailTaxIncomes { get; set; }
 }

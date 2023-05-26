@@ -12,11 +12,9 @@ using MediatR;
 namespace hrOT.Application.OvertimeLogs.Commands.Create;
 public record Employee_CreateOvertimeLogCommand : IRequest<Guid>
 {
-    //public Guid Id { get; init; }
     public Guid EmployeeId { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
-    public OvertimeLogStatus Status { get; init; }
 }
 
 
@@ -35,7 +33,10 @@ public class Employee_CreateOvertimeLogCommandHandler : IRequestHandler<Employee
         entity.EmployeeId = request.EmployeeId;
         entity.StartDate = request.StartDate;
         entity.EndDate = request.EndDate;
-        entity.Status = request.Status;
+        entity.Status = OvertimeLogStatus.Pending;
+        entity.CreatedBy = "Employee";
+        entity.LastModified = DateTime.Now;
+        entity.LastModifiedBy = "Employee";
 
         _context.OvertimeLogs.Add(entity);
 

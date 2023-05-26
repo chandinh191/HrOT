@@ -53,7 +53,7 @@ namespace WebUI.Controllers
                 return Ok("Cập nhật thất bại");
             }
         }
-        [HttpPut("[action]")]
+        [HttpDelete("[action]")]
         public async Task<IActionResult> Delete(Guid id, DeleteEmployee command)
         {
             if (id != command.Id)

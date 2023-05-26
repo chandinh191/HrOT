@@ -861,7 +861,6 @@ namespace hrOT.Infrastructure.Migrations
 
                     Level = table.Column<int>(type: "int", nullable: true),
                     Payment = table.Column<double>(type: "float", nullable: true),
-
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -925,11 +924,9 @@ namespace hrOT.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "EmployeeContracts",
                 columns: new[] { "Id", "ContractType", "Created", "CreatedBy", "CustomSalary", "EmployeeId", "EndDate", "File", "InsuranceType", "IsDeleted", "Job", "LastModified", "LastModifiedBy", "Number_Of_Dependents", "Salary", "SalaryType", "StartDate", "Status" },
-<<<<<<<< HEAD:src/Infrastructure/Migrations/20230525161540_SeedingData.cs
-                values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, 1.0, 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
-========
+
                 values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, 20000000.0, 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
->>>>>>>> ee353871a49935632552dd561ef6c724b6d1cb39:src/Infrastructure/Migrations/20230526025358_SeedingData.cs
+
 
             migrationBuilder.InsertData(
                 table: "Experiences",
