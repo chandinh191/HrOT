@@ -14,37 +14,37 @@ public class Employee_ExperienceUpdateCommandValidator : AbstractValidator<Emplo
         _context = context;
 
         RuleFor(v => v.Experience.NameProject)
-            .NotEmpty().WithMessage("NameProject is required.")
-            .MaximumLength(200).WithMessage("NameProject must not exceed 200 characters.")
-            .MustAsync(BeUniqueProjectName).WithMessage("The specified name already exist.");
+            .NotEmpty().WithMessage("Tên dự án không được để trống.")
+            .MaximumLength(200).WithMessage("Tên dự án không được quá 200 chữ.")
+            .MustAsync(BeUniqueProjectName).WithMessage("Tên dự án đã tồn tại.");
 
         RuleFor(v => v.Experience.TeamSize)
-            .GreaterThan(0).WithMessage("TeamSize must be greater than 0.")
-            .LessThanOrEqualTo(10).WithMessage("Team must be less than or equal to 10.");
+            .GreaterThan(0).WithMessage("Số lượng thành viên trong nhóm không được để trống.")
+            .LessThanOrEqualTo(10).WithMessage("Số lượng thành viên trong nhóm không được vượt quá 10.");
 
         RuleFor(v => v.Experience.StartDate)
             .NotNull().WithMessage("StartDate is required.")
-            .LessThan(v => v.Experience.EndDate).WithMessage("Start date must be before End date.");
+            .LessThan(v => v.Experience.EndDate).WithMessage("Ngày bắt đầu phải sớm hơn ngày kết thúc.");
 
         RuleFor(v => v.Experience.EndDate)
             .NotNull().WithMessage("EndDate is required.")
-            .GreaterThan(d => d.Experience.StartDate).WithMessage("End date must be greater than Start date.");
+            .GreaterThan(d => d.Experience.StartDate).WithMessage("Ngày kết thúc phải trễ hơn ngày bắt đầu");
 
         RuleFor(v => v.Experience.Description)
-            .NotEmpty().WithMessage("Description is required.");
+            .NotEmpty().WithMessage("Mô tả không được để trống.");
 
         RuleFor(v => v.Experience.TechStack)
-            .NotEmpty().WithMessage("TechStack is required.");
+            .NotEmpty().WithMessage("TechStack không được để trống.");
 
         RuleFor(v => v.Experience.Status)
-            .NotNull().WithMessage("Status is required.");
+            .NotNull().WithMessage("Trạng thái không được để trống.");
     }
 
     private async Task<bool> BeUniqueProjectName(Employee_ExperienceUpdateCommand experienceUpdateCommand
         , string arg1, CancellationToken arg2)
     {
         return await _context.Experiences
-            .Where(e => e.Id == experienceUpdateCommand.Experience.Id)
+            .Where(e => e.EmployeeId == experienceUpdateCommand.EmployeeID)
             .AllAsync(n => n.NameProject != arg1, arg2);
     }
 }

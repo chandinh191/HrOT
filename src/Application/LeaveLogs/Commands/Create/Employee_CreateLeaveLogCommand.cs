@@ -12,13 +12,10 @@ using MediatR;
 namespace hrOT.Application.OvertimeLogs.Commands.Create;
 public record Employee_CreateLeaveLogCommand : IRequest<Guid>
 {
-    //public Guid Id { get; init; }
     public Guid EmployeeId { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
-    public int LeaveHours { get; init; }
     public string Reason { get; init; }
-    public LeaveLogStatus Status { get; init; }
 }
 
 
@@ -33,13 +30,19 @@ public class Employee_CreateLeaveLogCommandHandler : IRequestHandler<Employee_Cr
 
     public async Task<Guid> Handle(Employee_CreateLeaveLogCommand request, CancellationToken cancellationToken)
     {
+        TimeSpan duration = request.EndDate - request.StartDate;
+        int leaveDays = duration.Days + 1;
+        int leaveHours = leaveDays * 8;
         var entity = new LeaveLog();
         entity.EmployeeId = request.EmployeeId;
         entity.StartDate = request.StartDate;
         entity.EndDate = request.EndDate;
-        entity.LeaveHours = request.LeaveHours;
+        entity.LeaveHours = leaveHours;
         entity.Reason = request.Reason;
-        entity.Status = request.Status;
+        entity.Status = LeaveLogStatus.Pending;
+        entity.CreatedBy = "Employee";
+        entity.LastModified = DateTime.Now;
+        entity.LastModifiedBy = "Employee";
 
         _context.LeaveLogs.Add(entity);
 

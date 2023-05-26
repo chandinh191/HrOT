@@ -1,8 +1,8 @@
 ﻿@using hrOT.Domain.IdentityModel;
-@using hrOT.Infrastructure.Identity
+@*@using hrOT.Infrastructure.Identity*@
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<hrOT.Domain.IdentityModel.ApplicationUser> SignInManager
+@inject UserManager<hrOT.Domain.IdentityModel.ApplicationUser> UserManager
 
 @{
     string? returnUrl = null;

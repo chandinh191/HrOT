@@ -31,10 +31,10 @@ public class Employee_GetListContractQueryHandler : IRequestHandler<Employee_Get
     public async Task<List<EmployeeContractDTO>> Handle(Employee_GetListContractQuery request, CancellationToken cancellationToken)
     {
         var list = await _context.EmployeeContracts
-            .Where(ec => ec.EmployeeId == request.EmployeeId)
+            .Where(ec => ec.EmployeeId == request.EmployeeId && ec.IsDeleted == false)
             .ProjectTo<EmployeeContractDTO>(_mapper.ConfigurationProvider)
             .ToListAsync();
-
+        
         return list;
     }
 }

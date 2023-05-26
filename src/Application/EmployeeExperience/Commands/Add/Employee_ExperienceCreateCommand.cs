@@ -9,13 +9,13 @@ namespace hrOT.Application.EmployeeExperience.Commands.Add;
 
 public class Employee_ExperienceCreateCommand : IRequest<bool>
 {
-    public ExperienceDTO Experience { get; set; }
-    public Guid Id { get; set; }
+    public ExperienceCommandDTO Experience { get; set; }
+    public Guid EmployeeId { get; set; }
 
-    public Employee_ExperienceCreateCommand(ExperienceDTO experience, Guid id)
+    public Employee_ExperienceCreateCommand(ExperienceCommandDTO experience, Guid EmployeeID)
     {
         Experience = experience;
-        Id = id;
+        EmployeeId = EmployeeID;
     }
 
 }
@@ -35,7 +35,7 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
     {
         var employee = await _context.Employees
             .Include(a => a.ApplicationUser)
-            .Where(e => e.Id == request.Id)
+            .Where(e => e.Id == request.EmployeeId)
             .FirstOrDefaultAsync();
 
         if (employee != null)
@@ -43,7 +43,7 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
             var experience = new Experience
             {
                 Id = new Guid(),
-                EmployeeId = request.Id,
+                EmployeeId = request.EmployeeId,
                 NameProject = request.Experience.NameProject,
                 TeamSize = request.Experience.TeamSize,
                 StartDate = request.Experience.StartDate,

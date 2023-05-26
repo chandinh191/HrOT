@@ -17,9 +17,6 @@ namespace hrOT.Application.OvertimeLogs.Commands.Create
             RuleFor(x => x.EndDate)
                 .NotEmpty().WithMessage("End date is required.")
                 .GreaterThanOrEqualTo(x => x.StartDate).WithMessage("End date must be greater than or equal to the start date.");
-
-            RuleFor(x => x.Status)
-                .IsInEnum().WithMessage("Invalid overtime log status.");
         }
     }
 }

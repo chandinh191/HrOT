@@ -1,4 +1,5 @@
-﻿using hrOT.Application.EmployeeExperience.Commands.Add;
+﻿using hrOT.Application.EmployeeExperience.Commands;
+using hrOT.Application.EmployeeExperience.Commands.Add;
 using hrOT.Application.EmployeeExperience.Commands.Delete;
 using hrOT.Application.Experiences;
 using hrOT.Application.Experiences.Commands;
@@ -14,8 +15,8 @@ public class Employee_ExperienceController : ApiControllerBase
 {
 
     // Xuất danh sách
-    [HttpGet("GetListKinhNghiem")]
-    public async Task<IActionResult> GetListKinhNghiem(Guid EmployeeID)
+    [HttpGet("GetListExperience")]
+    public async Task<IActionResult> GetListExperience(Guid EmployeeID)
     {
         if (EmployeeID.ToString() == null)
         {
@@ -25,17 +26,15 @@ public class Employee_ExperienceController : ApiControllerBase
         var result = await Mediator
             .Send(new Employee_GetListExperienceQuery(EmployeeID));
 
-        if (result != null)
-        {
-            return Ok(result);
-        }
-        return BadRequest($"Không tìm thấy bất kì kinh nghiệm bản thân nào của EmployeeID: {EmployeeID}");
+        return result.Count > 0
+            ? Ok(result) 
+            : BadRequest($"Không tìm thấy bất kì kinh nghiệm bản thân nào của EmployeeID: {EmployeeID}");
     }
 
 
     // Khởi tạo
-    [HttpPost("TaoKinhNghiem")]
-    public async Task<IActionResult> TaoKinhNghiem(Guid EmployeeID, ExperienceDTO experienceDTO)
+    [HttpPost("CreateExperience")]
+    public async Task<IActionResult> CreateExperience(Guid EmployeeID, [FromForm] ExperienceCommandDTO experienceDTO)
     {
         if (EmployeeID.ToString() == null)
         {
@@ -45,17 +44,15 @@ public class Employee_ExperienceController : ApiControllerBase
         var result = await Mediator
             .Send(new Employee_ExperienceCreateCommand(experienceDTO, EmployeeID));
 
-        if (result == true)
-        {
-            return Ok($"Thêm thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}");
-        }
-        return BadRequest($"Không tìm thấy EmployeeID: {EmployeeID}");
+        return result == true
+            ? Ok($"Thêm thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}")
+            : BadRequest($"Không tìm thấy EmployeeID: {EmployeeID}");
     }
 
 
     // Update
-    [HttpPut("UpdateKinhNghiem")]
-    public async Task<IActionResult> UpdateKinhNghiem(Guid ExperienceID, Guid EmployeeID, ExperienceDTO experienceDTO)
+    [HttpPut("UpdateExperience")]
+    public async Task<IActionResult> UpdateExperience(Guid ExperienceID, Guid EmployeeID, [FromForm] ExperienceCommandDTO experienceDTO)
     {
         if (EmployeeID.ToString() == null)
         {
@@ -70,16 +67,14 @@ public class Employee_ExperienceController : ApiControllerBase
         var result = await Mediator
             .Send(new Employee_ExperienceUpdateCommand(ExperienceID, EmployeeID, experienceDTO));
 
-        if (result == true)
-        {
-            return Ok($"Cập nhật thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}");
-        }
-        return BadRequest($"Không tìm thấy kinh nghiệm với : \nEmployeeID: {EmployeeID}\n ExperienceID: {ExperienceID}");
+        return result == true
+            ? Ok($"Cập nhật thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}")
+            : BadRequest($"Không tìm thấy kinh nghiệm với : \nEmployeeID: {EmployeeID}\n ExperienceID: {ExperienceID}");
     }
 
     // Xóa
-    [HttpDelete("XoaKinhNghiem")]
-    public async Task<IActionResult> XoaKinhNghiem(Guid ExperienceID, Guid EmployeeID)
+    [HttpDelete("DeleteExperience")]
+    public async Task<IActionResult> DeleteExperience(Guid ExperienceID, Guid EmployeeID)
     {
         if (EmployeeID.ToString() == null)
         {
@@ -94,10 +89,8 @@ public class Employee_ExperienceController : ApiControllerBase
         var result = await Mediator
             .Send(new Employee_ExperienceDeleteCommand(ExperienceID, EmployeeID));
 
-        if (result == true)
-        {
-            return Ok($"Xóa thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}");
-        }
-        return BadRequest($"Không tìm thấy kinh nghiệm với : \nEmployeeID: {EmployeeID}\n ExperienceID: {ExperienceID}");
+        return result == true
+            ? Ok($"Xóa thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}")
+            : BadRequest($"Không tìm thấy kinh nghiệm với : \nEmployeeID: {EmployeeID}\n ExperienceID: {ExperienceID}");
     }
 }

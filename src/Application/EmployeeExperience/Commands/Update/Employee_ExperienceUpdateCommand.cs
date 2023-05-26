@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
 using hrOT.Application.Common.Interfaces;
+using hrOT.Application.EmployeeExperience.Commands;
 using MediatR;
 
 namespace hrOT.Application.Experiences.Commands;
 
 public class Employee_ExperienceUpdateCommand : IRequest<bool>
 {
-    public ExperienceDTO Experience { get; set; }
+    public ExperienceCommandDTO Experience { get; set; }
     public Guid EmployeeID { get; set; }
     public Guid ExperienceID { get; set; } 
 
-    public Employee_ExperienceUpdateCommand(Guid ExperienceID, Guid EmployeeID, ExperienceDTO experience)
+    public Employee_ExperienceUpdateCommand(Guid ExperienceID, Guid EmployeeID, ExperienceCommandDTO experience)
     {
         Experience = experience;
         this.EmployeeID = EmployeeID;

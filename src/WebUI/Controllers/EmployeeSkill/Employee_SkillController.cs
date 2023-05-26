@@ -12,8 +12,8 @@ namespace WebUI.Controllers.EmployeeSkill;
 [ApiController]
 public class Employee_SkillController : ApiControllerBase
 {
-    [HttpGet("GetListKiNang")]
-    public async Task<IActionResult> GetListKiNang(Guid EmployeeID)
+    [HttpGet("GetListSKill")]
+    public async Task<IActionResult> GetListSKill(Guid EmployeeID)
     {
         if (EmployeeID.ToString() == null)
         {
@@ -23,15 +23,13 @@ public class Employee_SkillController : ApiControllerBase
         var result = await Mediator
             .Send(new Employee_GetListSkillQuery(EmployeeID));
 
-        if (result != null)
-        {
-            return Ok(result);
-        }
-        return BadRequest($"Không tìm thấy bất kì kĩ năng bản thân nào của EmployeeID: {EmployeeID}");
+        return result.Count > 0 
+            ? Ok(result) 
+            : BadRequest($"Không tìm thấy bất kì kĩ năng bản thân nào của EmployeeID: {EmployeeID}");
     }
 
-    [HttpPost("TaoKiNang")]
-    public async Task<IActionResult> TaoKiNang(Guid EmployeeId, Skill_EmployeeDTO skill_Employee)
+    [HttpPost("CreateSkill")]
+    public async Task<IActionResult> CreateSkill(Guid EmployeeId, [FromForm] Skill_EmployeeDTO skill_Employee)
     {
         if (EmployeeId.ToString() == null)
         {
@@ -47,8 +45,8 @@ public class Employee_SkillController : ApiControllerBase
         return BadRequest($"Không tìm thấy EmployeeID: {EmployeeId}");
     }
 
-    [HttpDelete("XoaKiNang")]
-    public async Task<IActionResult> XoaKiNang(Guid EmployeeId, Guid SkillId)
+    [HttpDelete("DeleteSkill")]
+    public async Task<IActionResult> DeleteSkill(Guid EmployeeId, Guid SkillId)
     {
         if (EmployeeId.ToString() == null)
         {
@@ -70,8 +68,8 @@ public class Employee_SkillController : ApiControllerBase
         return BadRequest($"Không tìm thấy kĩ năng bản thân cần xóa của EmployeeID: {EmployeeId}");
     }
 
-    [HttpPut("CapNhatKiNang")]
-    public async Task<IActionResult> CapNhatKiNang(Guid EmployeeId, Guid SkillId, Skill_EmployeeDTO skill_EmployeeDTO)
+    [HttpPut("UpdateSkill")]
+    public async Task<IActionResult> UpdateSkill(Guid EmployeeId, Guid SkillId, [FromForm] Skill_EmployeeDTO skill_EmployeeDTO)
     {
         if (EmployeeId.ToString() == null)
         {
