@@ -9,5 +9,6 @@ using hrOT.Domain.Entities;
 namespace hrOT.Application.PaySlips.Commands;
 public class DetailTaxInComeDto : IMapFrom<DetailTaxIncome>
 {
+    public int? Level { get; set; }
     public double? Payment { get; set; }
 }

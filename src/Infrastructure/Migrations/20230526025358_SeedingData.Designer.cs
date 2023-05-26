@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230525154255_SeedingData")]
+    [Migration("20230526025358_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -503,6 +503,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Level")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("PaySlipId")
                         .HasColumnType("uniqueidentifier");

@@ -858,6 +858,7 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PaySlipId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: true),
                     Payment = table.Column<double>(type: "float", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),

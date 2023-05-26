@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
 using hrOT.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -28,10 +29,16 @@ public class GetListPaySlipByEmployeeIdQueryHandler : IRequestHandler<GetListPay
         var EmployeeContract = await _context.EmployeeContracts
             .Where(x => x.EmployeeId == request.EmployeeId && x.Status == EmployeeContractStatus.Effective)
             .SingleOrDefaultAsync(cancellationToken);
-        return await _context.PaySlips
+        var PaySlips = await _context.PaySlips
                 .Where(x => x.EmployeeContractId == EmployeeContract.Id)
                 .OrderByDescending(t => t.Paid_date)
                 .ProjectTo<PaySlipDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
+        foreach (var PaySlip in PaySlips)
+        {
+            PaySlip.DetailTaxIncomes = PaySlip.DetailTaxIncomes.OrderBy(x => x.Level).ToList();
+        }
+
+        return PaySlips;
     }
 }

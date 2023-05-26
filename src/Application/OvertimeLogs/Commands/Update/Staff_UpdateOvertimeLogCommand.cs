@@ -15,11 +15,6 @@ namespace hrOT.Application.OvertimeLogs.Commands.Update;
 public record Staff_UpdateOvertimeLogCommand : IRequest
 {
     public Guid Id { get; init; }
-    //public Guid EmployeeId { get; init; }
-
-    public DateTime StartDate { get; init; }
-
-    public DateTime EndDate { get; init; }
     public OvertimeLogStatus Status { get; init; }
 }
 public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_UpdateOvertimeLogCommand>
@@ -42,9 +37,8 @@ public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_Updat
         }
 
         entity.Status = request.Status;
-        entity.StartDate = request.StartDate;
-        entity.EndDate = request.EndDate;
-
+        entity.LastModified = DateTime.Now;
+        entity.LastModifiedBy = "Employee";
 
         await _context.SaveChangesAsync(cancellationToken);
 

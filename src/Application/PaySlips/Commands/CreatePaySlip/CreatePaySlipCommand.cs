@@ -59,10 +59,10 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
 
         Salary_1Hour = EmployeeContract.Salary / Standard_Work_Hours;
         var OvertimeLog = await _context.OvertimeLogs
-            .Where(x => x.IsDeleted == false)
+            .Where(x => x.Status == OvertimeLogStatus.Approved && x.IsDeleted == false)
             .ToListAsync(cancellationToken);
         var LeaveLog = await _context.LeaveLogs
-            .Where(x => x.IsDeleted == false)
+            .Where(x => x.Status == LeaveLogStatus.Approved && x.IsDeleted == false)
             .ToListAsync(cancellationToken);
         Ot_Hours = OvertimeLog.Sum(x => x.TotalHours);
         Leave_Hours = LeaveLog.Sum(x => x.LeaveHours);
@@ -350,6 +350,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             var detail = new DetailTaxIncome
             {
                 PaySlipId = payslip.Id,
+                Level = i + 1,
                 Payment = DetailTaxInComes[i],
                 CreatedBy = "Admin",
                 LastModified = DateTime.Now,

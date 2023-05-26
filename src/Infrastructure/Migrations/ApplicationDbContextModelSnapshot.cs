@@ -501,6 +501,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Level")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("PaySlipId")
                         .HasColumnType("uniqueidentifier");
 

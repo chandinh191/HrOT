@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace hrOT.WebUI.Controllers;
 
-//[Authorize]
+/*[Authorize]
 public class TodoItemsController : ApiControllerBase
 {
     [HttpGet]
@@ -58,3 +58,4 @@ public class TodoItemsController : ApiControllerBase
         return NoContent();
     }
 }
+*/

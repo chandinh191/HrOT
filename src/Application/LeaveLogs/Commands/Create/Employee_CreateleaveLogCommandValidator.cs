@@ -18,16 +18,9 @@ namespace hrOT.Application.OvertimeLogs.Commands.Create
                 .NotEmpty().WithMessage("End date is required.")
                 .GreaterThanOrEqualTo(x => x.StartDate).WithMessage("End date must be greater than or equal to the start date.");
 
-            RuleFor(x => x.LeaveHours)
-                .NotEmpty().WithMessage("Leave hours are required.")
-                .GreaterThanOrEqualTo(0).WithMessage("Leave hours must be greater than or equal to 0.");
-
             RuleFor(x => x.Reason)
                 .NotEmpty().WithMessage("Reason is required.")
                 .MaximumLength(200).WithMessage("Reason must not exceed 200 characters.");
-
-            RuleFor(x => x.Status)
-                .IsInEnum().WithMessage("Invalid leave log status.");
         }
     }
 }
