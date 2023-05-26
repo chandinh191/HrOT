@@ -12,9 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-
-    [Migration("20230526025358_SeedingData")]
-
+    [Migration("20230526091026_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -550,9 +548,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("DepartmentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Diploma")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -574,8 +569,6 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
-
-                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Employees");
 
@@ -1373,7 +1366,8 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("Positions");
                 });
@@ -1906,10 +1900,6 @@ namespace hrOT.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("hrOT.Domain.Entities.Department", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("DepartmentId");
-
                     b.Navigation("ApplicationUser");
                 });
 
@@ -2040,8 +2030,8 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
-                        .WithMany("Roles")
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("Position")
+                        .HasForeignKey("hrOT.Domain.Entities.Position", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2140,8 +2130,6 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
-                    b.Navigation("Employees");
-
                     b.Navigation("Roles");
                 });
 
@@ -2157,7 +2145,8 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Navigation("OvertimeLogs");
 
-                    b.Navigation("Roles");
+                    b.Navigation("Position")
+                        .IsRequired();
 
                     b.Navigation("Skill_Employees");
                 });
