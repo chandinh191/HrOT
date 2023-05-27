@@ -9,10 +9,11 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using hrOT.Domain.Enums;
+using hrOT.Domain.IdentityModel;
 
 namespace hrOT.Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityModel.ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -30,8 +31,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
 
     public DbSet<TodoList> TodoLists => Set<TodoList>();
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-    //public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
-    public DbSet<Domain.IdentityModel.ApplicationUser> ApplicationUsers => Set<Domain.IdentityModel.ApplicationUser>();
+  public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+
     public DbSet<Allowance> Allowances => Set<Allowance>();
     public DbSet<Company> Companies => Set<Company>();
     public DbSet<CompanyContract> CompanyContracts => Set<CompanyContract>();
@@ -54,6 +55,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
     public DbSet<Skill_Employee> Skill_Employees => Set<Skill_Employee>();
     public DbSet<Skill_JD> Skill_JDs => Set<Skill_JD>();
 
+    public DbSet<TaxInCome> TaxInComes => Set<TaxInCome>();
+
     
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -61,15 +64,16 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         //Seeding database
-        builder.Entity<hrOT.Domain.IdentityModel.ApplicationUser>()
+        builder.Entity<ApplicationUser>()
             .HasData(
-            new Domain.IdentityModel.ApplicationUser
+            new ApplicationUser
             {
                 Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 Fullname = "Lewis",
                 Address = "TEST",
                 Image = "TESTIMAGE",
                 UserName = "test",
+                BirthDay = DateTime.Parse("9/9/9999"),
                 NormalizedUserName = "test",
                 Email = "test@gmail.com",
                 NormalizedEmail = "test@gmail.com",
@@ -93,7 +97,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 IdentityImage = "IMGTEST",
-                BirthDay = DateTime.Parse("9/9/9999"),
                 Diploma = "TEST",
                 BankAccountNumber = "123456789",
                 BankAccountName = "LUONG THE DAN",
@@ -137,7 +140,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                 StartDate = new DateTime(9999, 9, 9, 0, 0, 0),
                 EndDate = new DateTime(9999, 9, 9, 0, 0, 0),
                 Job = "test",
-                Salary = 1,
+                Salary = 20000000,
+                Number_Of_Dependents = 0,
+                InsuranceType = InsuranceType.Official,
+                CustomSalary = 0,
                 Status = EmployeeContractStatus.Effective,
                 SalaryType = SalaryType.Net,
                 ContractType = ContractType.Open_Ended,
@@ -215,6 +221,185 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<Domain.IdentityMod
                 LastModifiedBy = "test"
             });
 
+        builder.Entity<TaxInCome>()
+       .HasData(
+           new TaxInCome
+
+           {
+               Id = Guid.Parse("a279788d-0fa2-4d9e-9e8e-5d689e853972"),
+               Muc_chiu_thue = 5000000,
+               Thue_suat = 0.05,
+               IsDeleted = false,
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test"
+           },
+
+           new TaxInCome
+
+           {
+               Id = Guid.Parse("2d6a8e64-6130-456b-9c9d-95a1bc0a11fd"),
+               Muc_chiu_thue = 10000000,
+               Thue_suat = 0.1,
+               IsDeleted = false,
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test"
+           },
+
+           new TaxInCome
+
+           {
+               Id = Guid.Parse("e582dd24-ec47-4c64-b0a7-6f8647b488a7"),
+               Muc_chiu_thue = 18000000,
+               Thue_suat = 0.15,
+               IsDeleted = false,
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test"
+           },
+
+           new TaxInCome
+
+           {
+               Id = Guid.Parse("c0b17a9e-ee6f-4fe0-8e6f-33d5c63640c8"),
+               Muc_chiu_thue = 32000000,
+               Thue_suat = 0.2,
+               IsDeleted = false,
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test"
+           },
+
+           new TaxInCome
+
+           {
+               Id = Guid.Parse("f0f3e78c-67c9-4e5e-a9fc-c8d2e7c1e5f5"),
+               Muc_chiu_thue = 52000000,
+               Thue_suat = 0.25,
+               IsDeleted = false,
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test"
+           },
+
+           new TaxInCome
+
+           {
+               Id = Guid.Parse("78a65c98-2d7a-4c57-98f0-81f5a870a915"),
+               Muc_chiu_thue = 80000000,
+               Thue_suat = 0.3,
+               IsDeleted = false,
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test"
+           },
+
+           new TaxInCome
+
+           {
+               Id = Guid.Parse("4ae0e892-5369-4ef1-9e37-5d4e0a9a3e2e"),
+               Muc_chiu_thue = double.MaxValue,
+               Thue_suat = 0.35,
+               IsDeleted = false,
+               Created = new DateTime(9999, 9, 9, 0, 0, 0),
+               CreatedBy = "test",
+               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+               LastModifiedBy = "test"
+           });
+
+        builder.Entity<Exchange>()
+        .HasData(
+            new Exchange
+            {
+                Id = Guid.Parse("d9f3a521-36e4-4a5c-9a89-0c733e92e85b"),
+                Muc_Quy_Doi = 4750000,
+                Giam_Tru = 0,
+                Thue_Suat = 0.95,
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            },
+            new Exchange
+            {
+                Id = Guid.Parse("3a1d42d9-9ee7-4a4c-b283-6e8f9126e44a"),
+                Muc_Quy_Doi = 9250000,
+                Giam_Tru = 250000,
+                Thue_Suat = 0.9,
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            },
+            new Exchange
+            {
+                Id = Guid.Parse("08d5ef29-44a5-47d0-9a85-28d9d0dc30f3"),
+                Muc_Quy_Doi = 16050000,
+                Giam_Tru = 750000,
+                Thue_Suat = 0.85,
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            },
+            new Exchange
+            {
+                Id = Guid.Parse("9218741c-99f6-40a2-87f4-d4baf4c9e15d"),
+                Muc_Quy_Doi = 27250000,
+                Giam_Tru = 1650000,
+                Thue_Suat = 0.8,
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            },
+            new Exchange
+            {
+                Id = Guid.Parse("e28a08ad-2b30-4df5-bc95-684d56ad8a56"),
+                Muc_Quy_Doi = 42250000,
+                Giam_Tru = 3250000,
+                Thue_Suat = 0.75,
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            },
+            new Exchange
+            {
+                Id = Guid.Parse("5ef5f6be-ef53-4af2-8b18-78fc6b8a295f"),
+                Muc_Quy_Doi = 61850000,
+                Giam_Tru = 5850000,
+                Thue_Suat = 0.7,
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            },
+            new Exchange
+            {
+                Id = Guid.Parse("7f1b1d11-3070-4b4b-96db-801d448a8920"),
+                Muc_Quy_Doi = double.MaxValue,
+                Giam_Tru = 9850000,
+                Thue_Suat = 0.65,
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            });
         base.OnModelCreating(builder);
     }
 

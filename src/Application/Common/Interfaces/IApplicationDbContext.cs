@@ -9,8 +9,8 @@ public interface IApplicationDbContext
     DbSet<TodoList> TodoLists { get; }
 
     DbSet<TodoItem> TodoItems { get; }
+   DbSet<ApplicationUser> ApplicationUsers { get; }
 
-    DbSet<ApplicationUser> ApplicationUsers { get; }
     DbSet<Allowance> Allowances { get; }
     DbSet<Company> Companies { get; }
     DbSet<CompanyContract> CompanyContracts { get; }
@@ -33,6 +33,9 @@ public interface IApplicationDbContext
     DbSet<Skill> Skills { get; }
     DbSet<Skill_Employee> Skill_Employees { get; }
     DbSet<Skill_JD> Skill_JDs { get; }
+
+    DbSet<TaxInCome> TaxInComes { get; }
+    
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

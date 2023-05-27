@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using hrOT.Domain.Entities;
+
 
 namespace hrOT.Domain.Entities;
 

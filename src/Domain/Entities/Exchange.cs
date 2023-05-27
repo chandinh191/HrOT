@@ -8,4 +8,6 @@ namespace hrOT.Domain.Entities;
 public class Exchange : BaseAuditableEntity
 {
     public double? Muc_Quy_Doi { get; set; }
+    public double? Giam_Tru { get; set; }
+    public double? Thue_Suat { get; set; }
 }

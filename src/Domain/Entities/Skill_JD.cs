@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using hrOT.Domain.IdentityModel;
 
 namespace hrOT.Domain.Entities;
 public class Skill_JD : BaseAuditableEntity

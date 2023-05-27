@@ -8,7 +8,7 @@ public class Employee : BaseAuditableEntity
     [ForeignKey("ApplicationUser")]
     public string ApplicationUserId { get; set; }
 
-    public DateTime BirthDay { get; set; }
+   
 
     // Bằng cấp
     public string Diploma { get; set; }
