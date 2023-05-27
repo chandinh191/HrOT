@@ -1,11 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using hrOT.Application.Common.Mappings;
+using hrOT.Domain.Entities;
+using hrOT.Domain.Enums;
 
-namespace hrOT.Domain.Entities;
-
-public class Allowance : BaseAuditableEntity
+namespace hrOT.Application.Allowances.Queries;
+public class AllowanceDto : IMapFrom<Allowance>
 {
-    [ForeignKey("EmployeeContract")]
+    public Guid Id { get; set; }
     public Guid EmployeeContractId { get; set; }
 
     public string Name { get; set; }
@@ -21,6 +27,7 @@ public class Allowance : BaseAuditableEntity
     public string Requirements { get; set; }
 
     // Relationship
-    //public virtual CompanyContract? CompanyContract { get; set; }
+    public bool IsDeleted { get; set; }
     public virtual EmployeeContract? EmployeeContract { get; set; }
 }
+

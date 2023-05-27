@@ -1,7 +1,10 @@
-﻿using hrOT.Application.Employees.Commands.Create;
+﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
+
 using LogOT.Application.Employees;
+
 using LogOT.Application.Employees.Commands.Create;
 using LogOT.Application.Employees.Queries;
 using MediatR;
@@ -120,6 +123,55 @@ namespace WebUI.Controllers
 
             return Ok("Thêm thất bại");
         }
+
+        [HttpGet("GetEmployeeById")]
+        public async Task<IActionResult> GetEmployee(Guid id)
+        {
+            try
+            {
+                var query = new Employee_GetEmployeeQuery { Id = id };
+                var employeeVm = await _mediator.Send(query);
+
+                if (employeeVm == null)
+                {
+                    return NotFound("Employee not found");
+                }
+
+                return Ok(employeeVm);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound("Employee not found");
+            }
+        }
+
+        [HttpPost("{id}/cv")]
+        public async Task<IActionResult> UploadCV(Guid id, IFormFile cvFile)
+        {
+            try
+            {
+                if (cvFile == null || cvFile.Length == 0)
+                {
+                    return BadRequest("No file uploaded");
+                }
+
+                var command = new Employee_EmployeeUploadCVCommand
+                {
+                    Id = id,
+                    CVFile = cvFile
+                };
+
+                await _mediator.Send(command);
+
+                return Ok("CV uploaded successfully");
+            }
+            catch (Exception ex)
+            {
+                // Handle and log the exception
+                return StatusCode(500, "An error occurred while uploading the CV");
+            }
+        }
+
 
 
     }

@@ -39,7 +39,7 @@ public class UpdatePositionCommandHandler : IRequestHandler<UpdatePositionComman
             throw new NotFoundException(nameof(Level), request.Id);
         }
         entity.DepartmentId = request.DepartmentId;
-        entity.EmployeeId = request.EmployeeId;
+        //entity.EmployeeId = request.EmployeeId;
         entity.Name = request.Name;
        
 

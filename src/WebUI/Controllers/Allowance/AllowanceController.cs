@@ -1,24 +1,21 @@
-﻿using hrOT.Application.Exchanges.Commands.DeleteExchange;
-using hrOT.Application.TaxInComes.Commands.CreateTaxInCome;
-using hrOT.Application.TaxInComes.Commands.DeleteTaxInCome;
-using hrOT.Application.TaxInComes.Commands.UpdateTaxInCome;
-using hrOT.Application.TaxInComes.Queries;
-using hrOT.Domain.Entities;
+﻿using hrOT.Application.Allowances.Command.Update;
+using hrOT.Application.Allowances.Queries;
+using hrOT.Application.Allowances.Command.Create;
 using hrOT.WebUI.Controllers;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using hrOT.Application.Allowances.Command.Delete;
 
-namespace WebUI.Controllers.TaxInComes;
-public class TaxInComeController : ApiControllerBase
+
+namespace WebUI.Controllers.Allowance;
+public class AllowanceController : ApiControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<List<TaxInCome>>> Get()
+    public async Task<ActionResult<AllowanceList>> GetList()
     {
-        return await Mediator.Send(new GetListTaxInComeQuery());
+        return await Mediator.Send(new GetListAllowanceQuery());
     }
-
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(CreateTaxInComeCommand command)
+    public async Task<ActionResult<Guid>> Create(CreateAllowanceCommand command)
     {
         if (ModelState.IsValid && command != null)
         {
@@ -27,9 +24,8 @@ public class TaxInComeController : ApiControllerBase
         }
         return Ok("Thêm thất bại");
     }
-
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(Guid id, UpdateTaxInComeCommand command)
+    public async Task<ActionResult> Update(Guid id, UpdateAllowanceCommand command)
     {
         if (id != command.Id)
         {
@@ -46,14 +42,19 @@ public class TaxInComeController : ApiControllerBase
             return Ok("Cập nhật thất bại");
         }
     }
-
+    
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(Guid id)
+    public async Task<ActionResult> Delete(Guid id, DeleteAllowanceCommand command)
     {
+        if (id != command.Id)
+        {
+            return Ok("Lỗi! Không tìm thấy Id");
+        }
         try
         {
-            await Mediator.Send(new DeleteTaxInComeCommand(id));
+            await Mediator.Send(command);
             return Ok("Xóa thành công");
+
         }
         catch (Exception ex)
         {

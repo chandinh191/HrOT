@@ -29,7 +29,7 @@ public class CreatePositionCommandHandler : IRequestHandler<CreatePositionComman
     {
         var entity = new Position();
         entity.DepartmentId = request.DepartmentId;
-        entity.EmployeeId = request.EmployeeId;
+        //entity.EmployeeId = request.EmployeeId;
         entity.Name = request.Name;
 
         _context.Positions.Add(entity);

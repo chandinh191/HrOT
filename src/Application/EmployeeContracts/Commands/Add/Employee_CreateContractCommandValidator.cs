@@ -45,8 +45,7 @@ public class Employee_CreateContractCommandValidator : AbstractValidator<Employe
 
         // Validate Number_Of_Dependents
         RuleFor(v => v.EmployeeContractDTO.Number_Of_Dependents)
-            .NotNull().WithMessage("Số phòng ban không được để trống.")
-            .GreaterThan(0).WithMessage("Số phòng ban không được âm.");
+            .NotNull().WithMessage("Số người phụ thuộc không được để trống.");
 
         // Validate Status
         RuleFor(v => v.EmployeeContractDTO.Status)

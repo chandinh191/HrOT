@@ -23,8 +23,5 @@ public class CreateDepartmentCommandValidator : AbstractValidator<CreateDepartme
         RuleFor(d => d.Description)
             .NotEmpty().WithMessage("Description is required.")
             .MaximumLength(200).WithMessage("Description must not exceed 200 characters.");
-
     }
-
-
 }
