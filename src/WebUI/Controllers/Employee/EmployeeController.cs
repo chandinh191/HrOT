@@ -2,8 +2,11 @@
 using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
-using hrOT.Application.Employees.Queries;
+
+using LogOT.Application.Employees;
+
 using LogOT.Application.Employees.Commands.Create;
+using LogOT.Application.Employees.Queries;
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +24,11 @@ namespace WebUI.Controllers
         {
             _mediator = mediator;
         }
-
+        [HttpGet]
+        public async Task<ActionResult<List<EmployeeDTO>>> Get()
+        {
+            return await _mediator.Send(new GetAllEmployeeQuery());
+        }
         [HttpPost("create")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
@@ -31,9 +38,16 @@ namespace WebUI.Controllers
                
                 return Ok("Thêm thành công");
             }
-           
 
-            return Ok("Thêm thất bại");
+
+            var errorMessages = ModelState.Values
+        .SelectMany(v => v.Errors)
+        .Select(e => e.ErrorMessage)
+        .ToList();
+
+            return BadRequest(errorMessages);
+
+           
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
@@ -52,7 +66,12 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok("Cập nhật thất bại");
+                var errorMessages = ModelState.Values
+       .SelectMany(v => v.Errors)
+       .Select(e => e.ErrorMessage)
+       .ToList();
+
+                return BadRequest(errorMessages);
             }
         }
 

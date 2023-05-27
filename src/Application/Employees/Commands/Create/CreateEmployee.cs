@@ -20,7 +20,7 @@ namespace hrOT.Application.Employees.Commands.Create
        
         public string IdentityImage { get; set; }
         public DateTime BirthDay { get; set; }
-        public string Diploma { get; set; }//image
+        public string Diploma { get; set; }
         public string BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
