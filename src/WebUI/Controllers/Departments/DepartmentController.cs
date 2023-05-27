@@ -12,7 +12,7 @@ using hrOT.Application.Departments;
 using hrOT.Application.Exchanges.Commands.DeleteExchange;
 
 namespace WebUI.Controllers.Departments;
-[Authorize]
+[Authorize(Policy = "manager")]
 public class DepartmentController : ApiControllerBase
 {
     [HttpGet]

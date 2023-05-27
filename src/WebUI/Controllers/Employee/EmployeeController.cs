@@ -4,10 +4,11 @@ using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
 using hrOT.Application.Employees.Queries;
 using hrOT.WebUI.Controllers;
+using LogOT.Application.Employees;
 using LogOT.Application.Employees.Commands.Create;
 using LogOT.Application.Employees.Queries;
 using MediatR;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
@@ -23,11 +24,13 @@ namespace WebUI.Controllers
             _mediator = mediator;
         }
         [HttpGet]
+        [Authorize(Policy = "manager")]
         public async Task<ActionResult<List<EmployeeDTO>>> Get()
         {
             return await _mediator.Send(new GetAllEmployeeQuery());
         }
         [HttpPost("create")]
+        [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
             if (ModelState.IsValid && createModel != null)
@@ -37,10 +40,17 @@ namespace WebUI.Controllers
                 return Ok("Thêm thành công");
             }
 
-            return Ok("Thêm thất bại");
+            var errorMessages = ModelState.Values
+         .SelectMany(v => v.Errors)
+         .Select(e => e.ErrorMessage)
+         .ToList();
+
+            return BadRequest(errorMessages);
+
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "manager")]
         public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
         {
             if (id != command.Id)
@@ -66,6 +76,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPut("[action]")]
+        [Authorize(Policy = "manager")]
         public async Task<IActionResult> Delete(Guid id, [FromForm] DeleteEmployee command)
 
         {
@@ -87,6 +98,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost("CreateEx")]
+        [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEx(IFormFile file)
         {
             if (file != null && file.Length > 0)
@@ -111,6 +123,7 @@ namespace WebUI.Controllers
         }
 
         [HttpGet("GetEmployeeById")]
+        [Authorize(Policy = "employee")]
         public async Task<IActionResult> GetEmployee(Guid id)
         {
             try
@@ -132,6 +145,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost("{id}/cv")]
+        [Authorize(Policy = "employee")]
         public async Task<IActionResult> UploadCV(Guid id, IFormFile cvFile)
         {
             try
@@ -159,6 +173,7 @@ namespace WebUI.Controllers
         }
 
         [HttpGet("GetEmployeeByMatchingJobSkill")]
+        [Authorize(Policy = "employee")]
         public async Task<IActionResult> GetEmployeeByMatchingJobSkill(string SkillName)
         {
             if (SkillName == null)

@@ -5,16 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 using hrOT.Application.LeaveLogs.Commands.Update;
 using hrOT.Application.LeaveLogs.Commands.Create;
 using hrOT.Application.LeaveLogs.Commands.Delete;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers.LeaveLog;
+
 public class LeaveLogController : ApiControllerBase
 {
     [HttpGet]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult<LeaveLogList>> GetList()
     {
         return await Mediator.Send(new Staff_GetListLeaveLogQuery());
     }
     [HttpPost]
+    [Authorize(Policy = "employee")]
     public async Task<ActionResult<Guid>> Create(Employee_CreateLeaveLogCommand command)
     {
         if (ModelState.IsValid && command != null)
@@ -25,6 +29,7 @@ public class LeaveLogController : ApiControllerBase
         return Ok("Thêm thất bại");
     }
     [HttpPut("Staff/{id}")]
+    [Authorize(Policy = "staff")]
     public async Task<ActionResult> UpdateStatus(Guid id, Staff_UpdateLeaveLogCommand command)
     {
         if (id != command.Id)
@@ -43,6 +48,7 @@ public class LeaveLogController : ApiControllerBase
         }
     }
     [HttpPut("Employee/{id}")]
+    [Authorize(Policy = "employee")]
     public async Task<ActionResult> Update(Guid id, Employee_UpdateLeaveLogCommand command)
     {
         if (id != command.Id)
@@ -63,6 +69,7 @@ public class LeaveLogController : ApiControllerBase
     
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "employee")]
     public async Task<ActionResult> Delete(Guid id, DeleteLeaveLogCommand command)
     {
         if (id != command.Id)
