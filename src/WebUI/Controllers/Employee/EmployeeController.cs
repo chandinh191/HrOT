@@ -5,6 +5,7 @@ using hrOT.Application.Employees.Commands.Update;
 using hrOT.Application.Employees.Queries;
 using hrOT.WebUI.Controllers;
 using LogOT.Application.Employees.Commands.Create;
+using LogOT.Application.Employees.Queries;
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,11 @@ namespace WebUI.Controllers
         {
             _mediator = mediator;
         }
-
+        [HttpGet]
+        public async Task<ActionResult<List<EmployeeDTO>>> Get()
+        {
+            return await _mediator.Send(new GetAllEmployeeQuery());
+        }
         [HttpPost("create")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
@@ -51,7 +56,12 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok("Cập nhật thất bại");
+                var errorMessages = ModelState.Values
+       .SelectMany(v => v.Errors)
+       .Select(e => e.ErrorMessage)
+       .ToList();
+
+                return BadRequest(errorMessages);
             }
         }
 
