@@ -11,21 +11,17 @@ public class Employee_CreateSkillCommandValidator : AbstractValidator<Employee_C
     public Employee_CreateSkillCommandValidator(IApplicationDbContext context)
     {
         _context = context;
+        RuleFor(v => v.SkillName)
+            .NotEmpty().WithMessage("Tên kĩ năng không được để trống.")
+            .MustAsync(BeUniqueName).WithMessage("Nhân viên đã tồn tại kĩ năng này.");
         RuleFor(v => v.Skill_EmployeeDTO.Level)
             .NotEmpty().WithMessage("Cấp bậc không được để trống.");
-        RuleFor(v => v.Skill_EmployeeDTO.Skill.SkillName)
-            .NotEmpty().WithMessage("Tên kĩ năng không được để trống.")
-            .MustAsync(BeUniqueName).WithMessage("Tên kĩ năng đã tồn tại.");
-
-        RuleFor(v => v.Skill_EmployeeDTO.Skill.Skill_Description)
-            .NotEmpty().WithMessage("Mô tả kĩ năng không được để trống.");
     }
 
-    private async Task<bool> BeUniqueName(Employee_CreateSkillCommand createSkillCommand, string arg1, CancellationToken arg2)
+    private async Task<bool> BeUniqueName(Employee_CreateSkillCommand employee_CreateSkillCommand, string arg1, CancellationToken arg2)
     {
         return await _context.Skill_Employees
-            .Where(s => s.SkillId == createSkillCommand.Skill_EmployeeDTO.Skill.ID &&
-                                    s.EmployeeId == createSkillCommand.EmployeeId)
+            .Where(s => s.Skill.SkillName == employee_CreateSkillCommand.SkillName && s.IsDeleted == false)
             .AllAsync(s => s.Skill.SkillName != arg1, arg2);
     }
 }

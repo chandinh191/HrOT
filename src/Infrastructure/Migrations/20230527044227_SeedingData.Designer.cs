@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230527032204_SeedingData")]
+    [Migration("20230527044227_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -421,7 +421,7 @@ namespace hrOT.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CompanyId")
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContactCode")
@@ -441,6 +441,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("File")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("InterviewProcessId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -463,6 +466,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("InterviewProcessId");
 
                     b.ToTable("CompanyContracts");
                 });
@@ -1892,13 +1897,17 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
                 {
-                    b.HasOne("hrOT.Domain.Entities.Company", "Company")
+                    b.HasOne("hrOT.Domain.Entities.Company", null)
                         .WithMany("CompanyContracts")
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("hrOT.Domain.Entities.InterviewProcess", "InterviewProcess")
+                        .WithMany()
+                        .HasForeignKey("InterviewProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Company");
+                    b.Navigation("InterviewProcess");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>

@@ -361,36 +361,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompanyContracts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    DayOff = table.Column<int>(type: "int", nullable: true),
-                    ContactCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    File = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyContracts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CompanyContracts_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Holidays",
                 columns: table => new
                 {
@@ -654,37 +624,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentHistories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalDeduction = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TotalBonus = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    AcceptanceCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentHistories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentHistories_CompanyContracts_CompanyContractId",
-                        column: x => x.CompanyContractId,
-                        principalTable: "CompanyContracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "InterviewProcesses",
                 columns: table => new
                 {
@@ -848,6 +787,42 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CompanyContracts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InterviewProcessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DayOff = table.Column<int>(type: "int", nullable: true),
+                    ContactCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    File = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyContracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompanyContracts_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CompanyContracts_InterviewProcesses_InterviewProcessId",
+                        column: x => x.InterviewProcessId,
+                        principalTable: "InterviewProcesses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DetailTaxIncomes",
                 columns: table => new
                 {
@@ -868,6 +843,37 @@ namespace hrOT.Infrastructure.Migrations
                         name: "FK_DetailTaxIncomes_PaySlips_PaySlipId",
                         column: x => x.PaySlipId,
                         principalTable: "PaySlips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentHistories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalDeduction = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TotalBonus = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    AcceptanceCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentHistories_CompanyContracts_CompanyContractId",
+                        column: x => x.CompanyContractId,
+                        principalTable: "CompanyContracts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -993,6 +999,11 @@ namespace hrOT.Infrastructure.Migrations
                 name: "IX_CompanyContracts_CompanyId",
                 table: "CompanyContracts",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyContracts_InterviewProcessId",
+                table: "CompanyContracts",
+                column: "InterviewProcessId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DetailTaxIncomes_PaySlipId",
@@ -1170,9 +1181,6 @@ namespace hrOT.Infrastructure.Migrations
                 name: "Holidays");
 
             migrationBuilder.DropTable(
-                name: "InterviewProcesses");
-
-            migrationBuilder.DropTable(
                 name: "Keys");
 
             migrationBuilder.DropTable(
@@ -1215,9 +1223,6 @@ namespace hrOT.Infrastructure.Migrations
                 name: "CompanyContracts");
 
             migrationBuilder.DropTable(
-                name: "JobDescriptions");
-
-            migrationBuilder.DropTable(
                 name: "Skills");
 
             migrationBuilder.DropTable(
@@ -1230,13 +1235,19 @@ namespace hrOT.Infrastructure.Migrations
                 name: "Departments");
 
             migrationBuilder.DropTable(
-                name: "Companies");
+                name: "InterviewProcesses");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
+                name: "JobDescriptions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
         }
     }
 }

@@ -8,12 +8,12 @@ namespace hrOT.Application.EmployeeSkill.Commands.Delete;
 public class Employee_DeleteSkillCommand : IRequest<bool>
 {
     public Guid EmployeeId { get; set; }
-    public Guid SkillId { get; set; }
+    public string SkillName { get; set; }
 
-    public Employee_DeleteSkillCommand(Guid EmployeeID, Guid SkillID)
+    public Employee_DeleteSkillCommand(Guid EmployeeID, string skillName)
     {
         EmployeeId = EmployeeID;
-        SkillId = SkillID;
+        SkillName = skillName;
     }
 }
 
@@ -30,20 +30,20 @@ public class Employee_DeleteSkillCommandHandler : IRequestHandler<Employee_Delet
 
     public async Task<bool> Handle(Employee_DeleteSkillCommand request, CancellationToken cancellationToken)
     {
-        var empskill = await _context.Skill_Employees
-            .Where(e => e.EmployeeId == request.EmployeeId && e.SkillId == request.SkillId)
-            .FirstOrDefaultAsync();
         var skill = await _context.Skills
-            .Where(s => s.Id == request.SkillId)
+            .Where(s => s.SkillName == request.SkillName)
             .FirstOrDefaultAsync();
 
-        if (empskill != null && skill != null)
+        var empskill = await _context.Skill_Employees
+            .Include(s => s.Skill)
+            .Where(e => e.EmployeeId == request.EmployeeId && e.Skill.SkillName == skill.SkillName)
+            .FirstOrDefaultAsync();
+
+        if (empskill != null)
         {
             empskill.IsDeleted = true;
-            skill.IsDeleted = true;
 
             _context.Skill_Employees.Update(empskill);
-            _context.Skills.Update(skill); 
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }

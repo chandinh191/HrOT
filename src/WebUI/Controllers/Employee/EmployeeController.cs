@@ -3,17 +3,17 @@ using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
 using hrOT.Application.Employees.Queries;
+using hrOT.WebUI.Controllers;
 using LogOT.Application.Employees.Commands.Create;
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace WebUI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EmployeeController : ControllerBase
+    public class EmployeeController : ApiControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -28,13 +28,13 @@ namespace WebUI.Controllers
             if (ModelState.IsValid && createModel != null)
             {
                 var entityId = await _mediator.Send(createModel);
-               
+
                 return Ok("Thêm thành công");
             }
-           
 
             return Ok("Thêm thất bại");
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
         {
@@ -44,11 +44,10 @@ namespace WebUI.Controllers
             }
             try
             {
-                //command.Image = image; 
+                //command.Image = image;
 
                 await _mediator.Send(command);
                 return Ok("Cập nhật thành công");
-               
             }
             catch (Exception ex)
             {
@@ -68,18 +67,17 @@ namespace WebUI.Controllers
             try
             {
                 await _mediator.Send(command);
-               
+
                 return Ok("Xóa thành công");
             }
             catch (Exception ex)
             {
-                
-                
                 return Ok("Xóa thất bại");
             }
         }
+
         [HttpPost("CreateEx")]
-        public async Task<IActionResult> CreateEx( IFormFile file)
+        public async Task<IActionResult> CreateEx(IFormFile file)
         {
             if (file != null && file.Length > 0)
             {
@@ -98,9 +96,6 @@ namespace WebUI.Controllers
 
                 return Ok("Thêm thành công");
             }
-
-           
-
 
             return Ok("Thêm thất bại");
         }
@@ -153,7 +148,19 @@ namespace WebUI.Controllers
             }
         }
 
+        [HttpGet("GetEmployeeByMatchingJobSkill")]
+        public async Task<IActionResult> GetEmployeeByMatchingJobSkill(string SkillName)
+        {
+            if (SkillName == null)
+            {
+                return BadRequest("Vui lòng nhập tên kĩ năng !");
+            }
 
+            var result = await Mediator.Send(new Employee_GetByMatchingJobDescriptionSkillQuery(SkillName));
 
+            return (result != null )
+                ? Ok(result)
+                : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
+        }
     }
 }
