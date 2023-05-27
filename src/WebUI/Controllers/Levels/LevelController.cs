@@ -28,7 +28,12 @@ public class LevelController : ApiControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(CreateLevelCommand command)
     {
-        return await Mediator.Send(command);
+        if (ModelState.IsValid && command != null)
+        {
+            await Mediator.Send(command);
+            return Ok("Thêm thành công");
+        }
+        return Ok("Thêm thất bại");
     }
 
 
@@ -37,20 +42,32 @@ public class LevelController : ApiControllerBase
     {
         if (id != command.Id)
         {
-            return BadRequest();
+            return Ok("Lỗi! Không tìm thấy Id");
         }
+        try
+        {
+            await Mediator.Send(command);
+            return Ok("Cập nhật thành công");
 
-        await Mediator.Send(command);
-
-        return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return Ok("Cập nhật thất bại");
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        await Mediator.Send(new DeleteLevelCommand(id));
-
-        return NoContent();
+        try
+        {
+            await Mediator.Send(new DeleteLevelCommand(id));
+            return Ok("Xóa thành công");
+        }
+        catch (Exception ex)
+        {
+            return Ok("Xóa thất bại");
+        }
 
     }
 }

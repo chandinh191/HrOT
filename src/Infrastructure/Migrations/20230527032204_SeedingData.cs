@@ -342,6 +342,7 @@ namespace hrOT.Infrastructure.Migrations
                     BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BankAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BankAccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CVPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -653,34 +654,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Allowances",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    EligibilityCriteria = table.Column<string>(name: "Eligibility_Criteria", type: "nvarchar(max)", nullable: false),
-                    Requirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Allowances", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Allowances_CompanyContracts_CompanyContractId",
-                        column: x => x.CompanyContractId,
-                        principalTable: "CompanyContracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PaymentHistories",
                 columns: table => new
                 {
@@ -774,6 +747,34 @@ namespace hrOT.Infrastructure.Migrations
                         name: "FK_Skill_JDs_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Allowances",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    EligibilityCriteria = table.Column<string>(name: "Eligibility_Criteria", type: "nvarchar(max)", nullable: false),
+                    Requirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Allowances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Allowances_EmployeeContracts_EmployeeContractId",
+                        column: x => x.EmployeeContractId,
+                        principalTable: "EmployeeContracts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -911,8 +912,8 @@ namespace hrOT.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "Id", "ApplicationUserId", "BankAccountName", "BankAccountNumber", "BankName", "Created", "CreatedBy", "Diploma", "IdentityImage", "IsDeleted", "LastModified", "LastModifiedBy" },
-                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "fe30e976-2640-4d35-8334-88e7c3b1eac1", "LUONG THE DAN", "123456789", "TECHCOMBANK", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "TEST", "IMGTEST", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test" });
+                columns: new[] { "Id", "ApplicationUserId", "BankAccountName", "BankAccountNumber", "BankName", "CVPath", "Created", "CreatedBy", "Diploma", "IdentityImage", "IsDeleted", "LastModified", "LastModifiedBy" },
+                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "fe30e976-2640-4d35-8334-88e7c3b1eac1", "LUONG THE DAN", "123456789", "TECHCOMBANK", null, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "TEST", "IMGTEST", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test" });
 
             migrationBuilder.InsertData(
                 table: "EmployeeContracts",
@@ -939,10 +940,15 @@ namespace hrOT.Infrastructure.Migrations
                 columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "IsDeleted", "LastModified", "LastModifiedBy", "Level", "SkillId" },
                 values: new object[] { new Guid("eaee3dcb-bfbb-497c-acff-6d013ef0ffd8"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Immediate", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Allowances_CompanyContractId",
+            migrationBuilder.InsertData(
                 table: "Allowances",
-                column: "CompanyContractId");
+                columns: new[] { "Id", "Amount", "Created", "CreatedBy", "Eligibility_Criteria", "EmployeeContractId", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "Requirements", "Type" },
+                values: new object[] { new Guid("c0d544cb-a345-490d-8ba3-d1c63e497eb2"), 1200000m, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "test", new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "test", "test", 0 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Allowances_EmployeeContractId",
+                table: "Allowances",
+                column: "EmployeeContractId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

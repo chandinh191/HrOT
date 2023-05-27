@@ -17,16 +17,15 @@ public class UpdateExchangeCommandValidator : AbstractValidator<UpdateExchangeCo
         _context = context;
 
         RuleFor(v => v.Muc_quy_doi)
-            .NotNull().WithMessage("Muc_quy_doi is required.")
-            .GreaterThan(0).WithMessage("Muc_quy_doi must be greater than 0.");
+            .NotNull().WithMessage("Mức quy đổi không được để trống.")
+            .GreaterThan(0).WithMessage("Mức quy đổi phải lớn hơn 0.");
 
         RuleFor(v => v.Giam_tru)
-            .NotNull().WithMessage("Giam_tru is required.")
-            .GreaterThan(0).WithMessage("Giam_tru must be greater than 0.");
+            .NotNull().WithMessage("Giảm trừ không được để trống.");
 
         RuleFor(v => v.Thue_suat)
-            .NotNull().WithMessage("Thue_suat is required.")
-            .GreaterThan(0).WithMessage("Thue_suat must be greater than 0.");
+            .NotNull().WithMessage("Thuế suất không được để trống.")
+            .GreaterThan(0).WithMessage("Thuế suất phải lớn hơn 0.");
     }
 }
 
