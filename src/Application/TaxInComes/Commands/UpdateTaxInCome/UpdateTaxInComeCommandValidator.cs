@@ -17,11 +17,11 @@ public class UpdateTaxInComeCommandValidator : AbstractValidator<UpdateTaxInCome
         _context = context;
 
         RuleFor(v => v.Muc_chiu_thue)
-            .NotNull().WithMessage("Muc_quy_doi is required.")
-            .GreaterThan(0).WithMessage("Muc_quy_doi must be greater than 0.");
+            .NotNull().WithMessage("Mức chịu thuế không được để trống.")
+            .GreaterThan(0).WithMessage("Mức chịu thuế phải lớn hơn 0.");
 
         RuleFor(v => v.Thue_suat)
-            .NotNull().WithMessage("Thue_suat is required.")
-            .GreaterThan(0).WithMessage("Thue_suat must be greater than 0.");
+            .NotNull().WithMessage("Thuế suất không được để trống.")
+            .GreaterThan(0).WithMessage("Thuế suất phải lớn hơn 0.");
     }
 }

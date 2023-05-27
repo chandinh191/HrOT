@@ -16,6 +16,11 @@ public class PaySlipController : ApiControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(CreatePaySlipCommand command)
     {
-        return await Mediator.Send(command);
+        if (ModelState.IsValid && command != null)
+        {
+            await Mediator.Send(command);
+            return Ok("Tạo thành công");
+        }
+        return Ok("Tạo thất bại");
     }
 }
