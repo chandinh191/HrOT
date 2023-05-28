@@ -1,26 +1,26 @@
-﻿using hrOT.Application.InterviewProcesses.Commands.Create;
-using hrOT.Application.InterviewProcesses.Commands.Delete;
-using hrOT.Application.InterviewProcesses.Commands.Update;
-using hrOT.Application.InterviewProcesses.Queries;
+﻿using hrOT.Application.CompanyContracts.Commands.Create;
+using hrOT.Application.CompanyContracts.Commands.Delete;
+using hrOT.Application.CompanyContracts.Commands.Update;
+using hrOT.Application.CompanyContracts.Queries;
 using hrOT.WebUI.Controllers;
-using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Controllers.InterviewProcesses;
-public class InterviewProcessController : ApiControllerBase
+namespace WebUI.Controllers.CompanyContracts;
+public class CompanyContractController : ApiControllerBase
 {
     [HttpGet("{EmployeeId}")]
-    public async Task<ActionResult<List<InterviewProcessDto>>> GetListByEmployeeId(Guid EmployeeId)
+    public async Task<ActionResult<List<CompanyContractDto>>> GetListByEmployeeId(Guid EmployeeId)
     {
-        return await Mediator.Send(new GetListInterviewProcessByEmployeeIdQuery(EmployeeId));
+        return await Mediator.Send(new GetListCompanyContractByEmployeeIdQuery(EmployeeId));
     }
-    [HttpGet("{JobId}")]
-    public async Task<ActionResult<List<InterviewProcessDto>>> GetListByJobId(Guid JobId)
+    [HttpGet]
+    public async Task<ActionResult<List<CompanyContractDto>>> GetList()
     {
-        return await Mediator.Send(new GetListInterviewProcessByJobIdQuery(JobId));
+        return await Mediator.Send(new GetListCompanyContractQuery());
     }
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(CreateInterviewProcessCommand command)
+    public async Task<ActionResult<Guid>> Create(CreateCompanyContractCommand command)
     {
         if (ModelState.IsValid && command != null)
         {
@@ -30,7 +30,7 @@ public class InterviewProcessController : ApiControllerBase
         return Ok("Thêm thất bại");
     }
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(Guid id, UpdateInterviewProcessCommand command)
+    public async Task<ActionResult> Update(Guid id, UpdateCompanyContractCommand command)
     {
         if (id != command.Id)
         {
@@ -49,7 +49,7 @@ public class InterviewProcessController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(Guid id, DeleteInterviewProcessCommand command)
+    public async Task<ActionResult> Delete(Guid id, DeleteCompanyContractCommand command)
     {
         if (id != command.Id)
         {

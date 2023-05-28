@@ -9,6 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Skill_JD\**" />
+      <EmbeddedResource Remove="Skill_JD\**" />
+      <None Remove="Skill_JD\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
         <PackageReference Include="EPPlus" Version="6.2.4" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
@@ -22,7 +28,6 @@
 
     <ItemGroup>
       <Folder Include="Auth\Commands\" />
-      <Folder Include="Skill_JD\" />
     </ItemGroup>
 
 </Project>
