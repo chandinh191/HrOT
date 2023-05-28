@@ -8,8 +8,7 @@ using hrOT.Domain.Entities;
 using hrOT.Domain.Enums;
 using MediatR;
 
-namespace hrOT.Application.InterviewProcesses.Commands.Create;{
-}
+namespace hrOT.Application.InterviewProcesses.Commands.Create;
 public record CreateInterviewProcessCommand : IRequest<Guid>
 {
     public Guid EmployeeId { get; init; }

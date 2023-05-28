@@ -9,24 +9,16 @@ using System.Threading.Tasks;
 namespace hrOT.Domain.Entities;
 public class CompanyContract : BaseAuditableEntity
 {
-    //[ForeignKey("Company")]
-    //public Guid CompanyId { get; set; }
-
     [ForeignKey("InterviewProcess")]
     public Guid InterviewProcessId { get; set; }
-    public decimal? Price { get; set; }
-    public int? DayOff { get; set; }
-    public string? ContactCode { get; set; }
-    public DateTime? StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-    public decimal? UnitPrice { get; set; }
     public string? File { get; set; }
+    public double? Salary { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; } 
+    public CompanyContractStatus? Status { get; set; }
 
     // Relationship
-    //public virtual Company? Company { get; set; }
-
     public virtual InterviewProcess? InterviewProcess { get; set; }
     public IList<PaymentHistory>? PaymentHistories { get; set; }
 
-    //public ICollection<Allowance>? Allowances { get; set; }
 }
