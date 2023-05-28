@@ -2,6 +2,7 @@
 using hrOT.Application.Allowances.Command.Delete;
 using hrOT.Application.Allowances.Command.Update;
 using hrOT.Application.Allowances.Queries;
+using hrOT.Application.InterviewProcesses.Commands.Create;
 using hrOT.Application.InterviewProcesses.Commands.Delete;
 using hrOT.Application.InterviewProcesses.Commands.Update;
 using hrOT.Application.InterviewProcesses.Queries;
