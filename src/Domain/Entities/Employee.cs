@@ -8,8 +8,6 @@ public class Employee : BaseAuditableEntity
     [ForeignKey("ApplicationUser")]
     public string ApplicationUserId { get; set; }
 
-    public DateTime BirthDay { get; set; }
-
     // Bằng cấp
     public string Diploma { get; set; }
 
@@ -23,6 +21,8 @@ public class Employee : BaseAuditableEntity
 
     public string BankAccountName { get; set; }
 
+    public string? CVPath { get; set; }
+
     // Relationship
     public IList<Experience> Experiences { get; private set; }
 
@@ -33,6 +33,6 @@ public class Employee : BaseAuditableEntity
     public IList<InterviewProcess> InterviewProcesses { get; private set; }
     public IList<Skill_Employee> Skill_Employees { get; private set; }
 
-    public ICollection<Position> Roles { get; private set; }
+    public virtual Position Position { get; private set; }
     public virtual ApplicationUser ApplicationUser { get; set; }
 }

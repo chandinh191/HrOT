@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace hrOT.WebUI.Controllers;
 
-[Authorize]
+/*[Authorize]
 public class TodoListsController : ApiControllerBase
 {
     [HttpGet]
@@ -52,3 +52,4 @@ public class TodoListsController : ApiControllerBase
         return NoContent();
     }
 }
+*/

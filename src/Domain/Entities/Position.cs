@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using hrOT.Domain.Entities;
+
 
 namespace hrOT.Domain.Entities;
 
@@ -9,9 +9,8 @@ public class Position : BaseAuditableEntity
     [ForeignKey("Department")]
     public Guid DepartmentId { get; set; }
 
-    [ForeignKey("Role")]
+    [ForeignKey("Employee")]
     public Guid EmployeeId { get; set; }
-
     [Required]
     public string Name { get; set; }
 
@@ -19,5 +18,7 @@ public class Position : BaseAuditableEntity
     public ICollection<Level>? Levels { get; set; }
 
     public virtual Department? Department { get; set; }
+
     public virtual Employee? Employee { get; set; }
+
 }

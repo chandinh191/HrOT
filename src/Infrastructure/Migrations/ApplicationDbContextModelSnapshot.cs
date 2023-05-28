@@ -309,9 +309,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("CompanyContractId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -321,6 +318,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("Eligibility_Criteria")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EmployeeContractId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -344,9 +344,26 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyContractId");
+                    b.HasIndex("EmployeeContractId");
 
                     b.ToTable("Allowances");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
+                            Amount = 1200000m,
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            EligibilityCriteria = "test",
+                            EmployeeContractId = new Guid("42c05e21-2931-4d71-8735-1f17508621a7"),
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Name = "test",
+                            Requirements = "test",
+                            Type = 0
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Company", b =>
@@ -401,7 +418,7 @@ namespace hrOT.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CompanyId")
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContactCode")
@@ -421,6 +438,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("File")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("InterviewProcessId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -443,6 +463,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("InterviewProcessId");
 
                     b.ToTable("CompanyContracts");
                 });
@@ -501,14 +523,14 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Muc_chiu_thue")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Level")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("PaySlipId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Thue_suat")
-                        .HasColumnType("int");
+                    b.Property<double?>("Payment")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -539,17 +561,14 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BirthDay")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CVPath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("DepartmentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Diploma")
                         .IsRequired()
@@ -573,8 +592,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.HasIndex("DepartmentId");
-
                     b.ToTable("Employees");
 
                     b.HasData(
@@ -585,7 +602,6 @@ namespace hrOT.Infrastructure.Migrations
                             BankAccountName = "LUONG THE DAN",
                             BankAccountNumber = "123456789",
                             BankName = "TECHCOMBANK",
-                            BirthDay = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
                             Diploma = "TEST",
@@ -611,6 +627,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double?>("CustomSalary")
+                        .HasColumnType("float");
+
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
@@ -619,6 +638,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("File")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InsuranceType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -631,6 +653,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Number_Of_Dependents")
+                        .HasColumnType("float");
 
                     b.Property<double?>("Salary")
                         .HasColumnType("float");
@@ -657,14 +682,17 @@ namespace hrOT.Infrastructure.Migrations
                             ContractType = 1,
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "test",
+                            CustomSalary = 0.0,
                             EmployeeId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                             EndDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             File = "test",
+                            InsuranceType = 0,
                             IsDeleted = false,
                             Job = "test",
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "test",
-                            Salary = 1.0,
+                            NumberOfDependents = 0.0,
+                            Salary = 20000000.0,
                             SalaryType = 0,
                             StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 0
@@ -683,6 +711,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double?>("Giam_Tru")
+                        .HasColumnType("float");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -695,9 +726,98 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<double?>("Muc_Quy_Doi")
                         .HasColumnType("float");
 
+                    b.Property<double?>("Thue_Suat")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.ToTable("Exchanges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d9f3a521-36e4-4a5c-9a89-0c733e92e85b"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            GiamTru = 0.0,
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            MucQuyDoi = 4750000.0,
+                            ThueSuat = 0.94999999999999996
+                        },
+                        new
+                        {
+                            Id = new Guid("3a1d42d9-9ee7-4a4c-b283-6e8f9126e44a"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            GiamTru = 250000.0,
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            MucQuyDoi = 9250000.0,
+                            ThueSuat = 0.90000000000000002
+                        },
+                        new
+                        {
+                            Id = new Guid("08d5ef29-44a5-47d0-9a85-28d9d0dc30f3"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            GiamTru = 750000.0,
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            MucQuyDoi = 16050000.0,
+                            ThueSuat = 0.84999999999999998
+                        },
+                        new
+                        {
+                            Id = new Guid("9218741c-99f6-40a2-87f4-d4baf4c9e15d"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            GiamTru = 1650000.0,
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            MucQuyDoi = 27250000.0,
+                            ThueSuat = 0.80000000000000004
+                        },
+                        new
+                        {
+                            Id = new Guid("e28a08ad-2b30-4df5-bc95-684d56ad8a56"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            GiamTru = 3250000.0,
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            MucQuyDoi = 42250000.0,
+                            ThueSuat = 0.75
+                        },
+                        new
+                        {
+                            Id = new Guid("5ef5f6be-ef53-4af2-8b18-78fc6b8a295f"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            GiamTru = 5850000.0,
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            MucQuyDoi = 61850000.0,
+                            ThueSuat = 0.69999999999999996
+                        },
+                        new
+                        {
+                            Id = new Guid("7f1b1d11-3070-4b4b-96db-801d448a8920"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            GiamTru = 9850000.0,
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            MucQuyDoi = 1.7976931348623157E+308,
+                            ThueSuat = 0.65000000000000002
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Experience", b =>
@@ -1123,9 +1243,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("BankName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Base_Salary")
-                        .HasColumnType("float");
-
                     b.Property<double?>("Bonus")
                         .HasColumnType("float");
 
@@ -1140,6 +1257,9 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Property<Guid>("EmployeeContractId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("Final_Salary")
+                        .HasColumnType("float");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -1162,13 +1282,13 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<DateTime?>("Paid_date")
                         .HasColumnType("datetime2");
 
+                    b.Property<double?>("Salary")
+                        .HasColumnType("float");
+
                     b.Property<int?>("Standard_Work_Hours")
                         .HasColumnType("int");
 
                     b.Property<double?>("Tax_In_Come")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("Total_Salary")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -1268,7 +1388,8 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("Positions");
                 });
@@ -1415,6 +1536,117 @@ namespace hrOT.Infrastructure.Migrations
                     b.ToTable("Skill_JDs");
                 });
 
+            modelBuilder.Entity("hrOT.Domain.Entities.TaxInCome", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Muc_chiu_thue")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Thue_suat")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaxInComes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a279788d-0fa2-4d9e-9e8e-5d689e853972"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Mucchiuthue = 5000000.0,
+                            Thuesuat = 0.050000000000000003
+                        },
+                        new
+                        {
+                            Id = new Guid("2d6a8e64-6130-456b-9c9d-95a1bc0a11fd"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Mucchiuthue = 10000000.0,
+                            Thuesuat = 0.10000000000000001
+                        },
+                        new
+                        {
+                            Id = new Guid("e582dd24-ec47-4c64-b0a7-6f8647b488a7"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Mucchiuthue = 18000000.0,
+                            Thuesuat = 0.14999999999999999
+                        },
+                        new
+                        {
+                            Id = new Guid("c0b17a9e-ee6f-4fe0-8e6f-33d5c63640c8"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Mucchiuthue = 32000000.0,
+                            Thuesuat = 0.20000000000000001
+                        },
+                        new
+                        {
+                            Id = new Guid("f0f3e78c-67c9-4e5e-a9fc-c8d2e7c1e5f5"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Mucchiuthue = 52000000.0,
+                            Thuesuat = 0.25
+                        },
+                        new
+                        {
+                            Id = new Guid("78a65c98-2d7a-4c57-98f0-81f5a870a915"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Mucchiuthue = 80000000.0,
+                            Thuesuat = 0.29999999999999999
+                        },
+                        new
+                        {
+                            Id = new Guid("4ae0e892-5369-4ef1-9e37-5d4e0a9a3e2e"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Mucchiuthue = 1.7976931348623157E+308,
+                            Thuesuat = 0.34999999999999998
+                        });
+                });
+
             modelBuilder.Entity("hrOT.Domain.Entities.TodoItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1506,6 +1738,9 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -1576,6 +1811,7 @@ namespace hrOT.Infrastructure.Migrations
                             Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                             AccessFailedCount = 0,
                             Address = "TEST",
+                            BirthDay = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ConcurrencyStamp = "test",
                             Email = "test@gmail.com",
                             EmailConfirmed = true,
@@ -1647,24 +1883,28 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Allowance", b =>
                 {
-                    b.HasOne("hrOT.Domain.Entities.CompanyContract", "CompanyContract")
+                    b.HasOne("hrOT.Domain.Entities.EmployeeContract", "EmployeeContract")
                         .WithMany("Allowances")
-                        .HasForeignKey("CompanyContractId")
+                        .HasForeignKey("EmployeeContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CompanyContract");
+                    b.Navigation("EmployeeContract");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
                 {
-                    b.HasOne("hrOT.Domain.Entities.Company", "Company")
+                    b.HasOne("hrOT.Domain.Entities.Company", null)
                         .WithMany("CompanyContracts")
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("hrOT.Domain.Entities.InterviewProcess", "InterviewProcess")
+                        .WithMany()
+                        .HasForeignKey("InterviewProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Company");
+                    b.Navigation("InterviewProcess");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>
@@ -1685,10 +1925,6 @@ namespace hrOT.Infrastructure.Migrations
                         .HasForeignKey("hrOT.Domain.Entities.Employee", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("hrOT.Domain.Entities.Department", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("DepartmentId");
 
                     b.Navigation("ApplicationUser");
                 });
@@ -1820,8 +2056,8 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
-                        .WithMany("Roles")
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("Position")
+                        .HasForeignKey("hrOT.Domain.Entities.Position", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1913,15 +2149,11 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
                 {
-                    b.Navigation("Allowances");
-
                     b.Navigation("PaymentHistories");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
-                    b.Navigation("Employees");
-
                     b.Navigation("Roles");
                 });
 
@@ -1937,13 +2169,16 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Navigation("OvertimeLogs");
 
-                    b.Navigation("Roles");
+                    b.Navigation("Position")
+                        .IsRequired();
 
                     b.Navigation("Skill_Employees");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
                 {
+                    b.Navigation("Allowances");
+
                     b.Navigation("PaySlips");
                 });
 

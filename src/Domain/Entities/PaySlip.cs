@@ -15,7 +15,7 @@ public class PaySlip : BaseAuditableEntity
     public int? Actual_Work_Hours { get; set; }
     public int? Ot_Hours { get; set; }
     public int? Leave_Hours { get; set; }
-    public double? Base_Salary { get; set; }
+    public double? Salary { get; set; }
     public double? BHXH_Emp { get; set; }
     public double? BHYT_Emp { get; set; }
     public double? BHTN_Emp { get; set; }
@@ -25,7 +25,7 @@ public class PaySlip : BaseAuditableEntity
     public double? Tax_In_Come { get; set; }
     public double? Bonus { get; set; }
     public double? Deduction { get; set; }
-    public double? Total_Salary { get; set; }
+    public double? Final_Salary { get; set; }
     public DateTime?  Paid_date { get; set; }
     public string? Note { get; set; }
     public string? BankName { get; set; }

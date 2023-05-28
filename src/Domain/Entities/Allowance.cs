@@ -5,8 +5,8 @@ namespace hrOT.Domain.Entities;
 
 public class Allowance : BaseAuditableEntity
 {
-    [ForeignKey("CompanyContract")]
-    public Guid CompanyContractId { get; set; }
+    [ForeignKey("EmployeeContract")]
+    public Guid EmployeeContractId { get; set; }
 
     public string Name { get; set; }
     public AllowanceType Type { get; set; }
@@ -21,5 +21,6 @@ public class Allowance : BaseAuditableEntity
     public string Requirements { get; set; }
 
     // Relationship
-    public virtual CompanyContract? CompanyContract { get; set; }
+    //public virtual CompanyContract? CompanyContract { get; set; }
+    public virtual EmployeeContract? EmployeeContract { get; set; }
 }
