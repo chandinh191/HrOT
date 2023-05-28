@@ -35,7 +35,7 @@ public class UpdateInterviewProcessCommandHandler : IRequestHandler<UpdateInterv
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(TodoList), request.Id);
+            throw new NotFoundException(nameof(InterviewProcess), request.Id);
         }
 
         entity.DayTime = request.DayTime;
