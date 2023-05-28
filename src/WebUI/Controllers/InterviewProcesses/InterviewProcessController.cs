@@ -1,4 +1,4 @@
-﻿using hrOT.Application.Allowances.Command.Create;
+using hrOT.Application.Allowances.Command.Create;
 using hrOT.Application.Allowances.Command.Delete;
 using hrOT.Application.Allowances.Command.Update;
 using hrOT.Application.Allowances.Queries;
@@ -7,6 +7,7 @@ using hrOT.Application.InterviewProcesses.Commands.Delete;
 using hrOT.Application.InterviewProcesses.Commands.Update;
 using hrOT.Application.InterviewProcesses.Queries;
 using hrOT.WebUI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.InterviewProcesses;
