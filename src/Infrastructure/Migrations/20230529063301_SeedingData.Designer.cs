@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230527044227_SeedingData")]
+    [Migration("20230529063301_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -309,8 +309,8 @@ namespace hrOT.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -355,7 +355,7 @@ namespace hrOT.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
-                            Amount = 1200000m,
+                            Amount = 1200000.0,
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "test",
                             EligibilityCriteria = "test",
@@ -424,17 +424,11 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ContactCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DayOff")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -454,14 +448,14 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("Salary")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -503,6 +497,19 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "Test",
+                            Description = "Đảm nhận công việc liên quan phần mềm",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "Test",
+                            Name = "Phòng IT"
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>
@@ -574,11 +581,9 @@ namespace hrOT.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Diploma")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -590,10 +595,15 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
+
+                    b.HasIndex("PositionId");
 
                     b.ToTable("Employees");
 
@@ -611,7 +621,8 @@ namespace hrOT.Infrastructure.Migrations
                             IdentityImage = "IMGTEST",
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastModifiedBy = "Test"
+                            LastModifiedBy = "Test",
+                            PositionId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143")
                         });
                 });
 
@@ -952,18 +963,13 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DayTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DayTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FeedBack")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Info")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -983,12 +989,8 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Result")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<int>("Result")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1249,6 +1251,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<double?>("Bonus")
                         .HasColumnType("float");
 
+                    b.Property<double?>("Company_Paid")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -1292,6 +1297,9 @@ namespace hrOT.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<double?>("Tax_In_Come")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Total_Allowance")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -1371,9 +1379,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1391,10 +1396,20 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("EmployeeId")
-                        .IsUnique();
-
                     b.ToTable("Positions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "Test",
+                            DepartmentId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "Test",
+                            Name = "Nhân viên"
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Skill", b =>
@@ -1760,7 +1775,6 @@ namespace hrOT.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -1929,7 +1943,15 @@ namespace hrOT.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("hrOT.Domain.Entities.Position", "Position")
+                        .WithMany("Employees")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
@@ -2058,15 +2080,7 @@ namespace hrOT.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
-                        .WithOne("Position")
-                        .HasForeignKey("hrOT.Domain.Entities.Position", "EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Department");
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Skill_Employee", b =>
@@ -2172,9 +2186,6 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Navigation("OvertimeLogs");
 
-                    b.Navigation("Position")
-                        .IsRequired();
-
                     b.Navigation("Skill_Employees");
                 });
 
@@ -2197,6 +2208,8 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
                 {
+                    b.Navigation("Employees");
+
                     b.Navigation("Levels");
                 });
 

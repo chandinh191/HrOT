@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace hrOT.Application.Departments;
 public class DepartmentDTO
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     public string? Description { get; set; }
 }

@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.TodoLists.Commands.CreateTodoList;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace hrOT.Application.Positions.Commands.CreatePosition;
 
@@ -17,10 +16,12 @@ public class CreatePositionCommandValidator : AbstractValidator<CreatePositionCo
     public CreatePositionCommandValidator(IApplicationDbContext context)
     {
         _context = context;
-
+        RuleFor(deid => deid.DepartmentId)
+            .NotEmpty().WithMessage("Không được bỏ trống ID phòng ban.");
+    
         RuleFor(n => n.Name)
-            .NotEmpty().WithMessage("Name is required.")
-            .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
+            .NotEmpty().WithMessage("Không được bỏ trống tên vị trí.")
+            .MaximumLength(100).WithMessage("Vị trí không được vượt quá 100 ký tự.");
            
     }
 

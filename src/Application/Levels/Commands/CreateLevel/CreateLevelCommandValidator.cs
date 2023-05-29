@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using FluentValidation;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Positions.Commands.UpdatePosition;
+
 
 namespace hrOT.Application.Levels.Commands.CreateLevel;
 
@@ -18,11 +14,11 @@ public class CreateLevelCommandValidator : AbstractValidator<CreateLevelCommand>
         _context = context;
 
         RuleFor(n => n.Name)
-            .NotEmpty().WithMessage("Name is required.")
-            .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
+            .NotEmpty().WithMessage("Không được bỏ trống cấp bậc.")
+            .MaximumLength(50).WithMessage("Cấp bậc không được vượt quá 50 ký tự.");
         RuleFor(d => d.Description)
-            .NotEmpty().WithMessage("Description is required.")
-            .MaximumLength(200).WithMessage("Description must not exceed 200 characters.");
+            .NotEmpty().WithMessage("Không được bỏ trống mô tả.")
+            .MaximumLength(200).WithMessage("Mô tả khuông được vượt quá 200 ký tự.");
 
     }
 

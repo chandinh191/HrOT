@@ -16,18 +16,15 @@ using Microsoft.AspNetCore.Hosting;
 namespace hrOT.Application.Employees.Commands.Create
 {
     public record CreateEmployee : IRequest<string>
-    {
-       
-        public string IdentityImage { get; set; }
+    { 
+        public Guid PositionId { get; set; }
         public DateTime BirthDay { get; set; }
-        public string Diploma { get; set; }
         public string BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
         public string FullName { get; set; }
         public string UserName { get;  set; }
         public string Address { get;  set; }
-        public string Image { get;  set; }
         public string Email { get;  set; }
         public string PhoneNumber { get;  set; }
         public string Password { get; set; }
@@ -41,9 +38,6 @@ namespace hrOT.Application.Employees.Commands.Create
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IApplicationDbContext _context;
-
-       
-
         public CreateEmployeeCommandHandler(IApplicationDbContext context, IIdentityService identityService, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
@@ -55,14 +49,10 @@ namespace hrOT.Application.Employees.Commands.Create
 
         public async Task<string> Handle(CreateEmployee request, CancellationToken cancellationToken)
         {
-            
-               
-
             var user = new ApplicationUser
             {
                 UserName = request.UserName,
                 Address = request.Address,
-                Image = request.Image,
                 Email = request.Email,
                 Fullname = request.FullName,
                 PhoneNumber = request.PhoneNumber,
@@ -85,10 +75,9 @@ namespace hrOT.Application.Employees.Commands.Create
             var entity = new Employee
             {
                 ApplicationUserId = user.Id,
-                IdentityImage = request.IdentityImage,
+                PositionId = request.PositionId,
                 CreatedBy = "2",
                 LastModifiedBy = "1",
-                Diploma = request.Diploma,
                 Created = DateTime.UtcNow,
                 LastModified = DateTime.UtcNow,
                 BankName = request.BankName,

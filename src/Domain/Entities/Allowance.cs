@@ -10,7 +10,7 @@ public class Allowance : BaseAuditableEntity
 
     public string Name { get; set; }
     public AllowanceType Type { get; set; }
-    public decimal Amount { get; set; }
+    public double Amount { get; set; }
 
     // Tiêu chí đủ điều kiện nhận trợ cấp
     [Required]

@@ -60,7 +60,52 @@ namespace WebUI.Controllers
 
           
         }
+        [HttpPost("change-password")]
+        
+        public async Task<IActionResult> ChangePassword([FromForm] ChangePassWord model)
+        {
+            try
+            {
+                var result = await _mediator.Send(new ChangePassWord
+                {
+                    Username = model.Username,
+                    CurrentPassword = model.CurrentPassword,
+                    NewPassword = model.NewPassword
+                });
 
+                return Ok(result);
+            }
+            catch (NotFoundException ex)
+            {
+                _logger.LogError(ex, "User not found");
+                return Ok("Người dùng không tồn tại.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during password change");
+                return Ok("Lỗi khi đổi mật khẩu.");
+            }
+        }
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPassword model)
+        {
+            try
+            {
+                var result = await _mediator.Send(new ResetPassword { Email = model.Email });
+
+                return Ok(result);
+            }
+            catch (NotFoundException ex)
+            {
+                _logger.LogError(ex, "User not found");
+                return Ok("Người dùng không tồn tại.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during password reset");
+                return Ok("Lỗi khi đặt lại mật khẩu.");
+            }
+        }
         [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {

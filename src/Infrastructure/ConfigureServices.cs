@@ -101,6 +101,7 @@ public static class ConfigureServices
         .Combine(options.DefaultPolicy)
         .RequireRole("Manager", "Staff")
         .Build());
+
         });
 
 
