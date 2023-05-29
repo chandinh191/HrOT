@@ -2,13 +2,20 @@
 using hrOT.WebUI.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using hrOT.Application.PaySlips;
-using hrOT.Application.PaySlips.Queries;
-using Microsoft.AspNetCore.Authorization;
+using System.Net.Http.Headers;
+using System.Net;
+
 
 namespace WebUI.Controllers.PaySlips;
 public class PaySlipController : ApiControllerBase
 {
+
+    private readonly IMediator _mediator;
+
+    public PaySlipController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
     [HttpGet]
     [Authorize(Policy = "manager")]
     public async Task<ActionResult<double?>> GetTotalSalary(DateTime FromDate, DateTime ToDate)
@@ -32,4 +39,34 @@ public class PaySlipController : ApiControllerBase
         }
         return Ok("Tạo thất bại");
     }
+
+   /* [HttpGet]
+    public async Task<ActionResult<HttpResponseMessage>> GetPaySlipById(Guid id)
+    {
+        var query = new GetPaySlipByIdQuery { Id = id };
+        var response = await _mediator.Send(query);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return response;
+    }
+
+    [HttpGet("{id}/DownloadPdf")]
+    public async Task<IActionResult> DownloadPdf(Guid id)
+    {
+        var query = new GetPaySlipByIdQuery { Id = id };
+        var response = await Mediator.Send(query);
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return NotFound();
+        }
+
+        var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+        return File(pdfBytes, "application/pdf", "paySlip.pdf");
+    }*/
+
 }
