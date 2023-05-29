@@ -20,7 +20,7 @@ public class CompanyContractController : ApiControllerBase
         return await Mediator.Send(new GetListCompanyContractQuery());
     }
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(CreateCompanyContractCommand command)
+    public async Task<ActionResult<Guid>> Create(CreateCompanyContractCommand command, IFormFile cvFile)
     {
         if (ModelState.IsValid && command != null)
         {
@@ -30,7 +30,7 @@ public class CompanyContractController : ApiControllerBase
         return Ok("Thêm thất bại");
     }
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(Guid id, UpdateCompanyContractCommand command)
+    public async Task<ActionResult> Update(Guid id, UpdateCompanyContractCommand command, IFormFile cvFile)
     {
         if (id != command.Id)
         {

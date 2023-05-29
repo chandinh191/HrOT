@@ -4,7 +4,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Net;
-
+using Microsoft.AspNetCore.Authorization;
+using hrOT.Application.PaySlips.Queries;
+using hrOT.Application.PaySlips;
 
 namespace WebUI.Controllers.PaySlips;
 public class PaySlipController : ApiControllerBase
