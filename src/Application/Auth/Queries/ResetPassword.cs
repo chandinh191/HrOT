@@ -79,7 +79,7 @@ namespace hrOT.Application.Auth.Queries
         private async Task SendEmailAsync(string email, string subject, string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("LogOT", "hamond1108@gmail.com"));
+            message.From.Add(new MailboxAddress("LogOT", "bishamond1108@gmail.com"));
             message.To.Add(new MailboxAddress("", email));
             message.Subject = subject;
 
@@ -91,7 +91,7 @@ namespace hrOT.Application.Auth.Queries
             using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync("hamond1108@gmail.com", "mznixcvlkvssfdco");
+                await client.AuthenticateAsync("bishamond1108@gmail.com", "mznixcvlkvssfdco");
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
