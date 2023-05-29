@@ -9,10 +9,10 @@ public class Employee : BaseAuditableEntity
     public string ApplicationUserId { get; set; }
 
     // Bằng cấp
-    public string Diploma { get; set; }
+    public string? Diploma { get; set; }
 
     // Thẻ căn cước
-    public string IdentityImage { get; set; }
+    public string? IdentityImage { get; set; }
 
     // Ngân Hàng
     public string BankName { get; set; }
