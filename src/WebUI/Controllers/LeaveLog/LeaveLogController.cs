@@ -29,7 +29,7 @@ public class LeaveLogController : ApiControllerBase
         return Ok("Thêm thất bại");
     }
     [HttpPut("Staff/{id}")]
-    [Authorize(Policy = "staff")]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult> UpdateStatus(Guid id, Staff_UpdateLeaveLogCommand command)
     {
         if (id != command.Id)

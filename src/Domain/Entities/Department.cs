@@ -10,19 +10,6 @@ public class Department : BaseAuditableEntity
 
     public string? Description { get; set; }
 
-    //public List<Employee>? Employees { get; set; }
-
     // Relationship
     public ICollection<Position>? Roles { get; set; }
-
-    // Tổng nhân viên hiện có
-    //public int GetTotalEmployees()
-    //{
-    //    if (Employees == null)
-    //    {
-    //        return 0;
-    //    }
-
-    //    return Roles.Count();
-    //}
 }

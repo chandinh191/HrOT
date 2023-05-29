@@ -54,7 +54,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "manager")]
+        [Authorize(Policy = "employee")]
         public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
         {
             if (id != command.Id)
@@ -137,18 +137,18 @@ namespace WebUI.Controllers
 
                 if (employeeVm == null)
                 {
-                    return NotFound("Employee not found");
+                    return NotFound("Không tìm thấy nhân viên");
                 }
 
                 return Ok(employeeVm);
             }
             catch (NotFoundException)
             {
-                return NotFound("Employee not found");
+                return NotFound("Không tìm thấy nhân viên");
             }
         }
 
-        [HttpPost("{id}/cv")]
+        [HttpPost("{id}/uploadCv")]
         [Authorize(Policy = "employee")]
         public async Task<IActionResult> UploadCV(Guid id, IFormFile cvFile)
         {
@@ -156,7 +156,7 @@ namespace WebUI.Controllers
             {
                 if (cvFile == null || cvFile.Length == 0)
                 {
-                    return BadRequest("No file uploaded");
+                    return BadRequest("Không tìm thấy file");
                 }
 
                 var command = new Employee_EmployeeUploadCVCommand
@@ -167,12 +167,12 @@ namespace WebUI.Controllers
 
                 await _mediator.Send(command);
 
-                return Ok("CV uploaded successfully");
+                return Ok("Cập nhật CV thành công");
             }
             catch (Exception ex)
             {
                 // Handle and log the exception
-                return StatusCode(500, "An error occurred while uploading the CV");
+                return StatusCode(500, "Lỗi cập nhật CV");
             }
         }
 
@@ -190,6 +190,88 @@ namespace WebUI.Controllers
             return (result != null )
                 ? Ok(result)
                 : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
+        }
+
+        [HttpPost("{id}/uploadImage")]
+        [Authorize(Policy = "employee")]
+        public async Task<IActionResult> UploadImage(Guid id, IFormFile imageFile)
+        {
+            try
+            {
+                if (imageFile == null || imageFile.Length == 0)
+                {
+                    return BadRequest("Không tìm thấy hình ảnh");
+                }
+
+                var command = new UpLoadImage
+                {
+                    Id = id,
+                    File = imageFile
+                };
+
+                await _mediator.Send(command);
+
+                return Ok("Cập nhật ảnh đại diện thành công");
+            }
+            catch (Exception ex)
+            {
+                // Handle and log the exception
+                return StatusCode(500, "Lỗi cập nhật hình ảnh");
+            }
+        }
+        [HttpPost("{id}/uploadIdentityImage")]
+        [Authorize(Policy = "employee")]
+        public async Task<IActionResult> UploadIdentityImage(Guid id, IFormFile imageFile)
+        {
+            try
+            {
+                if (imageFile == null || imageFile.Length == 0)
+                {
+                    return BadRequest("Không tìm thấy hình ảnh");
+                }
+
+                var command = new UploadIdentityImage
+                {
+                    Id = id,
+                    File = imageFile
+                };
+
+                await _mediator.Send(command);
+
+                return Ok("Cập nhật ảnh căn cước thành công");
+            }
+            catch (Exception ex)
+            {
+                // Handle and log the exception
+                return StatusCode(500, "Lỗi cập nhật hình ảnh");
+            }
+        }
+        [HttpPost("{id}/uploadDiploma")]
+        [Authorize(Policy = "employee")]
+        public async Task<IActionResult> UploadDiploma(Guid id, IFormFile imageFile)
+        {
+            try
+            {
+                if (imageFile == null || imageFile.Length == 0)
+                {
+                    return BadRequest("Không tìm thấy hình ảnh");
+                }
+
+                var command = new UpLoadDiploma
+                {
+                    Id = id,
+                    File = imageFile
+                };
+
+                await _mediator.Send(command);
+
+                return Ok("Cập nhật ảnh bằng cấp thành công");
+            }
+            catch (Exception ex)
+            {
+                // Handle and log the exception
+                return StatusCode(500, "Lỗi cập nhật hình ảnh");
+            }
         }
     }
 }

@@ -76,16 +76,6 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
           .NotEmpty().WithMessage("Số tài khoản không được để trống.")
           .MaximumLength(20).WithMessage("Bank Account Number must not exceed 20 characters.");
 
-
-        RuleFor(e => e.IdentityImage)
-            .NotNull().WithMessage("Hình không được để trống");
-
-        RuleFor(e => e.Diploma)
-            .NotNull().WithMessage("Bằng cấp không được để trống");
-
-        RuleFor(e => e.Image)
-            .NotNull().WithMessage("Hình không được để trống");
-
         RuleFor(e => e.SelectedRole)
             .NotNull().WithMessage("Quyền không được để trống");
 

@@ -8,6 +8,8 @@ public class Employee : BaseAuditableEntity
     [ForeignKey("ApplicationUser")]
     public string ApplicationUserId { get; set; }
 
+    [ForeignKey("Position")]
+    public Guid PositionId { get; set; }
     // Bằng cấp
     public string? Diploma { get; set; }
 
@@ -33,6 +35,6 @@ public class Employee : BaseAuditableEntity
     public IList<InterviewProcess> InterviewProcesses { get; private set; }
     public IList<Skill_Employee> Skill_Employees { get; private set; }
 
-    public virtual Position Position { get; private set; }
+    public virtual Position Position { get; set; }
     public virtual ApplicationUser ApplicationUser { get; set; }
 }
