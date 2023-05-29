@@ -1,9 +1,11 @@
 ﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Employees;
 using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
 using hrOT.Application.Employees.Queries;
 using hrOT.WebUI.Controllers;
+using LogOT.Application.Employees;
 using LogOT.Application.Employees.Commands.Create;
 using LogOT.Application.Employees.Queries;
 using MediatR;
@@ -22,11 +24,13 @@ namespace WebUI.Controllers
         {
             _mediator = mediator;
         }
+
         [HttpGet]
         public async Task<ActionResult<List<EmployeeDTO>>> Get()
         {
             return await _mediator.Send(new GetAllEmployeeQuery());
         }
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
