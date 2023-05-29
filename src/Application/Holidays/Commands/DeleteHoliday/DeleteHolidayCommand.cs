@@ -4,27 +4,27 @@ using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
 using MediatR;
 
-namespace hrOT.Application.Levels.Commands.DeleteLevel;
+namespace hrOT.Application.Holidays.Commands.DeleteHoliday;
 
-public record DeleteLevelCommand(Guid Id) : IRequest;
+public record DeleteHolidayCommand(Guid Id) : IRequest;
 
-public class DeleteLevelCommandHandler : IRequestHandler<DeleteLevelCommand>
+public class DeleteHolidayCommandHandler : IRequestHandler<DeleteHolidayCommand>
 {
     private readonly IApplicationDbContext _context;
 
-    public DeleteLevelCommandHandler(IApplicationDbContext context)
+    public DeleteHolidayCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<Unit> Handle(DeleteLevelCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteHolidayCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Levels
+        var entity = await _context.Holidays
             .FindAsync(new object[] { request.Id }, cancellationToken);
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(Level), request.Id);
+            throw new NotFoundException(nameof(Holiday), request.Id);
         }
 
         entity.IsDeleted = true;
@@ -35,4 +35,5 @@ public class DeleteLevelCommandHandler : IRequestHandler<DeleteLevelCommand>
 
     }
 }
+
 
