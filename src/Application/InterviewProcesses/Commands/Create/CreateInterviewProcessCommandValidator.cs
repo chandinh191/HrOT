@@ -16,18 +16,18 @@ public class CreateInterviewProcessCommandValidator : AbstractValidator<CreateIn
     {
         _context = context;
         RuleFor(command => command.EmployeeId)
-            .NotEmpty().WithMessage("EmployeeId không được để trống.")
+            .NotEmpty().WithMessage("ID của nhân viên không được để trống.")
             .MustAsync(BeExistingEmployeeId).WithMessage("EmployeeId không tồn tại.");
 
         RuleFor(command => command.JobDescriptionId)
-            .NotEmpty().WithMessage("JobDescriptionId không được để trống.")
-            .MustAsync(BeExistingJobDescriptionId).WithMessage("JobDescriptionId không tồn tại.");
+            .NotEmpty().WithMessage("ID của mô tả công việc không được để trống.")
+            .MustAsync(BeExistingJobDescriptionId).WithMessage("ID của mô tả công việc không tồn tại.");
 
         RuleFor(command => command.DayTime)
-            .NotEmpty().WithMessage("DayTime không được để trống.");
+            .NotEmpty().WithMessage("Ngày phỏng vấn không được để trống.");
 
         RuleFor(command => command.Place)
-            .NotEmpty().WithMessage("Place không được để trống.");
+            .NotEmpty().WithMessage("Địa điểm không được để trống.");
 
         RuleFor(command => command.FeedBack)
             .NotEmpty().WithMessage("FeedBack không được để trống.");

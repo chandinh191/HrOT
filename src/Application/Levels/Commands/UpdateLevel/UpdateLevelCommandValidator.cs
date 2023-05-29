@@ -18,11 +18,11 @@ public class UpdateLevelCommandValidator : AbstractValidator<UpdateLevelCommand>
         _context = context;
 
         RuleFor(n => n.Name)
-            .NotEmpty().WithMessage("Name is required.")
-            .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
+           .NotEmpty().WithMessage("Tên không được để trống.")
+           .MaximumLength(200).WithMessage("Tên không được vượt quá 200 chữ.");
         RuleFor(d => d.Description)
-            .NotEmpty().WithMessage("Description is required.")
-            .MaximumLength(200).WithMessage("Description must not exceed 200 characters.");
+            .NotEmpty().WithMessage("Mô tả không được để trống")
+            .MaximumLength(200).WithMessage("Mô tả không được vượt quá 200 chữ");
 
     }
 

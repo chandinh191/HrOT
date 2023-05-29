@@ -81,7 +81,7 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
             .NotNull().WithMessage("Hình không được để trống");
 
         RuleFor(e => e.Diploma)
-            .NotNull().WithMessage("Hình không được để trống");
+            .NotNull().WithMessage("Bằng cấp không được để trống");
 
         RuleFor(e => e.Image)
             .NotNull().WithMessage("Hình không được để trống");

@@ -8,10 +8,10 @@ namespace hrOT.Application.LeaveLogs.Commands.Update
         public Staff_UpdateLeaveLogCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Leave log ID is required.");
+                .NotEmpty().WithMessage("ID của Leave Log không được để trống");
 
             RuleFor(x => x.Status)
-                .IsInEnum().WithMessage("Invalid leave log status.");
+                .IsInEnum().WithMessage("Trạng thái không hợp lệ.");
         }
     }
 }

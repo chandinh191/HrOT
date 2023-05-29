@@ -7,22 +7,22 @@ namespace hrOT.Application.LeaveLogs.Commands.Create
         public Employee_CreateLeaveLogCommandValidator()
         {
             RuleFor(x => x.EmployeeId)
-                .NotEmpty().WithMessage("Employee ID is required.");
+                .NotEmpty().WithMessage("ID nhân viên không được để trống.");
 
             RuleFor(x => x.LeaveHours)
-                .NotEmpty().WithMessage("Leave hours are required.")
-                .GreaterThanOrEqualTo(0).WithMessage("Leave hours must be greater than or equal to 0.");
+                .NotEmpty().WithMessage("Giờ rời đi không được để trống.")
+                .GreaterThanOrEqualTo(0).WithMessage("Giờ rời đi phải lớn hơn hoặc bằng 0.");
 
             RuleFor(x => x.StartDate)
-                .NotEmpty().WithMessage("Start date is required.");
+                .NotEmpty().WithMessage("Ngày bắt đầu không được để trống.");
 
             RuleFor(x => x.EndDate)
-                .NotEmpty().WithMessage("End date is required.")
-                .GreaterThanOrEqualTo(x => x.StartDate).WithMessage("End date must be greater than or equal to the start date.");
+                .NotEmpty().WithMessage("Ngày kết thúc không được để trống.")
+                .GreaterThanOrEqualTo(x => x.StartDate).WithMessage("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.");
 
             RuleFor(x => x.Reason)
-                .NotEmpty().WithMessage("Reason is required.")
-                .MaximumLength(200).WithMessage("Reason must not exceed 200 characters.");
+                .NotEmpty().WithMessage("Lí do không được để trống.")
+                .MaximumLength(200).WithMessage("Lí do không được vượt quá 200 chữ.");
         }
     }
 }
