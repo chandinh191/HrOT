@@ -25,7 +25,9 @@ public class PaySlip : BaseAuditableEntity
     public double? Tax_In_Come { get; set; }
     public double? Bonus { get; set; }
     public double? Deduction { get; set; }
+    public double? Total_Allowance { get; set; }
     public double? Final_Salary { get; set; }
+    public double? Company_Paid { get; set; }
     public DateTime?  Paid_date { get; set; }
     public string? Note { get; set; }
     public string? BankName { get; set; }
