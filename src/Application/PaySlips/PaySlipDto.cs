@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using hrOT.Application.Common.Mappings;
 using hrOT.Domain.Entities;
 
-namespace hrOT.Application.PaySlips.Commands;
+namespace hrOT.Application.PaySlips;
 public class PaySlipDto : IMapFrom<PaySlip>
 {
     public int? Standard_Work_Hours { get; set; }
@@ -23,6 +23,7 @@ public class PaySlipDto : IMapFrom<PaySlip>
     public double? Tax_In_Come { get; set; }
     public double? Bonus { get; set; }
     public double? Deduction { get; set; }
+    public double? Total_Allowance { get; set; }
     public double? Final_Salary { get; set; }
     public DateTime? Paid_date { get; set; }
     public IList<DetailTaxInComeDto> DetailTaxIncomes { get; set; }

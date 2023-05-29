@@ -17,18 +17,13 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
         _context = context;
 
         RuleFor(e => e.FullName)
-
             .NotEmpty().WithMessage("Tên không được để trống.").WithName("FullName")
             .MaximumLength(50).WithMessage("Tên không quá 50 ký tự.")
             .Must(BeValidFullName).WithMessage("Định dạng tên đầy đủ không hợp lệ hoặc chứa các ký tự không hợp lệ.");
 
         RuleFor(e => e.Address)
-
             .NotEmpty().WithMessage("Địa chỉ không được để trống.")
             .MaximumLength(50).WithMessage("Address must not exceed 50 characters.");
-
-
-
         RuleFor(e => e.PhoneNumber)
 
             .NotEmpty().WithMessage("Số điện thoại không được để trống.")

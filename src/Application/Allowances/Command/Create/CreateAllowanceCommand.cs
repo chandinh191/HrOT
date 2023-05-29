@@ -16,7 +16,7 @@ public record CreateAllowanceCommand : IRequest<Guid>
     public Guid EmployeeContractId { get; init; }
     public string Name { get; init; }
     public AllowanceType Type { get; init; }
-    public decimal Amount { get; init; }
+    public double Amount { get; init; }
     public string Eligibility_Criteria { get; init; }
     public string Requirements { get; init; }
 }

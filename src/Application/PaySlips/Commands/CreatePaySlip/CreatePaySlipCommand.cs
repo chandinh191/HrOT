@@ -45,6 +45,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
         double? TNCT = 0;
         double? TTNCN = 0;
         double? SalaryFinal = 0;
+        double? Company_Paid = 0;
 
         var EmployeeContract = await _context.EmployeeContracts
             .Where(x => x.EmployeeId == request.EmployeeId && x.Status == EmployeeContractStatus.Effective)
@@ -89,6 +90,10 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
                 DetailTaxInCome_Max[i] = (List_TaxInCome[i].Muc_chiu_thue - List_TaxInCome[i - 1].Muc_chiu_thue) * List_TaxInCome[i].Thue_suat;
             }
         }
+
+        var Total_Allowance = await _context.Allowances
+            .Where(x => x.EmployeeContractId == EmployeeContract.Id)
+            .SumAsync(x => x.Amount, cancellationToken);    
 
         //nếu là lương NET
         if (EmployeeContract.SalaryType == SalaryType.Net)
@@ -170,7 +175,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             }
 
             //tính lương cuối
-            Net = TNTT - TTNCN + Bonus;
+            Net = TNTT - TTNCN + Bonus + Total_Allowance;
             SalaryFinal = Net;
 
             //tính các loại bảo hiểm công ty phải trả 
@@ -189,6 +194,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             {
                 BHTN_Cmp = 884000;
             }
+            Company_Paid = SalaryFinal + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp;
         }
 
         //nếu là lương GROSS
@@ -297,7 +303,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
                 }
             }
             //tính lương cuối
-            Gross = TNTT + BHXH_Emp + BHYT_Emp + BHTN_Emp + Bonus;
+            Gross = TNTT + BHXH_Emp + BHYT_Emp + BHTN_Emp + Bonus + Total_Allowance;
             SalaryFinal = Gross;
 
             //tính các loại bảo hiểm công ty phải trả 
@@ -316,6 +322,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             {
                 BHTN_Cmp = 884000;
             }
+            Company_Paid = SalaryFinal + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp;
         }
 
         //tạo payslip
@@ -336,7 +343,9 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             Tax_In_Come = Math.Ceiling(TTNCN.Value),
             Bonus = Math.Ceiling(Bonus.Value),
             Deduction = Math.Ceiling(Deduction.Value),
+            Total_Allowance = Math.Ceiling(Total_Allowance),
             Final_Salary = Math.Ceiling(SalaryFinal.Value),
+            Company_Paid = Math.Ceiling(Company_Paid.Value),
             Paid_date = DateTime.Now,
             CreatedBy = "Admin",
             LastModified = DateTime.Now,

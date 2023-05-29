@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
+using hrOT.Application.CompanyContracts.Commands.Create;
 
-namespace hrOT.Application.CompanyContracts.Commands.Create;
-public class CreateCompanyContractCommandValidator : AbstractValidator<CreateCompanyContractCommand>
+namespace hrOT.Application.CompanyContracts.Commands.Update;
+public class UpdateCompanyContractCommandValidator : AbstractValidator<UpdateCompanyContractCommand>
 {
-    public CreateCompanyContractCommandValidator()
+    public UpdateCompanyContractCommandValidator()
     {
         RuleFor(command => command.File)
-           .NotEmpty().WithMessage("File không được để trống.");
+            .NotEmpty().WithMessage("File không được để trống.");
 
         RuleFor(command => command.Salary)
             .NotEmpty().WithMessage("Lương không được để trống.");
