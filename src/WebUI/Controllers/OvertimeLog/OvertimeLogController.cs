@@ -28,7 +28,7 @@ public class OvertimeLogController : ApiControllerBase
         return Ok("Thêm thất bại");
     }
     [HttpPut("Staff/{id}")]
-    [Authorize(Policy = "staff")]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult> UpdateStatus(Guid id, Staff_UpdateOvertimeLogCommand command)
     {
         if (id != command.Id)
