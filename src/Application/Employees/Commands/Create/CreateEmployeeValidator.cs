@@ -71,11 +71,11 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
           .MaximumLength(20).WithMessage("Bank Account Number must not exceed 20 characters.");
 
 
-        RuleFor(e => e.IdentityImage)
+        /*RuleFor(e => e.IdentityImage)
             .NotNull().WithMessage("Hình không được để trống");
 
         RuleFor(e => e.Diploma)
-            .NotNull().WithMessage("Hình không được để trống");
+            .NotNull().WithMessage("Hình không được để trống");*/
 
         /*RuleFor(e => e.Image)
             .NotNull().WithMessage("Hình không được để trống");*/
