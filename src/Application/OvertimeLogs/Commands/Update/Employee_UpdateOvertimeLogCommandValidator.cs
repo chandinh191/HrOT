@@ -7,14 +7,15 @@ namespace hrOT.Application.OvertimeLogs.Commands.Update
         public Employee_UpdateOvertimeLogCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("ID is required.");
+                .NotEmpty().WithMessage("ID nhân viên không được để trống");
 
             RuleFor(x => x.StartDate)
-                .NotEmpty().WithMessage("Start date is required.");
+                .NotEmpty().WithMessage("Ngày bắt đầu không được để trống.")
+                .LessThanOrEqualTo(x => x.EndDate).WithMessage("Ngày bắt đầu phải sớm hơn hoặc bằng ngày kết thúc.");
 
             RuleFor(x => x.EndDate)
-                .NotEmpty().WithMessage("End date is required.")
-                .GreaterThanOrEqualTo(x => x.StartDate).WithMessage("End date must be greater than or equal to the start date.");
+                .NotEmpty().WithMessage("Ngày kết thúc không được để trống.")
+                .GreaterThanOrEqualTo(x => x.StartDate).WithMessage("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.");
         }
     }
 }

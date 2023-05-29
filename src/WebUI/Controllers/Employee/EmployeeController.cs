@@ -1,4 +1,5 @@
 ﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Employees;
 using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
@@ -23,6 +24,7 @@ namespace WebUI.Controllers
         {
             _mediator = mediator;
         }
+
         [HttpGet]
         [Authorize(Policy = "manager")]
         public async Task<ActionResult<List<EmployeeDTO>>> Get()
@@ -30,6 +32,7 @@ namespace WebUI.Controllers
             return await _mediator.Send(new GetAllEmployeeQuery());
 
         }
+
         [HttpPost("create")]
         [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)

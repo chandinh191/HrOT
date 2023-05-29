@@ -16,16 +16,16 @@ public class UpdateInterviewProcessCommandValidator : AbstractValidator<UpdateIn
         _context = context;
 
         RuleFor(command => command.DayTime)
-            .NotEmpty().WithMessage("DayTime không được để trống.");
+            .NotEmpty().WithMessage("Ngày phỏng vấn không được để trống.");
 
         RuleFor(command => command.Place)
-            .NotEmpty().WithMessage("Place không được để trống.");
+            .NotEmpty().WithMessage("Địa điểm không được để trống.");
 
         RuleFor(command => command.FeedBack)
             .NotEmpty().WithMessage("FeedBack không được để trống.");
 
         RuleFor(command => command.Result)
-            .NotEmpty().WithMessage("Result không được để trống.");
+            .NotEmpty().WithMessage("Kết quả phỏng vấn không được để trống.");
     }
 }
 

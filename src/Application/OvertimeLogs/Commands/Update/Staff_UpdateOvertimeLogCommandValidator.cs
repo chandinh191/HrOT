@@ -10,7 +10,7 @@ namespace hrOT.Application.OvertimeLogs.Commands.Update
         public Staff_UpdateOvertimeLogCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Overtime log ID is required.");
+                .NotEmpty().WithMessage("ID của OT Log không được để trống");
 
             RuleFor(x => x.Status)
                 .IsInEnum().WithMessage("Invalid overtime log status.");

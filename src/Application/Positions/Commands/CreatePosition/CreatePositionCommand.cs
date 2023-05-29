@@ -12,7 +12,6 @@ namespace hrOT.Application.Positions.Commands.CreatePosition;
 public record CreatePositionCommand : IRequest<Guid>
 {
     public Guid DepartmentId { get; set; }
-    public Guid EmployeeId { get; set; }
     public string? Name { get; set; }
 }
 
@@ -29,7 +28,6 @@ public class CreatePositionCommandHandler : IRequestHandler<CreatePositionComman
     {
         var entity = new Position();
         entity.DepartmentId = request.DepartmentId;
-        //entity.EmployeeId = request.EmployeeId;
         entity.Name = request.Name;
 
         _context.Positions.Add(entity);

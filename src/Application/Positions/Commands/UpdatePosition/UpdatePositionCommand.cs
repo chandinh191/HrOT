@@ -13,9 +13,6 @@ namespace hrOT.Application.Positions.Commands.UpdatePosition;
 public record UpdatePositionCommand : IRequest
 {
     public Guid Id { get; init; }
-    public Guid DepartmentId { get; set; }
-    public Guid EmployeeId { get; set; }
-
     public string? Name { get; init; }
 
 }
@@ -38,8 +35,7 @@ public class UpdatePositionCommandHandler : IRequestHandler<UpdatePositionComman
         {
             throw new NotFoundException(nameof(Level), request.Id);
         }
-        entity.DepartmentId = request.DepartmentId;
-        //entity.EmployeeId = request.EmployeeId;
+        
         entity.Name = request.Name;
        
 
