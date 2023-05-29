@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebUI.Controllers.Positions;
 
 
-[Authorize]
+[Authorize(Policy = "manager")]
 public class PositionController : ApiControllerBase
 {
     [HttpGet]

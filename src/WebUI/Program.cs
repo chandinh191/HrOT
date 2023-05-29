@@ -1,3 +1,4 @@
+using hrOT.Application.AccessDeniedMiddleware;
 using hrOT.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,7 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-
+app.UseMiddleware<AccessDeniedMiddleware>();
 app.UseAuthentication();
 app.UseIdentityServer();
 app.UseAuthorization();

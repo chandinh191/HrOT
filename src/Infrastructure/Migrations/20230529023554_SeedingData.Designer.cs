@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230527044227_SeedingData")]
+    [Migration("20230529023554_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -309,8 +309,8 @@ namespace hrOT.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -355,7 +355,7 @@ namespace hrOT.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
-                            Amount = 1200000m,
+                            Amount = 1200000.0,
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "test",
                             EligibilityCriteria = "test",
@@ -424,17 +424,11 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ContactCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DayOff")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -454,14 +448,14 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("Salary")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -952,18 +946,13 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DayTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DayTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FeedBack")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Info")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -983,12 +972,8 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Result")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<int>("Result")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1249,6 +1234,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<double?>("Bonus")
                         .HasColumnType("float");
 
+                    b.Property<double?>("Company_Paid")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -1292,6 +1280,9 @@ namespace hrOT.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<double?>("Tax_In_Come")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Total_Allowance")
                         .HasColumnType("float");
 
                     b.HasKey("Id");

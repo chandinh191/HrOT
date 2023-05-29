@@ -5,12 +5,14 @@ using hrOT.Application.EmployeeContracts.Commands.Delete;
 using hrOT.Application.EmployeeContracts.Commands.Update;
 using hrOT.Application.EmployeeContracts.Queries;
 using hrOT.WebUI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.EmployeeContract;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Policy = "manager")]
 public class Employee_ContractController : ApiControllerBase
 {
     // Xuất danh sách hợp đồng

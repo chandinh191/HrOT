@@ -4,9 +4,10 @@ using hrOT.Application.Allowances.Command.Create;
 using hrOT.WebUI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using hrOT.Application.Allowances.Command.Delete;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers.Allowance;
+[Authorize(Policy = "manager")]
 public class AllowanceController : ApiControllerBase
 {
     [HttpGet]

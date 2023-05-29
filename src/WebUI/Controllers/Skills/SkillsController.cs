@@ -5,12 +5,14 @@ using hrOT.Application.Skills.Commands.Delete;
 using hrOT.Application.Skills.Commands.Update;
 using hrOT.Application.Skills.Queries;
 using hrOT.WebUI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.Skills;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Policy = "manager")]
 public class SkillsController : ApiControllerBase
 {
     [HttpGet("GetSkillsList")]

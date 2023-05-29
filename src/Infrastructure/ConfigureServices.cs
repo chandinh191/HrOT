@@ -85,16 +85,25 @@ public static class ConfigureServices
                 .RequireAuthenticatedUser()
                 .Build();
 
-            options.AddPolicy("admin", policy => policy
+            options.AddPolicy("Manager", policy => policy
                 .Combine(options.DefaultPolicy)
-                .RequireRole("Administrator")
+                .RequireRole("Manager")
                 .Build());
-            options.AddPolicy("member", policy => policy
+            options.AddPolicy("Staff", policy => policy
                 .Combine(options.DefaultPolicy)
-                .RequireRole("Member")
+                .RequireRole("Staff")
                 .Build());
+            options.AddPolicy("Employee", policy => policy
+               .Combine(options.DefaultPolicy)
+               .RequireRole("Employee")
+               .Build());
+            options.AddPolicy("ManagerOrStaff", policy => policy
+        .Combine(options.DefaultPolicy)
+        .RequireRole("Manager", "Staff")
+        .Build());
 
         });
+
 
         services.AddSession();
 

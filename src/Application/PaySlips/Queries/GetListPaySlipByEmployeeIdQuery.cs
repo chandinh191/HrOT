@@ -11,7 +11,7 @@ using hrOT.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace hrOT.Application.PaySlips.Commands.Queries;
+namespace hrOT.Application.PaySlips.Queries;
 public record GetListPaySlipByEmployeeIdQuery(Guid EmployeeId) : IRequest<List<PaySlipDto>>;
 public class GetListPaySlipByEmployeeIdQueryHandler : IRequestHandler<GetListPaySlipByEmployeeIdQuery, List<PaySlipDto>>
 {

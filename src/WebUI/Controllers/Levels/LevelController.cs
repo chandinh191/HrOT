@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebUI.Controllers.Levels;
 
 
-[Authorize]
+[Authorize(Policy = "manager")]
 public class LevelController : ApiControllerBase
 {
     [HttpGet]
