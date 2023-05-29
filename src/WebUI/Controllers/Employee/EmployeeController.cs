@@ -51,7 +51,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "manager")]
+        [Authorize(Policy = "employee")]
         public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
         {
             if (id != command.Id)

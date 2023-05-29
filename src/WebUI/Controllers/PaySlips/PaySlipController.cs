@@ -4,21 +4,25 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using hrOT.Application.PaySlips;
 using hrOT.Application.PaySlips.Queries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers.PaySlips;
 public class PaySlipController : ApiControllerBase
 {
     [HttpGet]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult<double?>> GetTotalSalary(DateTime FromDate, DateTime ToDate)
     {
         return await Mediator.Send(new GetTotalSalaryPayForEmployeeQuery(FromDate, ToDate));
     }
     [HttpGet("{EmployeeId}")]
+    [Authorize(Policy ="employee")]
     public async Task<ActionResult<List<PaySlipDto>>> Get(Guid EmployeeId)
     {
         return await Mediator.Send(new GetListPaySlipByEmployeeIdQuery(EmployeeId));
     }
     [HttpPost]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult<Guid>> Create(CreatePaySlipCommand command)
     {
         if (ModelState.IsValid && command != null)
