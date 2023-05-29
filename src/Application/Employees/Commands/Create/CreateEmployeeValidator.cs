@@ -82,8 +82,8 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
         RuleFor(e => e.Diploma)
             .NotNull().WithMessage("Hình không được để trống");
 
-        RuleFor(e => e.Image)
-            .NotNull().WithMessage("Hình không được để trống");
+        /*RuleFor(e => e.Image)
+            .NotNull().WithMessage("Hình không được để trống");*/
 
         RuleFor(e => e.SelectedRole)
             .NotNull().WithMessage("Quyền không được để trống");
