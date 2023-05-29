@@ -39,7 +39,7 @@ namespace hrOT.Application.Auth.Queries
             var resetPasswordResult = await _userManager.ResetPasswordAsync(user, await _userManager.GeneratePasswordResetTokenAsync(user), newPassword);
             if (!resetPasswordResult.Succeeded)
             {
-                throw new Exception("Đặt lại mật khẩu thất bại");
+                return("Đặt lại mật khẩu thất bại");
             }
 
             await SendEmailAsync(user.Email, "Đặt lại mật khẩu", $"Mật khẩu mới của bạn là: {newPassword}");

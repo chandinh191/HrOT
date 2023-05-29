@@ -27,16 +27,19 @@ public class ChangePasswordHandler : IRequestHandler<ChangePassWord, string>
 
     public async Task<string> Handle(ChangePassWord request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByNameAsync(request.Username);
-        if (user == null)
-            throw new NotFoundException(nameof(ApplicationUser), request.Username);
+        
+            var user = await _userManager.FindByNameAsync(request.Username);
+            if (user == null)
+                throw new NotFoundException(nameof(ApplicationUser), request.Username);
 
-        var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
-        if (!changePasswordResult.Succeeded)
-        {
-            throw new Exception("Lỗi không thể đổi mật khẩu");
-        }
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                return("Lỗi không thể đổi mật khẩu");
+            }
 
-        return "Đổi mật khẩu thành công";
+            return "Đổi mật khẩu thành công";
+        
+        
     }
 }
