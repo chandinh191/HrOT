@@ -6,29 +6,28 @@ using System.Threading.Tasks;
 using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
-using hrOT.Domain.Enums;
 using MediatR;
 
-namespace hrOT.Application.InterviewProcesses.Commands.Delete;
-public record DeleteInterviewProcessCommand(Guid Id) : IRequest;
+namespace hrOT.Application.CompanyContracts.Commands.Delete;
+public record DeleteCompanyContractCommand(Guid Id) : IRequest;
 
-public class DeleteInterviewProcessCommandHandler : IRequestHandler<DeleteInterviewProcessCommand>
+public class DeleteCompanyContractCommandHandler : IRequestHandler<DeleteCompanyContractCommand>
 {
     private readonly IApplicationDbContext _context;
 
-    public DeleteInterviewProcessCommandHandler(IApplicationDbContext context)
+    public DeleteCompanyContractCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<Unit> Handle(DeleteInterviewProcessCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteCompanyContractCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.InterviewProcesses
+        var entity = await _context.CompanyContracts
             .FindAsync(new object[] { request.Id }, cancellationToken);
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(InterviewProcess), request.Id);
+            throw new NotFoundException(nameof(CompanyContract), request.Id);
         }
 
         entity.IsDeleted = true;
