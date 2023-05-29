@@ -28,6 +28,7 @@ namespace WebUI.Controllers
         public async Task<ActionResult<List<EmployeeDTO>>> Get()
         {
             return await _mediator.Send(new GetAllEmployeeQuery());
+
         }
         [HttpPost("create")]
         [Authorize(Policy = "manager")]

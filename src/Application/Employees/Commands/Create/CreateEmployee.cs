@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Hosting;
 namespace hrOT.Application.Employees.Commands.Create
 {
     public record CreateEmployee : IRequest<string>
-    {
         public Guid PositionId { get; set; }
         public DateTime BirthDay { get; set; }
         public string BankAccountNumber { get; set; }
