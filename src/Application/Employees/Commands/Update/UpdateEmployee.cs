@@ -18,8 +18,7 @@ namespace hrOT.Application.Employees.Commands.Update
     public record UpdateEmployee : IRequest
     {
         public Guid Id { get; set; }
-        //public string ApplicationUserId { get; set; }
-        public string IdentityImage { get; set; }
+        public Guid PositionId { get; set; }
         public DateTime BirthDay { get; set; }
         public string BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
@@ -27,8 +26,6 @@ namespace hrOT.Application.Employees.Commands.Update
         public string Fullname { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
-        public string Image { get; set; }
-        public string Diploma { get; set; }
         public string SelectedRole { get; set; } // New property to hold the selected role
     }
 
@@ -58,17 +55,15 @@ namespace hrOT.Application.Employees.Commands.Update
                 throw new NotFoundException(nameof(Employee), request.Id);
             }
 
-            entity.IdentityImage = request.IdentityImage;
             entity.BankName = request.BankName;
             entity.BankAccountNumber = request.BankAccountNumber;
             entity.BankAccountName = request.BankAccountName;
-            entity.Diploma = request.Diploma;
+            entity.PositionId = request.PositionId;
 
             if (entity.ApplicationUser != null)
             {
                 entity.ApplicationUser.Fullname = request.Fullname;
                 entity.ApplicationUser.Address = request.Address;
-                entity.ApplicationUser.Image = request.Image;
                 entity.ApplicationUser.BirthDay = request.BirthDay;
                 entity.ApplicationUser.PhoneNumber = request.PhoneNumber;
             }

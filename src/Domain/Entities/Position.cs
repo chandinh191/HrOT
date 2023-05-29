@@ -9,8 +9,6 @@ public class Position : BaseAuditableEntity
     [ForeignKey("Department")]
     public Guid DepartmentId { get; set; }
 
-    [ForeignKey("Employee")]
-    public Guid EmployeeId { get; set; }
     [Required]
     public string Name { get; set; }
 
@@ -19,6 +17,6 @@ public class Position : BaseAuditableEntity
 
     public virtual Department? Department { get; set; }
 
-    public virtual Employee? Employee { get; set; }
+    public IList<Employee>? Employees { get; set; }
 
 }
