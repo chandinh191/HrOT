@@ -15,5 +15,6 @@ public class Position : BaseAuditableEntity
     public ICollection<Level>? Levels { get; set; }
 
     public virtual Department? Department { get; set; }
-    public IList <Employee>? Employee { get; set; }
+
+    public IList<Employee>? Employee { get; set; }
 }

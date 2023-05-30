@@ -17,7 +17,7 @@ namespace hrOT.Application.Employees.Commands.Update
 {
     public record UpdateEmployee : IRequest
     {
-        public Guid Id { get; set; }
+       
         public Guid PositionId { get; set; }
         public string? CitizenIdentificationNumber { get; set; }
         public DateTime? CreatedDateCIN { get; set; }
@@ -40,25 +40,29 @@ namespace hrOT.Application.Employees.Commands.Update
         private readonly IApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IHostingEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UpdateEmployeeHandler(IApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment)
+        public UpdateEmployeeHandler(IApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             this.userManager = userManager;
             _environment = environment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
       
 
         public async Task<Unit> Handle(UpdateEmployee request, CancellationToken cancellationToken)
         {
+            var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+            var employeeId = Guid.Parse(employeeIdCookie);
             var entity = await _context.Employees
                 .Include(e => e.ApplicationUser)
-                .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(e => e.Id == employeeId, cancellationToken);
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Employee), request.Id);
+                throw new NotFoundException(nameof(Employee), employeeId);
             }
             entity.CitizenIdentificationNumber = request.CitizenIdentificationNumber;
             entity.CreatedDateCIN = request.CreatedDateCIN;

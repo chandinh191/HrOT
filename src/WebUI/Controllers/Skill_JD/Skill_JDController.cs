@@ -1,4 +1,4 @@
-﻿/*using hrOT.Application.OvertimeLogs.Queries;
+﻿using hrOT.Application.OvertimeLogs.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using hrOT.Application.Skill_JDs.Queries;
@@ -62,4 +62,3 @@ public class Skill_JDController : ApiControllerBase
         }
     }
 }
-*/
