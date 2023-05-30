@@ -59,24 +59,37 @@ namespace hrOT.Application.Auth.Queries
                     var roles = await userManager.GetRolesAsync(user);
 
                     var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim("Id", user.Id),
-        };
-
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim("Id", user.Id),
+           
+                    };
+                   
                     response.Cookies.Append("FullName", user.Fullname);
-                    response.Cookies.Append("Image", user.Image);
 
+                    //Lấy role 
                     foreach (var role in roles)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role));
+                        response.Cookies.Append("Role", role);
                     }
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
 
                     await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    //Lấy id của Employee
+                    var employee = await _context.Employees.FirstOrDefaultAsync(e => e.ApplicationUserId == user.Id);
+
+                    if (employee != null)
+                    {
+                        var employeeId = employee.Id;
+                       
+                        response.Cookies.Append("EmployeeId", employeeId.ToString());
+                    }
+                    //Thông báo role khi đăng nhập
 
                     if (await userManager.IsInRoleAsync(user, "Manager"))
                     {

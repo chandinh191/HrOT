@@ -29,6 +29,7 @@ namespace WebUI.Controllers
         [Authorize(Policy = "manager")]
         public async Task<ActionResult<List<EmployeeDTO>>> Get()
         {
+            //var employeeIdCookie = Request.Cookies["EmployeeId"];
             return await _mediator.Send(new GetAllEmployeeQuery());
 
         }
@@ -37,6 +38,7 @@ namespace WebUI.Controllers
         [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
+
             if (ModelState.IsValid && createModel != null)
             {
                 var entityId = await _mediator.Send(createModel);
@@ -59,7 +61,7 @@ namespace WebUI.Controllers
         {
             if (id != command.Id)
             {
-                return Ok("Không tìm thấy Id");
+                return BadRequest("Không tìm thấy Id");
             }
             try
             {
@@ -97,7 +99,7 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok("Xóa thất bại");
+                return BadRequest("Xóa thất bại");
             }
         }
 
@@ -123,7 +125,7 @@ namespace WebUI.Controllers
                 return Ok("Thêm thành công");
             }
 
-            return Ok("Thêm thất bại");
+            return BadRequest("Thêm thất bại");
         }
 
         [HttpGet("GetEmployeeById")]
