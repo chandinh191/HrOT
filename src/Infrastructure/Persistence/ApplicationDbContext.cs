@@ -75,7 +75,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             {
                 Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 Fullname = "Lewis",
-                
                 Image = "TESTIMAGE",
                 UserName = "test",
                 BirthDay = DateTime.Parse("9/9/9999"),
@@ -99,8 +98,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             .HasData(
             new Department
             {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
-               
+                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),            
                 Name = "Phòng IT",
                 Description = "Đảm nhận công việc liên quan phần mềm",
                 Created = DateTime.Parse("9/9/9999"),

@@ -204,9 +204,9 @@ namespace WebUI.Controllers
                 : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
         }
 
-        /*[HttpPost("{id}/uploadImage")]
+        [HttpPost("{id}/uploadImage")]
         [Authorize(Policy = "employee")]
-        public async Task<IActionResult> UploadImage(Guid id, IFormFile imageFile)
+        public async Task<IActionResult> UploadImage(IFormFile imageFile)
         {
             try
             {
@@ -214,16 +214,19 @@ namespace WebUI.Controllers
                 {
                     return BadRequest("Không tìm thấy hình ảnh");
                 }
-
+                if (!IsImageFile(imageFile))
+                {
+                    return BadRequest("Bạn phải sử dụng file hình ảnh");
+                }
                 var command = new UpLoadImage
                 {
-                    Id = id,
                     File = imageFile
                 };
 
                 await _mediator.Send(command);
 
                 return Ok("Cập nhật ảnh đại diện thành công");
+
             }
             catch (Exception ex)
             {
@@ -231,7 +234,14 @@ namespace WebUI.Controllers
                 return BadRequest("Lỗi cập nhật hình ảnh");
             }
         }
-        [HttpPost("{id}/uploadIdentityImage")]
+        private bool IsImageFile(IFormFile file)
+        {
+            // Kiểm tra phần mở rộng của tệp tin có phải là hình ảnh không
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName);
+            return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
+        }
+        /*[HttpPost("{id}/uploadIdentityImage")]
         [Authorize(Policy = "employee")]
         public async Task<IActionResult> UploadIdentityImage(Guid id, IFormFile imageFile)
         {

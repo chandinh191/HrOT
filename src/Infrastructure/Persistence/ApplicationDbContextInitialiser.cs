@@ -56,11 +56,11 @@ public class ApplicationDbContextInitialiser
 
         // Roles
         var roles = new List<IdentityRole>
-    {
-        new IdentityRole("Manager"),
-        new IdentityRole("Staff"),
-        new IdentityRole("Employee")
-    };
+        {
+            new IdentityRole("Manager"),
+            new IdentityRole("Staff"),
+            new IdentityRole("Employee")
+        };
 
         
 
@@ -76,8 +76,7 @@ public class ApplicationDbContextInitialiser
         // Manager
         var administrator = new ApplicationUser
         {
-            UserName = "administrator@localhost",
-           
+            UserName = "administrator@localhost",          
             Fullname = "sinh",
             Email = "administrator@localhost",
             Image = "123",
@@ -123,8 +122,7 @@ public class ApplicationDbContextInitialiser
         var employee = new ApplicationUser
         {
             UserName = "employee@localhost",
-            Email = "employee@localhost",
-           
+            Email = "employee@localhost",           
             Fullname = "sinh",
             Image = "123",
             

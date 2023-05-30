@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace hrOT.Application.Employees.Commands.Update
 {
     public record UpLoadImage : IRequest
     {
-        public Guid Id { get; set; }
         public IFormFile File { get; set; }
     }
 
@@ -27,23 +27,29 @@ namespace hrOT.Application.Employees.Commands.Update
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IHostingEnvironment _environment;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public UpLoadImageHandler(IApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment, IWebHostEnvironment webHostEnvironment)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UpLoadImageHandler(IApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             this.userManager = userManager;
             _environment = environment;
             _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
+
 
         public async Task<Unit> Handle(UpLoadImage request, CancellationToken cancellationToken)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var employeeIdCookie = httpContext.Request.Cookies["EmployeeId"];
+            var employeeIdGuid = Guid.Parse(employeeIdCookie);
             var entity = await _context.Employees
                 .Include(e => e.ApplicationUser)
-                .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(e => e.Id == employeeIdGuid, cancellationToken);
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Employee), request.Id);
+                throw new NotFoundException(nameof(Employee), employeeIdGuid);
             }
 
             // Lấy đường dẫn tuyệt đối của thư mục wwwroot
