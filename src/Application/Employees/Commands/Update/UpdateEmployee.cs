@@ -18,6 +18,7 @@ namespace hrOT.Application.Employees.Commands.Update
     public record UpdateEmployee : IRequest
     {
         public Guid Id { get; set; }
+        public Guid PositionId { get; set; }
         public string? CitizenIdentificationNumber { get; set; }
         public DateTime? CreatedDateCIN { get; set; }
         public string? PlaceForCIN { get; set; }
@@ -68,7 +69,7 @@ namespace hrOT.Application.Employees.Commands.Update
             entity.BankName = request.BankName;
             entity.BankAccountNumber = request.BankAccountNumber;
             entity.BankAccountName = request.BankAccountName;
-            
+            entity.PositionId = request.PositionId;
 
             if (entity.ApplicationUser != null)
             {

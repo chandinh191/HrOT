@@ -61,6 +61,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Family> Families => Set<Family>();
     public DbSet<Degree> Degrees => Set<Degree>();
 
+
     public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -99,8 +100,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             new Department
             {
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
-                EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
-                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+               
                 Name = "Phòng IT",
                 Description = "Đảm nhận công việc liên quan phần mềm",
                 Created = DateTime.Parse("9/9/9999"),
@@ -116,7 +116,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             new Position
             {
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                
+                DepartmentId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
                 Name = "Nhân viên",
                 Created = DateTime.Parse("9/9/9999"),
                 CreatedBy = "Test",
@@ -132,7 +132,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             {
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
-               
+                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
                 //IdentityImage = "IMGTEST",
                 CitizenIdentificationNumber = "0931248141241231",
                 CreatedDateCIN = DateTime.Parse("1/1/2023"),

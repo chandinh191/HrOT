@@ -160,9 +160,9 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpPost("{id}/uploadCv")]
+        [HttpPost("uploadCv")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> UploadCV(Guid id, IFormFile cvFile)
+        public async Task<IActionResult> UploadCV( IFormFile cvFile)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace WebUI.Controllers
 
                 var command = new Employee_EmployeeUploadCVCommand
                 {
-                    Id = id,
+                   
                     CVFile = cvFile
                 };
 
