@@ -31,7 +31,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<TodoList> TodoLists => Set<TodoList>();
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-  public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
 
     public DbSet<Allowance> Allowances => Set<Allowance>();
     public DbSet<Company> Companies => Set<Company>();
@@ -57,6 +57,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<TaxInCome> TaxInComes => Set<TaxInCome>();
     public DbSet<TimeAttendanceLog> TimeAttendanceLogs => Set<TimeAttendanceLog>();
+    public DbSet<Family> Families => Set<Family>();
+    public DbSet<Degree> Degrees => Set<Degree>();
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -127,8 +129,13 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                IdentityImage = "IMGTEST",
-                Diploma = "TEST",
+                //IdentityImage = "IMGTEST",
+                CitizenIdentificationNumber = "0931248141241231",
+                CreatedDateCIN = DateTime.Parse("1/1/2023"),
+                PlaceForCIN = "TP HCM",
+                Address = "123, Lê Văn Việt, Tăng Nhơn Phú",
+                District = "Quận nine",
+                Province = "TP Hồ Chí Minh",
                 BankAccountNumber = "123456789",
                 BankAccountName = "LUONG THE DAN",
                 BankName = "TECHCOMBANK",
@@ -139,6 +146,38 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 IsDeleted = false
             }
         );
+        builder.Entity<Family>()
+            .HasData(
+            new Family
+            {
+                Id = Guid.Parse("668d6b8b-7997-40fc-9454-036158af413b"),
+                EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
+                FatherName = "Test",
+                MotherName = "Test",
+                NumberOfDependents =  3,
+                HomeTown = "Test",
+                Created = DateTime.Parse("9/9/9999"),
+                CreatedBy = "Test",
+                LastModified = DateTime.Parse("9/9/9999"),
+                LastModifiedBy = "Test",
+                IsDeleted = false
+            }
+        );
+        builder.Entity<Degree>()
+           .HasData(
+           new Degree
+           {
+               Id = Guid.Parse("d10de52b-58a1-43e8-9ab6-5651693341f8"),
+               EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
+               Name = "Test",
+               Status = DegreeStatus.Valid,
+               Created = DateTime.Parse("9/9/9999"),
+               CreatedBy = "Test",
+               LastModified = DateTime.Parse("9/9/9999"),
+               LastModifiedBy = "Test",
+               IsDeleted = false
+           }
+       );
 
         builder.Entity<Experience>()
                 .HasData(

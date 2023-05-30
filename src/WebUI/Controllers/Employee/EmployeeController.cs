@@ -184,7 +184,7 @@ namespace WebUI.Controllers
                 : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
         }
 
-        [HttpPost("{id}/uploadImage")]
+        /*[HttpPost("{id}/uploadImage")]
         [Authorize(Policy = "employee")]
         public async Task<IActionResult> UploadImage(Guid id, IFormFile imageFile)
         {
@@ -264,6 +264,6 @@ namespace WebUI.Controllers
                 // Handle and log the exception
                 return BadRequest("Lỗi cập nhật hình ảnh");
             }
-        }
+        }*/
     }
 }
