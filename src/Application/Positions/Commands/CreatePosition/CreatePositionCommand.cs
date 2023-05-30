@@ -11,7 +11,7 @@ namespace hrOT.Application.Positions.Commands.CreatePosition;
 
 public record CreatePositionCommand : IRequest<Guid>
 {
-    public Guid DepartmentId { get; set; }
+    
     public string? Name { get; set; }
 }
 
@@ -27,7 +27,7 @@ public class CreatePositionCommandHandler : IRequestHandler<CreatePositionComman
     public async Task<Guid> Handle(CreatePositionCommand request, CancellationToken cancellationToken)
     {
         var entity = new Position();
-        //entity.DepartmentId = request.DepartmentId;
+      
         entity.Name = request.Name;
 
         _context.Positions.Add(entity);

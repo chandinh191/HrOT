@@ -11,10 +11,5 @@ using hrOT.Domain.Entities;
 namespace hrOT.Application.Positions;
 public class PositionDTO: IMapFrom<Position>
 {
-   
-    public Guid DepartmentId { get; set; }
-
-    public Guid EmployeeId { get; set; }
-
     public string Name { get; set; }
 }

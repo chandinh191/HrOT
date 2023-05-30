@@ -16,8 +16,7 @@ public class CreatePositionCommandValidator : AbstractValidator<CreatePositionCo
     public CreatePositionCommandValidator(IApplicationDbContext context)
     {
         _context = context;
-        RuleFor(deid => deid.DepartmentId)
-            .NotEmpty().WithMessage("Không được bỏ trống ID phòng ban.");
+       
     
         RuleFor(n => n.Name)
             .NotEmpty().WithMessage("Không được bỏ trống tên vị trí.")
