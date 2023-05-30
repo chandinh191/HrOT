@@ -73,7 +73,7 @@ namespace hrOT.Application.Employees.Commands.Update
                 image.Save(webpImagePath);
             }
 
-            entity.IdentityImage = "/IdentityImages/" + webpImageFileName;
+            //entity.IdentityImage = "/IdentityImages/" + webpImageFileName;
 
             await _context.SaveChangesAsync(cancellationToken);
 
