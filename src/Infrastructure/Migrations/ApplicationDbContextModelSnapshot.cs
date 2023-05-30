@@ -595,7 +595,11 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+
+
                     b.Property<Guid?>("EmployeeId")
+
+
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -614,6 +618,10 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+
+                    b.HasIndex("PositionId");
+
 
                     b.ToTable("Departments");
 
@@ -734,8 +742,12 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
+
+
                     b.HasIndex("PositionId")
                         .IsUnique();
+
+
 
                     b.ToTable("Employees");
 
@@ -2225,9 +2237,11 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
+
                     b.HasOne("hrOT.Domain.Entities.Employee", null)
                         .WithMany("Departments")
                         .HasForeignKey("EmployeeId");
+
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>
@@ -2248,6 +2262,7 @@ namespace hrOT.Infrastructure.Migrations
                         .HasForeignKey("hrOT.Domain.Entities.Employee", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
 
                     b.HasOne("hrOT.Domain.Entities.Position", "Position")
                         .WithOne("Employee")
@@ -2389,6 +2404,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("CompanyContract");
                 });
 
+
             modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.Department", "Department")
@@ -2399,6 +2415,7 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Navigation("Department");
                 });
+
 
             modelBuilder.Entity("hrOT.Domain.Entities.Skill_Employee", b =>
                 {
@@ -2497,10 +2514,12 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("PaymentHistories");
                 });
 
+
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Positionss");
                 });
+
 
             modelBuilder.Entity("hrOT.Domain.Entities.Employee", b =>
                 {
@@ -2542,7 +2561,9 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
                 {
+
                     b.Navigation("Employee");
+
 
                     b.Navigation("Levels");
                 });

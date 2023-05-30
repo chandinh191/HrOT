@@ -62,7 +62,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Degree> Degrees => Set<Degree>();
 
 
-
     public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
 
     protected override void OnModelCreating(ModelBuilder builder)
