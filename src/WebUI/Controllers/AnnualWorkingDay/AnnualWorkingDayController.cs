@@ -3,6 +3,7 @@ using hrOT.Application.AnnualWorkingDays.Queries.Create;
 using hrOT.WebUI.Controllers;
 using LogOT.Application.Employees.Commands.Create;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.AnnualWorkingDay;
@@ -16,6 +17,7 @@ public class AnnualWorkingDayController : ApiControllerBase
     }
 
     [HttpPost("CreateEx")]
+    [Authorize(Policy = "Manager")]
     public async Task<IActionResult> CreateEx(IFormFile file)
     {
         if (file != null && file.Length > 0)

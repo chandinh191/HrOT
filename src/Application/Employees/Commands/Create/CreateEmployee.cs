@@ -18,6 +18,7 @@ namespace hrOT.Application.Employees.Commands.Create
     public record CreateEmployee : IRequest<string>
     {
         // Thẻ căn cước
+        public Guid PositionId { get; set; }
         public string? CitizenIdentificationNumber { get; set; }
         public DateTime? CreatedDateCIN { get; set; }
         public string? PlaceForCIN { get; set; }
@@ -80,7 +81,7 @@ namespace hrOT.Application.Employees.Commands.Create
             }
 
             var entity = new Employee
-            {
+            {   PositionId = request.PositionId,
                 ApplicationUserId = user.Id,
                 CitizenIdentificationNumber = request.CitizenIdentificationNumber,
                 CreatedDateCIN = request.CreatedDateCIN,

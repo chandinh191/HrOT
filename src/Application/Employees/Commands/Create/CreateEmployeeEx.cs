@@ -88,6 +88,7 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
 
                             var employee = new Employee
                             {
+                                PositionId= Guid.Parse(worksheet.Cells[row, 18].Value?.ToString()),
                                 Province = worksheet.Cells[row, 16].Value?.ToString(),
                                 District = worksheet.Cells[row, 17].Value?.ToString(),
                                 CitizenIdentificationNumber = worksheet.Cells[row, 15].Value?.ToString(),

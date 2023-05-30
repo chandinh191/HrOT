@@ -35,7 +35,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost("create")]
-        [Authorize(Policy = "manager")]
+        //[Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
 
@@ -50,17 +50,14 @@ namespace WebUI.Controllers
 
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
+        public async Task<IActionResult> Edit( [FromForm] UpdateEmployee command)
         {
-            if (id != command.Id)
-            {
-                return BadRequest("Không tìm thấy Id");
-            }
+           
             try
             {
-                //command.Image = image;
+                
 
                 await _mediator.Send(command);
                 return Ok("Cập nhật thành công");
@@ -135,11 +132,11 @@ namespace WebUI.Controllers
 
         [HttpGet("GetEmployeeById")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> GetEmployee(Guid id)
+        public async Task<IActionResult> GetEmployee()
         {
             try
             {
-                var query = new Employee_GetEmployeeQuery { Id = id };
+                var query = new Employee_GetEmployeeQuery {  };
                 var employeeVm = await _mediator.Send(query);
 
                 if (employeeVm == null)
@@ -155,9 +152,9 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpPost("{id}/uploadCv")]
+        [HttpPost("uploadCv")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> UploadCV(Guid id, IFormFile cvFile)
+        public async Task<IActionResult> UploadCV( IFormFile cvFile)
         {
             try
             {
@@ -168,7 +165,7 @@ namespace WebUI.Controllers
 
                 var command = new Employee_EmployeeUploadCVCommand
                 {
-                    Id = id,
+                   
                     CVFile = cvFile
                 };
 
@@ -183,7 +180,7 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpGet("GetEmployeeByMatchingJobSkill")]
+        /*[HttpGet("GetEmployeeByMatchingJobSkill")]
         [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> GetEmployeeByMatchingJobSkill(string SkillName)
         {
@@ -197,11 +194,11 @@ namespace WebUI.Controllers
             return (result != null )
                 ? Ok(result)
                 : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
-        }
+        }*/
 
-        /*[HttpPost("{id}/uploadImage")]
-        [Authorize(Policy = "employee")]
-        public async Task<IActionResult> UploadImage(Guid id, IFormFile imageFile)
+        [HttpPost("uploadImage")]
+        [Authorize(Policy = "ManagerOrStaff")]
+        public async Task<IActionResult> UploadImage(IFormFile imageFile)
         {
             try
             {
@@ -209,16 +206,19 @@ namespace WebUI.Controllers
                 {
                     return BadRequest("Không tìm thấy hình ảnh");
                 }
-
+                if (!IsImageFile(imageFile))
+                {
+                    return BadRequest("Bạn phải sử dụng file hình ảnh");
+                }
                 var command = new UpLoadImage
                 {
-                    Id = id,
                     File = imageFile
                 };
 
                 await _mediator.Send(command);
 
                 return Ok("Cập nhật ảnh đại diện thành công");
+
             }
             catch (Exception ex)
             {
@@ -226,7 +226,14 @@ namespace WebUI.Controllers
                 return BadRequest("Lỗi cập nhật hình ảnh");
             }
         }
-        [HttpPost("{id}/uploadIdentityImage")]
+        private bool IsImageFile(IFormFile file)
+        {
+            // Kiểm tra phần mở rộng của tệp tin có phải là hình ảnh không
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName);
+            return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
+        }
+        /*[HttpPost("{id}/uploadIdentityImage")]
         [Authorize(Policy = "employee")]
         public async Task<IActionResult> UploadIdentityImage(Guid id, IFormFile imageFile)
         {

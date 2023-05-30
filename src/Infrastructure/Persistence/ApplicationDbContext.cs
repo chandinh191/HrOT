@@ -1,15 +1,17 @@
 using System.Reflection;
+using Duende.IdentityServer.EntityFramework.Options;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
-//using hrOT.Infrastructure.Identity;
-using hrOT.Infrastructure.Persistence.Interceptors;
-using Duende.IdentityServer.EntityFramework.Options;
-using MediatR;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using hrOT.Domain.Enums;
 using hrOT.Domain.IdentityModel;
+
+//using hrOT.Infrastructure.Identity;
+using hrOT.Infrastructure.Persistence.Interceptors;
+using MediatR;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace hrOT.Infrastructure.Persistence;
 
@@ -22,7 +24,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         DbContextOptions<ApplicationDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         IMediator mediator,
-        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) 
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options, operationalStoreOptions)
     {
         _mediator = mediator;
@@ -59,35 +61,33 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<TimeAttendanceLog> TimeAttendanceLogs => Set<TimeAttendanceLog>();
     public DbSet<Family> Families => Set<Family>();
     public DbSet<Degree> Degrees => Set<Degree>();
+
     public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        //Seeding database
         builder.Entity<ApplicationUser>()
             .HasData(
             new ApplicationUser
             {
                 Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 Fullname = "Lewis",
-                
                 Image = "TESTIMAGE",
-                UserName = "test",
+                UserName = "admin",
                 BirthDay = DateTime.Parse("9/9/9999"),
                 NormalizedUserName = "test",
                 Email = "test@gmail.com",
                 NormalizedEmail = "test@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = "098f6bcd4621d373cade4e832627b4f6",
-                SecurityStamp = "test",
-                ConcurrencyStamp = "test",
+                PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
+                SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
+                ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
                 PhoneNumber = "123456789",
                 PhoneNumberConfirmed = true,
                 TwoFactorEnabled = false,
                 LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
-                LockoutEnabled = false,
+                LockoutEnabled = true,
                 AccessFailedCount = 0
             }
         );
@@ -96,9 +96,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             .HasData(
             new Department
             {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
-                EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
-                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),            
                 Name = "Phòng IT",
                 Description = "Đảm nhận công việc liên quan phần mềm",
                 Created = DateTime.Parse("9/9/9999"),
@@ -114,7 +112,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             new Position
             {
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                
+                DepartmentId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
                 Name = "Nhân viên",
                 Created = DateTime.Parse("9/9/9999"),
                 CreatedBy = "Test",
@@ -130,8 +128,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             {
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
-               
-                //IdentityImage = "IMGTEST",
+                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
                 CitizenIdentificationNumber = "0931248141241231",
                 CreatedDateCIN = DateTime.Parse("1/1/2023"),
                 PlaceForCIN = "TP HCM",
@@ -156,7 +153,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 FatherName = "Test",
                 MotherName = "Test",
-                NumberOfDependents =  3,
+                NumberOfDependents = 3,
                 HomeTown = "Test",
                 Created = DateTime.Parse("9/9/9999"),
                 CreatedBy = "Test",
@@ -232,8 +229,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
            {
                Id = Guid.Parse("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
                EmployeeContractId = Guid.Parse("42c05e21-2931-4d71-8735-1f17508621a7"),
-               Name= "test",
-               Type= AllowanceType.Meal_Allowance,
+               Name = "test",
+               Type = AllowanceType.Meal_Allowance,
                Amount = 1200000,
                Eligibility_Criteria = "test",
                Requirements = "test",
@@ -399,7 +396,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                CreatedBy = "test",
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
-           }); 
+           });
 
         builder.Entity<TaxInCome>()
        .HasData(

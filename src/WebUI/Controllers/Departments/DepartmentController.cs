@@ -24,7 +24,7 @@ public class DepartmentController : ApiControllerBase
     {
         var result = await Mediator.Send(new GetListEmployeeInDepartmentQuery(DepartmentId));
         return result > 0
-            ? Ok($"Có tổng cộng {result} nhân viên trong phòng ban ID: {DepartmentId}")
+            ? Ok(result)
             : BadRequest($"Không tồn tại nhân viên nào trong phòng ban ID: {DepartmentId}");
     }
 

@@ -52,7 +52,6 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDay = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -170,23 +169,6 @@ namespace hrOT.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Positions",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Positions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -350,35 +332,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Diploma = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdentityImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankAccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CVPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Holidays",
                 columns: table => new
                 {
@@ -433,31 +386,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Levels",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Levels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Levels_Positions_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Positions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TodoItems",
                 columns: table => new
                 {
@@ -486,14 +414,144 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Skill_JDs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SkillId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    JobDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skill_JDs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Skill_JDs_JobDescriptions_JobDescriptionId",
+                        column: x => x.JobDescriptionId,
+                        principalTable: "JobDescriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Skill_JDs_Skills_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Allowances",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    EligibilityCriteria = table.Column<string>(name: "Eligibility_Criteria", type: "nvarchar(max)", nullable: false),
+                    Requirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Allowances", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyContracts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InterviewProcessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    File = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Salary = table.Column<double>(type: "float", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyContracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompanyContracts_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentHistories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalDeduction = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TotalBonus = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    AcceptanceCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentHistories_CompanyContracts_CompanyContractId",
+                        column: x => x.CompanyContractId,
+                        principalTable: "CompanyContracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Degrees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Degrees", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -503,15 +561,92 @@ namespace hrOT.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Departments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Positions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Positions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Departments_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
+                        name: "FK_Positions_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CitizenIdentificationNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDateCIN = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PlaceForCIN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankAccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CVPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Departments_Positions_PositionId",
+                        name: "FK_Employees_Positions_PositionId",
                         column: x => x.PositionId,
+                        principalTable: "Positions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Levels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Levels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Levels_Positions_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Positions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -577,6 +712,67 @@ namespace hrOT.Infrastructure.Migrations
                         name: "FK_Experiences_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Families",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FatherName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MotherName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumberOfDependents = table.Column<int>(type: "int", nullable: true),
+                    HomeTown = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Families", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Families_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InterviewProcesses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    JobDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DayTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FeedBack = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Result = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InterviewProcesses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InterviewProcesses_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InterviewProcesses_JobDescriptions_JobDescriptionId",
+                        column: x => x.JobDescriptionId,
+                        principalTable: "JobDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -694,99 +890,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InterviewProcesses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    JobDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DayTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FeedBack = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Result = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InterviewProcesses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InterviewProcesses_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InterviewProcesses_JobDescriptions_JobDescriptionId",
-                        column: x => x.JobDescriptionId,
-                        principalTable: "JobDescriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Skill_JDs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SkillId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    JobDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skill_JDs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Skill_JDs_JobDescriptions_JobDescriptionId",
-                        column: x => x.JobDescriptionId,
-                        principalTable: "JobDescriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Skill_JDs_Skills_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "Skills",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Allowances",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmployeeContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<double>(type: "float", nullable: false),
-                    EligibilityCriteria = table.Column<string>(name: "Eligibility_Criteria", type: "nvarchar(max)", nullable: false),
-                    Requirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Allowances", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Allowances_EmployeeContracts_EmployeeContractId",
-                        column: x => x.EmployeeContractId,
-                        principalTable: "EmployeeContracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PaySlips",
                 columns: table => new
                 {
@@ -832,40 +935,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompanyContracts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InterviewProcessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    File = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Salary = table.Column<double>(type: "float", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: true),
-                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyContracts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CompanyContracts_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CompanyContracts_InterviewProcesses_InterviewProcessId",
-                        column: x => x.InterviewProcessId,
-                        principalTable: "InterviewProcesses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DetailTaxIncomes",
                 columns: table => new
                 {
@@ -890,41 +959,10 @@ namespace hrOT.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PaymentHistories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalDeduction = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TotalBonus = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    AcceptanceCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentHistories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentHistories_CompanyContracts_CompanyContractId",
-                        column: x => x.CompanyContractId,
-                        principalTable: "CompanyContracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "BirthDay", "ConcurrencyStamp", "Email", "EmailConfirmed", "Fullname", "Image", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "fe30e976-2640-4d35-8334-88e7c3b1eac1", 0, "TEST", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "test@gmail.com", true, "Lewis", "TESTIMAGE", false, new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)), "test@gmail.com", "test", "098f6bcd4621d373cade4e832627b4f6", "123456789", true, "test", false, "test" });
+                columns: new[] { "Id", "AccessFailedCount", "BirthDay", "ConcurrencyStamp", "Email", "EmailConfirmed", "Fullname", "Image", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "fe30e976-2640-4d35-8334-88e7c3b1eac1", 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "40495f9c-e853-41e8-8c5b-6b3c93d3791b", "test@gmail.com", true, "Lewis", "TESTIMAGE", true, new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)), "test@gmail.com", "test", "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==", "123456789", true, "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Companies",
@@ -934,6 +972,11 @@ namespace hrOT.Infrastructure.Migrations
                     { new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"), "congtyb@gmail.com", "Quận 10, Tp HCM", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "HRcongtyB@gmail.com", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "CÔNG TY B", "0123456789" },
                     { new Guid("6b36c601-4a2b-47a2-b607-3597f3049f75"), "congtya@gmail.com", "Quận 9, Tp HCM", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "HRcongtyA@gmail.com", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "CÔNG TY A", "0987654321" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Departments",
+                columns: new[] { "Id", "Created", "CreatedBy", "Description", "EmployeeId", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
+                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Đảm nhận công việc liên quan phần mềm", null, false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Phòng IT" });
 
             migrationBuilder.InsertData(
                 table: "Exchanges",
@@ -948,11 +991,6 @@ namespace hrOT.Infrastructure.Migrations
                     { new Guid("d9f3a521-36e4-4a5c-9a89-0c733e92e85b"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 4750000.0, 0.94999999999999996 },
                     { new Guid("e28a08ad-2b30-4df5-bc95-684d56ad8a56"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 3250000.0, false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 42250000.0, 0.75 }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Positions",
-                columns: new[] { "Id", "Created", "CreatedBy", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
-                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Nhân viên" });
 
             migrationBuilder.InsertData(
                 table: "Skills",
@@ -974,11 +1012,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Employees",
-                columns: new[] { "Id", "ApplicationUserId", "BankAccountName", "BankAccountNumber", "BankName", "CVPath", "Created", "CreatedBy", "Diploma", "IdentityImage", "IsDeleted", "LastModified", "LastModifiedBy" },
-                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "fe30e976-2640-4d35-8334-88e7c3b1eac1", "LUONG THE DAN", "123456789", "TECHCOMBANK", null, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "TEST", "IMGTEST", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test" });
-
-            migrationBuilder.InsertData(
                 table: "JobDescriptions",
                 columns: new[] { "Id", "CompanyId", "Created", "CreatedBy", "Description", "EndDate", "IsDeleted", "LastModified", "LastModifiedBy", "StartDate", "Status", "Title" },
                 values: new object[,]
@@ -988,9 +1021,28 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Departments",
-                columns: new[] { "Id", "Created", "CreatedBy", "Description", "EmployeeId", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "PositionId" },
-                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Đảm nhận công việc liên quan phần mềm", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Phòng IT", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143") });
+                table: "Positions",
+                columns: new[] { "Id", "Created", "CreatedBy", "DepartmentId", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
+                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Nhân viên" });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "Id", "Address", "ApplicationUserId", "BankAccountName", "BankAccountNumber", "BankName", "CVPath", "CitizenIdentificationNumber", "Created", "CreatedBy", "CreatedDateCIN", "District", "IsDeleted", "LastModified", "LastModifiedBy", "PlaceForCIN", "PositionId", "Province" },
+                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "123, Lê Văn Việt, Tăng Nhơn Phú", "fe30e976-2640-4d35-8334-88e7c3b1eac1", "LUONG THE DAN", "123456789", "TECHCOMBANK", null, "0931248141241231", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Quận nine", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "TP HCM", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"), "TP Hồ Chí Minh" });
+
+            migrationBuilder.InsertData(
+                table: "Skill_JDs",
+                columns: new[] { "Id", "Created", "CreatedBy", "IsDeleted", "JobDescriptionId", "LastModified", "LastModifiedBy", "Level", "SkillId" },
+                values: new object[,]
+                {
+                    { new Guid("318d7891-7119-4543-ab13-e4e61333ea08"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", false, new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Đỉnh kao", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") },
+                    { new Guid("bb499b5d-69f1-4a9e-958a-f1c3bebd7350"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", false, new Guid("06a99eff-b374-4a5e-a3fc-58e8defecfe6"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Tạm", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Degrees",
+                columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "Status" },
+                values: new object[] { new Guid("d10de52b-58a1-43e8-9ab6-5651693341f8"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Test", 1 });
 
             migrationBuilder.InsertData(
                 table: "EmployeeContracts",
@@ -1001,6 +1053,11 @@ namespace hrOT.Infrastructure.Migrations
                 table: "Experiences",
                 columns: new[] { "Id", "Created", "CreatedBy", "Description", "EmployeeId", "EndDate", "IsDeleted", "LastModified", "LastModifiedBy", "NameProject", "StartDate", "Status", "TeamSize", "TechStack" },
                 values: new object[] { new Guid("850df2d9-f8dc-444a-b1dc-ca773c0a2d0d"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Normal", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "TestProject", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4, "MSSQL, .NET 7, MVC" });
+
+            migrationBuilder.InsertData(
+                table: "Families",
+                columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "FatherName", "HomeTown", "IsDeleted", "LastModified", "LastModifiedBy", "MotherName", "NumberOfDependents" },
+                values: new object[] { new Guid("668d6b8b-7997-40fc-9454-036158af413b"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "Test", "Test", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Test", 3 });
 
             migrationBuilder.InsertData(
                 table: "LeaveLogs",
@@ -1016,15 +1073,6 @@ namespace hrOT.Infrastructure.Migrations
                 table: "Skill_Employees",
                 columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "IsDeleted", "LastModified", "LastModifiedBy", "Level", "SkillId" },
                 values: new object[] { new Guid("eaee3dcb-bfbb-497c-acff-6d013ef0ffd8"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Immediate", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") });
-
-            migrationBuilder.InsertData(
-                table: "Skill_JDs",
-                columns: new[] { "Id", "Created", "CreatedBy", "IsDeleted", "JobDescriptionId", "LastModified", "LastModifiedBy", "Level", "SkillId" },
-                values: new object[,]
-                {
-                    { new Guid("318d7891-7119-4543-ab13-e4e61333ea08"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", false, new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Đỉnh kao", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") },
-                    { new Guid("bb499b5d-69f1-4a9e-958a-f1c3bebd7350"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", false, new Guid("06a99eff-b374-4a5e-a3fc-58e8defecfe6"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Tạm", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") }
-                });
 
             migrationBuilder.InsertData(
                 table: "Allowances",
@@ -1086,14 +1134,14 @@ namespace hrOT.Infrastructure.Migrations
                 column: "InterviewProcessId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departments_EmployeeId",
-                table: "Departments",
+                name: "IX_Degrees_EmployeeId",
+                table: "Degrees",
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departments_PositionId",
+                name: "IX_Departments_EmployeeId",
                 table: "Departments",
-                column: "PositionId");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DetailTaxIncomes_PaySlipId",
@@ -1123,8 +1171,18 @@ namespace hrOT.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employees_PositionId",
+                table: "Employees",
+                column: "PositionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Experiences_EmployeeId",
                 table: "Experiences",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Families_EmployeeId",
+                table: "Families",
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
@@ -1198,6 +1256,11 @@ namespace hrOT.Infrastructure.Migrations
                 columns: new[] { "SubjectId", "SessionId", "Type" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Positions_DepartmentId",
+                table: "Positions",
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Skill_Employees_EmployeeId",
                 table: "Skill_Employees",
                 column: "EmployeeId");
@@ -1226,11 +1289,50 @@ namespace hrOT.Infrastructure.Migrations
                 name: "IX_TodoItems_ListId",
                 table: "TodoItems",
                 column: "ListId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Allowances_EmployeeContracts_EmployeeContractId",
+                table: "Allowances",
+                column: "EmployeeContractId",
+                principalTable: "EmployeeContracts",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CompanyContracts_InterviewProcesses_InterviewProcessId",
+                table: "CompanyContracts",
+                column: "InterviewProcessId",
+                principalTable: "InterviewProcesses",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Degrees_Employees_EmployeeId",
+                table: "Degrees",
+                column: "EmployeeId",
+                principalTable: "Employees",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Departments_Employees_EmployeeId",
+                table: "Departments",
+                column: "EmployeeId",
+                principalTable: "Employees",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_AspNetUsers_ApplicationUserId",
+                table: "Employees");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Departments_Employees_EmployeeId",
+                table: "Departments");
+
             migrationBuilder.DropTable(
                 name: "Allowances");
 
@@ -1253,7 +1355,7 @@ namespace hrOT.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Departments");
+                name: "Degrees");
 
             migrationBuilder.DropTable(
                 name: "DetailTaxIncomes");
@@ -1266,6 +1368,9 @@ namespace hrOT.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Experiences");
+
+            migrationBuilder.DropTable(
+                name: "Families");
 
             migrationBuilder.DropTable(
                 name: "Holidays");
@@ -1310,9 +1415,6 @@ namespace hrOT.Infrastructure.Migrations
                 name: "PaySlips");
 
             migrationBuilder.DropTable(
-                name: "Positions");
-
-            migrationBuilder.DropTable(
                 name: "CompanyContracts");
 
             migrationBuilder.DropTable(
@@ -1328,16 +1430,22 @@ namespace hrOT.Infrastructure.Migrations
                 name: "InterviewProcesses");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "JobDescriptions");
 
             migrationBuilder.DropTable(
-                name: "JobDescriptions");
+                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Companies");
+                name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Positions");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
         }
     }
 }

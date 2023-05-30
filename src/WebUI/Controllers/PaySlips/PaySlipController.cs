@@ -25,7 +25,7 @@ public class PaySlipController : ApiControllerBase
         return await Mediator.Send(new GetTotalSalaryPayForEmployeeQuery(FromDate, ToDate));
     }
     [HttpGet("{EmployeeId}")]
-    [Authorize(Policy ="employee")]
+    [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult<List<PaySlipDto>>> Get(Guid EmployeeId)
     {
         return await Mediator.Send(new GetListPaySlipByEmployeeIdQuery(EmployeeId));

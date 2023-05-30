@@ -6,9 +6,11 @@ using hrOT.Application.TaxInComes.Queries;
 using hrOT.Domain.Entities;
 using hrOT.WebUI.Controllers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.TaxInComes;
+[Authorize(Policy = "Manager")]
 public class TaxInComeController : ApiControllerBase
 {
     [HttpGet]
