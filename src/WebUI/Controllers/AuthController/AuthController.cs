@@ -28,17 +28,17 @@ namespace WebUI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromForm] LoginWithPassword model)
         {
-            
-                var user = await _mediator.Send(new Login { Username = model.Username, Password = model.Password });
 
-                // Xử lý thành công, thực hiện các hành động khác
+            if (User.Identity.IsAuthenticated)
+            {
+                
+                return BadRequest("Bạn đã đăng nhập.");
+            }
 
+            var user = await _mediator.Send(new Login { Username = model.Username, Password = model.Password });
 
-                return Ok(user);
+            return Ok(user);
 
-                                            
-
-          
         }
         [HttpPost("change-password")]
         
@@ -58,7 +58,7 @@ namespace WebUI.Controllers
             catch (NotFoundException ex)
             {
                 _logger.LogError(ex, "User not found");
-                return Ok("Người dùng không tồn tại.");
+                return BadRequest("Người dùng không tồn tại.");
             }
             
         }
@@ -74,7 +74,7 @@ namespace WebUI.Controllers
             catch (NotFoundException ex)
             {
                 _logger.LogError(ex, "User not found");
-                return Ok("Người dùng không tồn tại.");
+                return BadRequest("Người dùng không tồn tại.");
             }
             
         }
@@ -86,5 +86,14 @@ namespace WebUI.Controllers
             return Ok("Đăng xuát thành công"); // Chuyển hướng người dùng đến trang đăng nhập
             
         }
+        private async Task<Employee> FindUserByUsername(Guid Id)
+        {
+            // Thực hiện logic để tìm người dùng dựa trên username
+            // Ví dụ:
+            var employee = await _mediator.Send(new FindUserByUsernameQuery { Id = Id });
+
+            return employee;
+        }
+
     }
 }
