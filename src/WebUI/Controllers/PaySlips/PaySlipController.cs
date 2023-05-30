@@ -39,7 +39,7 @@ public class PaySlipController : ApiControllerBase
             await Mediator.Send(command);
             return Ok("Tạo thành công");
         }
-        return Ok("Tạo thất bại");
+        return BadRequest("Tạo thất bại");
     }
 
    /* [HttpGet]

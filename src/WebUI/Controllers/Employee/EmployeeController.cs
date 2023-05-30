@@ -46,12 +46,7 @@ namespace WebUI.Controllers
                 return Ok("Thêm thành công");
             }
 
-            var errorMessages = ModelState.Values
-         .SelectMany(v => v.Errors)
-         .Select(e => e.ErrorMessage)
-         .ToList();
-
-            return BadRequest(errorMessages);
+            return BadRequest("Thêm thất bại");
 
         }
 
@@ -72,12 +67,7 @@ namespace WebUI.Controllers
             }
             catch (Exception ex)
             {
-                var errorMessages = ModelState.Values
-       .SelectMany(v => v.Errors)
-       .Select(e => e.ErrorMessage)
-       .ToList();
-
-                return BadRequest(errorMessages);
+                return BadRequest("Cập nhật thất bại");
             }
         }
 
@@ -139,14 +129,14 @@ namespace WebUI.Controllers
 
                 if (employeeVm == null)
                 {
-                    return NotFound("Không tìm thấy nhân viên");
+                    return BadRequest("Không tìm thấy nhân viên");
                 }
 
                 return Ok(employeeVm);
             }
             catch (NotFoundException)
             {
-                return NotFound("Không tìm thấy nhân viên");
+                return BadRequest("Không tìm thấy nhân viên");
             }
         }
 
@@ -174,7 +164,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 // Handle and log the exception
-                return StatusCode(500, "Lỗi cập nhật CV");
+                return BadRequest("Lỗi cập nhật CV");
             }
         }
 
@@ -218,7 +208,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 // Handle and log the exception
-                return StatusCode(500, "Lỗi cập nhật hình ảnh");
+                return BadRequest("Lỗi cập nhật hình ảnh");
             }
         }
         [HttpPost("{id}/uploadIdentityImage")]
@@ -245,7 +235,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 // Handle and log the exception
-                return StatusCode(500, "Lỗi cập nhật hình ảnh");
+                return BadRequest("Lỗi cập nhật hình ảnh");
             }
         }
         [HttpPost("{id}/uploadDiploma")]
@@ -272,7 +262,7 @@ namespace WebUI.Controllers
             catch (Exception ex)
             {
                 // Handle and log the exception
-                return StatusCode(500, "Lỗi cập nhật hình ảnh");
+                return BadRequest("Lỗi cập nhật hình ảnh");
             }
         }
     }
