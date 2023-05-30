@@ -31,7 +31,7 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
         int? Standard_Work_Hours = 240;
         int? Actual_Work_Hours;
         double? Ot_Hours = 0;
-        int? Leave_Hours = 0;
+        double? Leave_Hours = 0;
         double? Bonus = 0;
         double? Deduction = 0;
         double? Exchange_Salary = 0;
@@ -330,9 +330,9 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
         {
             EmployeeContractId = EmployeeContract.Id,
             Standard_Work_Hours = Standard_Work_Hours,
-            Actual_Work_Hours = Standard_Work_Hours - Leave_Hours,
+            Actual_Work_Hours = (int)(Standard_Work_Hours - Leave_Hours),
             Ot_Hours = (int)Ot_Hours,
-            Leave_Hours = Leave_Hours,
+            Leave_Hours = (int)Leave_Hours,
             Salary = Math.Ceiling(EmployeeContract.Salary.Value),
             BHXH_Emp = Math.Ceiling(BHXH_Emp.Value),
             BHYT_Emp = Math.Ceiling(BHYT_Emp.Value),

@@ -16,6 +16,9 @@ namespace hrOT.Application.OvertimeLogs.Commands.Update
             RuleFor(x => x.EndDate)
                 .NotEmpty().WithMessage("Ngày kết thúc không được để trống.")
                 .GreaterThanOrEqualTo(x => x.StartDate).WithMessage("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.");
+            RuleFor(x => x.TotalHours)
+                .NotEmpty().WithMessage("Ngày kết thúc không được để trống.")
+                .GreaterThan(0).WithMessage("Tổng giờ phải lớn hơn 0.");
         }
     }
 }

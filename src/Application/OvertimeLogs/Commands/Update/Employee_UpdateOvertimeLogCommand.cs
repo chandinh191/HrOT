@@ -20,7 +20,7 @@ public record Employee_UpdateOvertimeLogCommand : IRequest
     public DateTime StartDate { get; init; }
 
     public DateTime EndDate { get; init; }
-   // public OvertimeLogStatus Status { get; init; }
+    public double TotalHours { get; init; }
 }
 public class Employee_UpdateOvertimeLogCommandHandler : IRequestHandler<Employee_UpdateOvertimeLogCommand>
 {
@@ -44,6 +44,7 @@ public class Employee_UpdateOvertimeLogCommandHandler : IRequestHandler<Employee
         entity.Status = OvertimeLogStatus.Pending;
         entity.StartDate = request.StartDate;
         entity.EndDate = request.EndDate;
+        entity.TotalHours = request.TotalHours;
 
 
         await _context.SaveChangesAsync(cancellationToken);
