@@ -5,10 +5,12 @@ using hrOT.Application.Exchanges.Queries;
 using hrOT.Domain.Entities;
 using hrOT.WebUI.Controllers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebUI.Controllers.Exchanges;
+[Authorize(Policy = "Manager")]
 public class ExchangeController : ApiControllerBase
 {
     [HttpGet]

@@ -35,7 +35,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost("create")]
-        [Authorize(Policy = "manager")]
+        //[Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
 
@@ -180,7 +180,7 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpGet("GetEmployeeByMatchingJobSkill")]
+        /*[HttpGet("GetEmployeeByMatchingJobSkill")]
         [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> GetEmployeeByMatchingJobSkill(string SkillName)
         {
@@ -194,10 +194,10 @@ namespace WebUI.Controllers
             return (result != null )
                 ? Ok(result)
                 : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
-        }
+        }*/
 
-        [HttpPost("{id}/uploadImage")]
-        [Authorize(Policy = "employee")]
+        [HttpPost("uploadImage")]
+        [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> UploadImage(IFormFile imageFile)
         {
             try

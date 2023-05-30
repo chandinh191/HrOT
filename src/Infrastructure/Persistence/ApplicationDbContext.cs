@@ -67,22 +67,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        builder.Entity<IdentityRole>()
-            .HasData(
-            new IdentityRole
-            {
-                Id = "12d0cad0-91be-4c7d-91f3-11eb0d626dd4",
-                Name = "Manager",
-                NormalizedName = "MANAGER"
-            },
-            new IdentityRole
-            {
-                Id = "d05c7a66-6126-4f93-ad49-fe3b97cee5d2",
-                Name = "Employee",
-                NormalizedName = "EMPLOYEE"
-            });
-
         builder.Entity<ApplicationUser>()
             .HasData(
             new ApplicationUser
@@ -105,44 +89,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
                 LockoutEnabled = true,
                 AccessFailedCount = 0
-            },
-            new ApplicationUser
-            {
-                Id = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
-                Fullname = "Lewis2",
-                Image = "TESTIMAGE2",
-                UserName = "employee",
-                BirthDay = DateTime.Parse("9/9/9999"),
-                NormalizedUserName = "test2",
-                Email = "test2@gmail.com",
-                NormalizedEmail = "test2@gmail.com",
-                EmailConfirmed = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
-                SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
-                ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
-                PhoneNumber = "123456788",
-                PhoneNumberConfirmed = true,
-                TwoFactorEnabled = false,
-                LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
-                LockoutEnabled = true,
-                AccessFailedCount = 0
             }
         );
-
-        builder.Entity<IdentityUserRole<string>>()
-            .HasData(
-            new IdentityUserRole<string>
-            {
-                UserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
-                RoleId = "12d0cad0-91be-4c7d-91f3-11eb0d626dd4"
-            },
-            new IdentityUserRole<string>
-            {
-                UserId = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
-                RoleId = "d05c7a66-6126-4f93-ad49-fe3b97cee5d2"
-            }
-        );
-        
 
         builder.Entity<Department>()
             .HasData(
@@ -182,26 +130,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
                 CitizenIdentificationNumber = "0931248141241231",
-                CreatedDateCIN = DateTime.Parse("1/1/2023"),
-                PlaceForCIN = "TP HCM",
-                Address = "123, Lê Văn Việt, Tăng Nhơn Phú",
-                District = "Quận nine",
-                Province = "TP Hồ Chí Minh",
-                BankAccountNumber = "123456789",
-                BankAccountName = "LUONG THE DAN",
-                BankName = "TECHCOMBANK",
-                Created = DateTime.Parse("9/9/9999"),
-                CreatedBy = "Test",
-                LastModified = DateTime.Parse("9/9/9999"),
-                LastModifiedBy = "Test",
-                IsDeleted = false
-            },
-            new Employee
-            {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894149"),
-                ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
-                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                CitizenIdentificationNumber = "0931248141241286",
                 CreatedDateCIN = DateTime.Parse("1/1/2023"),
                 PlaceForCIN = "TP HCM",
                 Address = "123, Lê Văn Việt, Tăng Nhơn Phú",

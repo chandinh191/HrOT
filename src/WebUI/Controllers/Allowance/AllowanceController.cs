@@ -7,15 +7,17 @@ using hrOT.Application.Allowances.Command.Delete;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers.Allowance;
-[Authorize(Policy = "manager")]
+
 public class AllowanceController : ApiControllerBase
 {
     [HttpGet]
+    [Authorize(Policy = "Manager")]
     public async Task<ActionResult<AllowanceList>> GetList()
     {
         return await Mediator.Send(new GetListAllowanceQuery());
     }
     [HttpPost]
+    [Authorize(Policy = "Manager")]
     public async Task<ActionResult<Guid>> Create(CreateAllowanceCommand command)
     {
         if (ModelState.IsValid && command != null)
@@ -26,6 +28,7 @@ public class AllowanceController : ApiControllerBase
         return BadRequest("Thêm thất bại");
     }
     [HttpPut("{id}")]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult> Update(Guid id, UpdateAllowanceCommand command)
     {
         if (id != command.Id)
@@ -45,6 +48,7 @@ public class AllowanceController : ApiControllerBase
     }
     
     [HttpDelete("{id}")]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult> Delete(Guid id, DeleteAllowanceCommand command)
     {
         if (id != command.Id)
