@@ -77,7 +77,7 @@ public class ApplicationDbContextInitialiser
         var administrator = new ApplicationUser
         {
             UserName = "administrator@localhost",
-            Address = "123",
+           
             Fullname = "sinh",
             Email = "administrator@localhost",
             Image = "123",
@@ -103,7 +103,7 @@ public class ApplicationDbContextInitialiser
             UserName = "staff@localhost",
             Email = "staff@localhost",
             Fullname = "sinh",
-            Address = "123",
+          
             Image = "123",
             
         };
@@ -124,7 +124,7 @@ public class ApplicationDbContextInitialiser
         {
             UserName = "employee@localhost",
             Email = "employee@localhost",
-            Address = "123",
+           
             Fullname = "sinh",
             Image = "123",
             

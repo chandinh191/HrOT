@@ -18,7 +18,9 @@ namespace hrOT.Application.Employees.Commands.Update
     public record UpdateEmployee : IRequest
     {
         public Guid Id { get; set; }
-        public Guid PositionId { get; set; }
+        public string? CitizenIdentificationNumber { get; set; }
+        public DateTime? CreatedDateCIN { get; set; }
+        public string? PlaceForCIN { get; set; }
         public DateTime BirthDay { get; set; }
         public string BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
@@ -26,6 +28,9 @@ namespace hrOT.Application.Employees.Commands.Update
         public string Fullname { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
+        //Địa chỉ
+        public string? District { get; set; }
+        public string? Province { get; set; }
         public string SelectedRole { get; set; } // New property to hold the selected role
     }
 
@@ -54,16 +59,21 @@ namespace hrOT.Application.Employees.Commands.Update
             {
                 throw new NotFoundException(nameof(Employee), request.Id);
             }
-
+            entity.CitizenIdentificationNumber = request.CitizenIdentificationNumber;
+            entity.CreatedDateCIN = request.CreatedDateCIN;
+            entity.PlaceForCIN = request.PlaceForCIN;
+            entity.District = request.District;
+            entity.Province = request.Province;
+            entity.Address = request.Address;
             entity.BankName = request.BankName;
             entity.BankAccountNumber = request.BankAccountNumber;
             entity.BankAccountName = request.BankAccountName;
-            //entity.PositionId = request.PositionId;
+            
 
             if (entity.ApplicationUser != null)
             {
                 entity.ApplicationUser.Fullname = request.Fullname;
-                entity.ApplicationUser.Address = request.Address;
+               
                 entity.ApplicationUser.BirthDay = request.BirthDay;
                 entity.ApplicationUser.PhoneNumber = request.PhoneNumber;
             }

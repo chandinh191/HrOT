@@ -51,7 +51,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "employee")]
+        [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
         {
             if (id != command.Id)
@@ -134,7 +134,7 @@ namespace WebUI.Controllers
 
 
         [HttpGet("GetEmployeeById")]
-        [Authorize(Policy = "employee")]
+        [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> GetEmployee(Guid id)
         {
             try
@@ -156,7 +156,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost("{id}/uploadCv")]
-        [Authorize(Policy = "employee")]
+        [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> UploadCV(Guid id, IFormFile cvFile)
         {
             try
@@ -184,7 +184,7 @@ namespace WebUI.Controllers
         }
 
         [HttpGet("GetEmployeeByMatchingJobSkill")]
-        [Authorize(Policy = "employee")]
+        [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> GetEmployeeByMatchingJobSkill(string SkillName)
         {
             if (SkillName == null)

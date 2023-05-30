@@ -16,19 +16,27 @@ using Microsoft.AspNetCore.Hosting;
 namespace hrOT.Application.Employees.Commands.Create
 {
     public record CreateEmployee : IRequest<string>
-    { 
-        public Guid PositionId { get; set; }
+    {
+        // Thẻ căn cước
+        public string? CitizenIdentificationNumber { get; set; }
+        public DateTime? CreatedDateCIN { get; set; }
+        public string? PlaceForCIN { get; set; }
+        // Ngân Hàng
         public DateTime BirthDay { get; set; }
         public string BankAccountNumber { get; set; }
         public string BankAccountName { get; set; }
         public string BankName { get; set; }
         public string FullName { get; set; }
         public string UserName { get;  set; }
-        public string Address { get;  set; }
+       
         public string Email { get;  set; }
         public string PhoneNumber { get;  set; }
         public string Password { get; set; }
         public string SelectedRole { get; set; }
+        //Địa chỉ
+        public string? Address { get; set; }
+        public string? District { get; set; }
+        public string? Province { get; set; }
     }
 
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployee, string>
@@ -51,8 +59,7 @@ namespace hrOT.Application.Employees.Commands.Create
         {
             var user = new ApplicationUser
             {
-                UserName = request.UserName,
-                Address = request.Address,
+                UserName = request.UserName,              
                 Email = request.Email,
                 Fullname = request.FullName,
                 PhoneNumber = request.PhoneNumber,
@@ -75,11 +82,12 @@ namespace hrOT.Application.Employees.Commands.Create
             var entity = new Employee
             {
                 ApplicationUserId = user.Id,
-                //PositionId = request.PositionId,
-                CreatedBy = "2",
-                LastModifiedBy = "1",
-                Created = DateTime.UtcNow,
-                LastModified = DateTime.UtcNow,
+                CitizenIdentificationNumber = request.CitizenIdentificationNumber,
+                CreatedDateCIN = request.CreatedDateCIN,
+                PlaceForCIN = request.PlaceForCIN,
+                Address = request.Address,
+                District = request.District,
+                Province = request.Province,              
                 BankName = request.BankName,
                 BankAccountNumber = request.BankAccountNumber,
                 BankAccountName = request.BankAccountName,
