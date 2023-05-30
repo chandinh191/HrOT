@@ -42,6 +42,8 @@ public interface IApplicationDbContext
     DbSet<TaxInCome> TaxInComes { get; }
     DbSet<TimeAttendanceLog> TimeAttendanceLogs { get; }
 
+    DbSet<Degree> Degrees { get; }
+    DbSet<Family> Families { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

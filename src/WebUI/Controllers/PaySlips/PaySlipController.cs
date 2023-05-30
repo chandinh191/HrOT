@@ -42,33 +42,42 @@ public class PaySlipController : ApiControllerBase
         return BadRequest("Tạo thất bại");
     }
 
-   /* [HttpGet]
-    public async Task<ActionResult<HttpResponseMessage>> GetPaySlipById(Guid id)
+    /* [HttpGet]
+     public async Task<ActionResult<HttpResponseMessage>> GetPaySlipById(Guid id)
+     {
+         var query = new GetPaySlipByIdQuery { Id = id };
+         var response = await _mediator.Send(query);
+
+         if (response == null)
+         {
+             return NotFound();
+         }
+
+         return response;
+     }
+
+     [HttpGet("{id}/DownloadPdf")]
+     public async Task<IActionResult> DownloadPdf(Guid id)
+     {
+         var query = new GetPaySlipByIdQuery { Id = id };
+         var response = await Mediator.Send(query);
+
+         if (response.StatusCode == HttpStatusCode.NotFound)
+         {
+             return NotFound();
+         }
+
+         var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+         return File(pdfBytes, "application/pdf", "paySlip.pdf");
+     }*/
+
+    [HttpGet("GetPaySlipByDateRange")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<List<PaySlipDto>>> GetByDateRange(DateTime fromDate, DateTime toDate)
     {
-        var query = new GetPaySlipByIdQuery { Id = id };
-        var response = await _mediator.Send(query);
-
-        if (response == null)
-        {
-            return NotFound();
-        }
-
-        return response;
+        return await _mediator.Send(new GetListPaySlipByDate(fromDate, toDate));
     }
 
-    [HttpGet("{id}/DownloadPdf")]
-    public async Task<IActionResult> DownloadPdf(Guid id)
-    {
-        var query = new GetPaySlipByIdQuery { Id = id };
-        var response = await Mediator.Send(query);
 
-        if (response.StatusCode == HttpStatusCode.NotFound)
-        {
-            return NotFound();
-        }
-
-        var pdfBytes = await response.Content.ReadAsByteArrayAsync();
-        return File(pdfBytes, "application/pdf", "paySlip.pdf");
-    }*/
 
 }

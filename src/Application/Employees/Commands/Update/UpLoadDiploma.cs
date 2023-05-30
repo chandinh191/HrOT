@@ -73,7 +73,7 @@ namespace hrOT.Application.Employees.Commands.Update
                 image.Save(webpImagePath);
             }
 
-            entity.Diploma = "/Diplomas/" + webpImageFileName;
+            //entity.Diploma = "/Diplomas/" + webpImageFileName;
 
             await _context.SaveChangesAsync(cancellationToken);
 

@@ -58,7 +58,7 @@ namespace hrOT.Application.Employees.Commands.Update
             entity.BankName = request.BankName;
             entity.BankAccountNumber = request.BankAccountNumber;
             entity.BankAccountName = request.BankAccountName;
-            entity.PositionId = request.PositionId;
+            //entity.PositionId = request.PositionId;
 
             if (entity.ApplicationUser != null)
             {
