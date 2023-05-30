@@ -12,7 +12,11 @@ public class CreateDepartmentCommandValidator : AbstractValidator<CreateDepartme
     public CreateDepartmentCommandValidator(IApplicationDbContext context)
     {
         _context = context;
-
+        RuleFor(n => n.PositionId)
+           .NotEmpty().WithMessage("Không được bỏ trống ID vị trí.");
+        RuleFor(n => n.EmployeeId)
+            .NotEmpty().WithMessage("Không được bỏ trống ID nhân viên.");
+       
         RuleFor(n => n.Name)
             .NotEmpty().WithMessage("Không được bỏ trống tên phòng ban.")
             .MaximumLength(100).WithMessage("Tên phòng ban không được vượt quá 100 ký tự.");

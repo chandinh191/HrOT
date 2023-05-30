@@ -99,6 +99,12 @@ namespace WebUI.Controllers
         {
             if (file != null && file.Length > 0)
             {
+                // Kiểm tra kiểu tệp tin
+                if (!IsExcelFile(file))
+                {
+                    return BadRequest("Chỉ cho phép sử dụng file Excel");
+                }
+
                 var filePath = Path.GetTempFileName(); // Tạo một tệp tạm để lưu trữ tệp Excel
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -117,6 +123,15 @@ namespace WebUI.Controllers
 
             return BadRequest("Thêm thất bại");
         }
+
+        private bool IsExcelFile(IFormFile file)
+        {
+            // Kiểm tra phần mở rộng của tệp tin có phải là .xls hoặc .xlsx không
+            var allowedExtensions = new[] { ".xls", ".xlsx" };
+            var fileExtension = Path.GetExtension(file.FileName);
+            return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
+        }
+
 
         [HttpGet("GetEmployeeById")]
         [Authorize(Policy = "employee")]

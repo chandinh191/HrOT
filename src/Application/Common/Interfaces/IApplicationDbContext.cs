@@ -34,7 +34,7 @@ public interface IApplicationDbContext
     DbSet<PaymentHistory> PaymentHistories { get; }
     DbSet<PaySlip> PaySlips { get; }
     DbSet<Position> Positions { get; }
-
+    DbSet<AnnualWorkingDay> AnnualWorkingDays { get; }
     DbSet<Skill> Skills { get; }
     DbSet<Skill_Employee> Skill_Employees { get; }
     DbSet<Skill_JD> Skill_JDs { get; }
