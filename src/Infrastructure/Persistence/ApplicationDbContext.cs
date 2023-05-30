@@ -54,7 +54,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Skill> Skills => Set<Skill>();
     public DbSet<Skill_Employee> Skill_Employees => Set<Skill_Employee>();
     public DbSet<Skill_JD> Skill_JDs => Set<Skill_JD>();
-
+    public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
     public DbSet<TaxInCome> TaxInComes => Set<TaxInCome>();
     public DbSet<TimeAttendanceLog> TimeAttendanceLogs => Set<TimeAttendanceLog>();
 
