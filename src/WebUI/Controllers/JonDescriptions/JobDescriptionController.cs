@@ -1,4 +1,4 @@
-﻿
+﻿/*
 using hrOT.WebUI.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -67,3 +67,4 @@ public class JobDescriptionController : ApiControllerBase
 
     }
 }
+*/
