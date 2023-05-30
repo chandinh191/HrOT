@@ -37,4 +37,5 @@ public class Employee : BaseAuditableEntity
 
     public virtual Position Position { get; set; }
     public virtual ApplicationUser ApplicationUser { get; set; }
+    public IList<TimeAttendanceLog> TimeAttendanceLogs { get; private set; }
 }

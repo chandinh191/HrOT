@@ -40,6 +40,7 @@ public interface IApplicationDbContext
     DbSet<Skill_JD> Skill_JDs { get; }
 
     DbSet<TaxInCome> TaxInComes { get; }
+    DbSet<TimeAttendanceLog> TimeAttendanceLogs { get; }
 
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
