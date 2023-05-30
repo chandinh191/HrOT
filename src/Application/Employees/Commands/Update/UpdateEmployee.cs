@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace hrOT.Application.Employees.Commands.Update
 {
-    public record UpdateEmployee : IRequest
+    public record UpdateEmployee : IRequest<string>
     {
        
         public Guid PositionId { get; set; }
@@ -35,7 +35,7 @@ namespace hrOT.Application.Employees.Commands.Update
         public string SelectedRole { get; set; } // New property to hold the selected role
     }
 
-    public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployee>
+    public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployee, string>
     {
         private readonly IApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> userManager;
@@ -52,7 +52,7 @@ namespace hrOT.Application.Employees.Commands.Update
 
       
 
-        public async Task<Unit> Handle(UpdateEmployee request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateEmployee request, CancellationToken cancellationToken)
         {
             var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
             var employeeId = Guid.Parse(employeeIdCookie);
@@ -62,7 +62,12 @@ namespace hrOT.Application.Employees.Commands.Update
 
             if (entity == null)
             {
+
                 throw new NotFoundException(nameof(Employee), employeeId);
+            } else if (entity.IsDeleted == true)
+            {
+                return "Nhân viên này đã bị xóa!";
+
             }
             entity.CitizenIdentificationNumber = request.CitizenIdentificationNumber;
             entity.CreatedDateCIN = request.CreatedDateCIN;
@@ -94,7 +99,7 @@ namespace hrOT.Application.Employees.Commands.Update
                 await userManager.AddToRoleAsync(user, request.SelectedRole);
             }
 
-            return Unit.Value;
+            return "Cập nhật thành công";
         }
     }
 }

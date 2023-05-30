@@ -12,7 +12,7 @@ using MediatR;
 
 namespace hrOT.Application.LeaveLogs.Commands.Update;
 
-public record Employee_UpdateLeaveLogCommand : IRequest
+public record Employee_UpdateLeaveLogCommand : IRequest<string>
 {
     public Guid Id { get; init; }
     //public Guid EmployeeId { get; init; }
@@ -22,7 +22,7 @@ public record Employee_UpdateLeaveLogCommand : IRequest
     public string Reason { get; init; }
     //public LeaveLogStatus Status { get; init; }
 }
-public class Employee_UpdateLeaveLogCommandHandler : IRequestHandler<Employee_UpdateLeaveLogCommand>
+public class Employee_UpdateLeaveLogCommandHandler : IRequestHandler<Employee_UpdateLeaveLogCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -31,7 +31,7 @@ public class Employee_UpdateLeaveLogCommandHandler : IRequestHandler<Employee_Up
         _context = context;
     }
 
-    public async Task<Unit> Handle(Employee_UpdateLeaveLogCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(Employee_UpdateLeaveLogCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.LeaveLogs
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -39,6 +39,9 @@ public class Employee_UpdateLeaveLogCommandHandler : IRequestHandler<Employee_Up
         if (entity == null)
         {
             throw new NotFoundException(nameof(LeaveLog), request.Id);
+        } else if ( entity.IsDeleted == true )
+        {
+            return "Log nghỉ phép này đã bị xóa";
         }
 
         entity.StartDate = request.StartDate;
@@ -50,6 +53,6 @@ public class Employee_UpdateLeaveLogCommandHandler : IRequestHandler<Employee_Up
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Cập nhật thành công";
     }
 }

@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.EmployeeContracts.Commands.Add;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace hrOT.Application.EmployeeContracts.Commands.Update;
 
-public class Employee_UpdateContractCommand : IRequest<bool>
+public class Employee_UpdateContractCommand : IRequest<string>
 {
     public Guid EmployeeId { get; set; }
     public Guid ContractId { get; set; }
@@ -21,12 +19,11 @@ public class Employee_UpdateContractCommand : IRequest<bool>
     }
 }
 
-public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_UpdateContractCommand, bool>
+public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_UpdateContractCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
-
 
     public Employee_UpdateContractCommandHandler(IApplicationDbContext context, IMapper mapper, IConfiguration configuration)
     {
@@ -35,19 +32,19 @@ public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_Up
         _configuration = configuration;
     }
 
-    public async Task<bool> Handle(Employee_UpdateContractCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(Employee_UpdateContractCommand request, CancellationToken cancellationToken)
     {
-        var employee =  _context.Employees
+        var employee = _context.Employees
             .Where(e => e.Id == request.EmployeeId)
             .FirstOrDefault();
 
         if (employee != null)
         {
-            var contract =  _context.EmployeeContracts
+            var contract = _context.EmployeeContracts
                 .Where(c => c.EmployeeId == employee.Id && c.Id == request.ContractId)
                 .FirstOrDefault();
 
-            if (contract != null)
+            if (contract != null && contract.IsDeleted == false)
             {
                 contract.File = UploadFile(request);
                 contract.StartDate = request.EmployeeContract.StartDate;
@@ -63,11 +60,15 @@ public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_Up
 
                 _context.EmployeeContracts.Update(contract);
                 await _context.SaveChangesAsync(cancellationToken);
-                return true;
+                return "Cập nhật thành công";
+            }
+            else
+            {
+                return "Hợp đồng này đã bị xóa";
             }
         }
 
-        return false;
+        return "Cập nhật thất bại";
     }
 
     private String UploadFile(Employee_UpdateContractCommand request)
@@ -92,7 +93,6 @@ public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_Up
 
             // Update the CVPath property of the employee
             return filePath;
-
         }
         return null;
     }

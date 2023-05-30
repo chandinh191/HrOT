@@ -12,7 +12,7 @@ using MediatR;
 
 
 namespace hrOT.Application.Degrees.Commands.Update;
-public record UpdateDegreeCommand : IRequest
+public record UpdateDegreeCommand : IRequest<string>
 {
     public Guid Id { get; init; }
     public Guid EmployeeId { get; init; }
@@ -20,7 +20,7 @@ public record UpdateDegreeCommand : IRequest
     public DegreeStatus Status { get; init; }
 }
 
-public class UpdateDegreeCommandHandler : IRequestHandler<UpdateDegreeCommand>
+public class UpdateDegreeCommandHandler : IRequestHandler<UpdateDegreeCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -29,7 +29,7 @@ public class UpdateDegreeCommandHandler : IRequestHandler<UpdateDegreeCommand>
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateDegreeCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateDegreeCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Degrees
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -37,6 +37,9 @@ public class UpdateDegreeCommandHandler : IRequestHandler<UpdateDegreeCommand>
         if (entity == null)
         {
             throw new NotFoundException(nameof(Degree), request.Id);
+        }else if (entity.IsDeleted == true)
+        {
+            return "Bằng cấp đã bị xóa!";
         }
         entity.Name = request.Name;
         entity.Status = request.Status;
@@ -45,6 +48,6 @@ public class UpdateDegreeCommandHandler : IRequestHandler<UpdateDegreeCommand>
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Cập nhật thành công";
     }
 }

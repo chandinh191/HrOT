@@ -26,9 +26,13 @@ public class UpdateTimeAttendanceLogHandler : IRequestHandler<UpdateTimeAttendan
         var TimeAttendanceLogs = await _context.TimeAttendanceLogs
             .Where(x => x.IsDeleted == false)
             .ToListAsync(cancellationToken);
-
+        
         foreach (var log in TimeAttendanceLogs)
         {
+            if(log.IsDeleted == true) 
+            {
+                return "Bảng thời gian biểu này đã bị xóa";
+            }
             if (log.StartTime.TimeOfDay < new TimeSpan(12, 0, 0))
             {
                 log.Ducation = (log.EndTime - log.StartTime).TotalHours - 1;

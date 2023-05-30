@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.Skills.Commands.Update;
 
-public class UpdateSkillCommand : IRequest<bool>
+public class UpdateSkillCommand : IRequest<string>
 {
     public Guid SkillId { get; set; }
     public SkillCommandDTO SkillDTO { get; set; }
@@ -16,7 +16,7 @@ public class UpdateSkillCommand : IRequest<bool>
     }
 }
 
-public class UpdateSkillCommandHandler : IRequestHandler<UpdateSkillCommand, bool>
+public class UpdateSkillCommandHandler : IRequestHandler<UpdateSkillCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -25,21 +25,24 @@ public class UpdateSkillCommandHandler : IRequestHandler<UpdateSkillCommand, boo
         _context = context;
     }
 
-    public async Task<bool> Handle(UpdateSkillCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateSkillCommand request, CancellationToken cancellationToken)
     {
         var skill = await _context.Skills
             .Where(s => s.Id == request.SkillId)
             .FirstOrDefaultAsync();
 
-        if (skill == null)
+        if (skill != null && skill.IsDeleted == false)
         {
-            return false;
-        }
-        skill.SkillName = request.SkillDTO.SkillName;
-        skill.Skill_Description = request.SkillDTO.Skill_Description;
+            skill.SkillName = request.SkillDTO.SkillName;
+            skill.Skill_Description = request.SkillDTO.Skill_Description;
 
-        _context.Skills.Update(skill);
-        await _context.SaveChangesAsync(cancellationToken);
-        return true;
+            _context.Skills.Update(skill);
+            await _context.SaveChangesAsync(cancellationToken);
+            return "Cập nhật thành công";
+        } else
+        {
+            return "Kĩ năng này đã bị xóa!";
+        }
+
     }
 }
