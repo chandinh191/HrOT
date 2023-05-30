@@ -54,7 +54,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Skill> Skills => Set<Skill>();
     public DbSet<Skill_Employee> Skill_Employees => Set<Skill_Employee>();
     public DbSet<Skill_JD> Skill_JDs => Set<Skill_JD>();
-
+    public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
     public DbSet<TaxInCome> TaxInComes => Set<TaxInCome>();
     public DbSet<TimeAttendanceLog> TimeAttendanceLogs => Set<TimeAttendanceLog>();
 
@@ -90,43 +90,13 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             }
         );
 
-        builder.Entity<Department>()
-            .HasData(
-            new Department
-            {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
-                Name = "Phòng IT",
-                Description = "Đảm nhận công việc liên quan phần mềm",
-                Created = DateTime.Parse("9/9/9999"),
-                CreatedBy = "Test",
-                LastModified = DateTime.Parse("9/9/9999"),
-                LastModifiedBy = "Test",
-                IsDeleted = false
-            }
-        );
-
-        builder.Entity<Position>()
-            .HasData(
-            new Position
-            {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                DepartmentId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
-                Name = "Nhân viên",
-                Created = DateTime.Parse("9/9/9999"),
-                CreatedBy = "Test",
-                LastModified = DateTime.Parse("9/9/9999"),
-                LastModifiedBy = "Test",
-                IsDeleted = false
-            }
-        );
-
         builder.Entity<Employee>()
             .HasData(
             new Employee
             {
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
-                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                //PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
                 IdentityImage = "IMGTEST",
                 Diploma = "TEST",
                 BankAccountNumber = "123456789",
@@ -139,6 +109,42 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 IsDeleted = false
             }
         );
+
+        
+
+        builder.Entity<Position>()
+            .HasData(
+            new Position
+            {
+                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                //DepartmentId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
+                Name = "Nhân viên",
+                Created = DateTime.Parse("9/9/9999"),
+                CreatedBy = "Test",
+                LastModified = DateTime.Parse("9/9/9999"),
+                LastModifiedBy = "Test",
+                IsDeleted = false
+            }
+        );
+
+        builder.Entity<Department>()
+            .HasData(
+            new Department
+            {
+                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
+                EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
+                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                Name = "Phòng IT",
+                Description = "Đảm nhận công việc liên quan phần mềm",
+                Created = DateTime.Parse("9/9/9999"),
+                CreatedBy = "Test",
+                LastModified = DateTime.Parse("9/9/9999"),
+                LastModifiedBy = "Test",
+                IsDeleted = false
+            }
+        );
+
+
 
         builder.Entity<Experience>()
                 .HasData(

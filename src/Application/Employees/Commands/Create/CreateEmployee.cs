@@ -75,7 +75,7 @@ namespace hrOT.Application.Employees.Commands.Create
             var entity = new Employee
             {
                 ApplicationUserId = user.Id,
-                PositionId = request.PositionId,
+                //PositionId = request.PositionId,
                 CreatedBy = "2",
                 LastModifiedBy = "1",
                 Created = DateTime.UtcNow,
