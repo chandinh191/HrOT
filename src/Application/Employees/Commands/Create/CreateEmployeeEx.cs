@@ -71,7 +71,7 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
                         var user = new ApplicationUser
                         {
                             UserName = userName,
-                            Address = worksheet.Cells[row, 2].Value?.ToString(),
+                            
                             Image = worksheet.Cells[row, 8].Value?.ToString(),
                             Email = worksheet.Cells[row, 5].Value?.ToString(),
                             Fullname = worksheet.Cells[row, 1].Value?.ToString(),
@@ -88,10 +88,13 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
 
                             var employee = new Employee
                             {
-                                //PositionId = Guid.Parse(worksheet.Cells[row, 15].Value?.ToString()),
+                                Province = worksheet.Cells[row, 16].Value?.ToString(),
+                                District = worksheet.Cells[row, 17].Value?.ToString(),
+                                CitizenIdentificationNumber = worksheet.Cells[row, 15].Value?.ToString(),
                                 ApplicationUserId = user.Id,
-                                //IdentityImage = worksheet.Cells[row, 7].Value?.ToString(),
-                                //Diploma = worksheet.Cells[row, 6].Value?.ToString(),
+                                Address = worksheet.Cells[row, 2].Value?.ToString(),
+                                CreatedDateCIN = DateTime.Parse(worksheet.Cells[row, 7].Value?.ToString()),
+                                PlaceForCIN = worksheet.Cells[row, 6].Value?.ToString(),
                                 BankName = worksheet.Cells[row, 9].Value?.ToString(),
                                 BankAccountNumber = worksheet.Cells[row, 10].Value?.ToString(),
                                 BankAccountName = worksheet.Cells[row, 11].Value?.ToString(),
@@ -107,7 +110,7 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
                 }
                 else
                 {
-                    return "Đã thêm nhân viên";
+                    return "Lỗi thêm nhân viên";
                 }
             }
 

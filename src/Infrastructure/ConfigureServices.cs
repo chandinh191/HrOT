@@ -99,7 +99,7 @@ public static class ConfigureServices
                .Build());
             options.AddPolicy("ManagerOrStaff", policy => policy
         .Combine(options.DefaultPolicy)
-        .RequireRole("Manager", "Staff")
+        .RequireRole("Manager", "Employee")
         .Build());
 
         });
