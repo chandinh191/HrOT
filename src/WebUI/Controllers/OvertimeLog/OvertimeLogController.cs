@@ -25,7 +25,7 @@ public class OvertimeLogController : ApiControllerBase
             await Mediator.Send(command);
             return Ok("Thêm thành công");
         }
-        return Ok("Thêm thất bại");
+        return BadRequest("Thêm thất bại");
     }
     [HttpPut("Staff/{id}")]
     [Authorize(Policy = "manager")]
@@ -33,7 +33,7 @@ public class OvertimeLogController : ApiControllerBase
     {
         if (id != command.Id)
         {
-            return Ok("Lỗi! Không tìm thấy Id");
+            return BadRequest("Lỗi! Không tìm thấy Id");
         }
         try
         {
@@ -43,7 +43,7 @@ public class OvertimeLogController : ApiControllerBase
         }
         catch (Exception ex)
         {
-            return Ok("Cập nhật thất bại");
+            return BadRequest("Cập nhật thất bại");
         }
     }
     [HttpPut("Employee/{id}")]
@@ -52,7 +52,7 @@ public class OvertimeLogController : ApiControllerBase
     {
         if (id != command.Id)
         {
-            return Ok("Lỗi! Không tìm thấy Id");
+            return BadRequest("Lỗi! Không tìm thấy Id");
         }
         try
         {
@@ -62,7 +62,7 @@ public class OvertimeLogController : ApiControllerBase
         }
         catch (Exception ex)
         {
-            return Ok("Cập nhật thất bại");
+            return BadRequest("Cập nhật thất bại");
         }
     }
 
@@ -73,7 +73,7 @@ public class OvertimeLogController : ApiControllerBase
      {
         if (id != command.Id)
         {
-            return Ok("Lỗi! Không tìm thấy Id");
+            return BadRequest("Lỗi! Không tìm thấy Id");
         }
         try
         {
@@ -83,7 +83,7 @@ public class OvertimeLogController : ApiControllerBase
         }
         catch (Exception ex)
         {
-            return Ok("Xóa thất bại");
+            return BadRequest("Xóa thất bại");
         }
     }
 

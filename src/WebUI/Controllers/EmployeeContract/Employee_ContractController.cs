@@ -54,7 +54,7 @@ public class Employee_ContractController : ApiControllerBase
             }));
         }
         
-        return BadRequest($"Không tìm thấy bất kì hợp đồng nào của EmployeeID: {EmployeeID}");
+        return BadRequest("Không tìm thấy bất kì hợp đồng nào");
     }
 
     //Thêm hợp đồng cho nhân viên
@@ -69,8 +69,8 @@ public class Employee_ContractController : ApiControllerBase
         var result = await Mediator.Send(new Employee_CreateContractCommand(EmployeeId, employeeContractDTO));
 
         return result != null
-            ? Ok($"Thêm thành công hợp đồng cho EmployeeID: {EmployeeId}")
-            : BadRequest($"Không tìm thấy bất kì hợp đồng nào của EmployeeID: {EmployeeId}");
+            ? Ok("Thêm thành công")
+            : BadRequest("Không tìm thấy bất kì hợp đồng nào");
     }
 
     //Cập nhật hợp đồng cho nhân viên
@@ -85,8 +85,8 @@ public class Employee_ContractController : ApiControllerBase
         var result = await Mediator.Send(new Employee_UpdateContractCommand(ContractId, EmployeeId, employeeContractDTO));
 
         return result == true
-            ? Ok($"Cập nhật thành công hợp đồng cho EmployeeID: {EmployeeId}")
-            : BadRequest($"Không tìm thấy bất kì hợp đồng nào của EmployeeID: {EmployeeId}");
+            ? Ok("Cập nhật thành công")
+            : BadRequest("Không tìm thấy bất kì hợp đồng nào");
     }
 
     // Xóa hợp đồng cho nhân viên
@@ -101,7 +101,7 @@ public class Employee_ContractController : ApiControllerBase
         var result = await Mediator.Send(new Employee_DeleteContractCommand(ContractId, EmployeeId));
 
         return result == true
-            ? Ok($"Xóa thành công hợp đồng cho EmployeeID: {EmployeeId}")
-            : BadRequest($"Không tìm thấy bất kì hợp đồng nào của EmployeeID: {EmployeeId}");
+            ? Ok("Xóa thành công")
+            : BadRequest("Không tìm thấy bất kì hợp đồng nào");
     }
 }
