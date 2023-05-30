@@ -1,15 +1,16 @@
 using System.Reflection;
+using Duende.IdentityServer.EntityFramework.Options;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
+using hrOT.Domain.Enums;
+using hrOT.Domain.IdentityModel;
+
 //using hrOT.Infrastructure.Identity;
 using hrOT.Infrastructure.Persistence.Interceptors;
-using Duende.IdentityServer.EntityFramework.Options;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using hrOT.Domain.Enums;
-using hrOT.Domain.IdentityModel;
 
 namespace hrOT.Infrastructure.Persistence;
 
@@ -22,7 +23,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         DbContextOptions<ApplicationDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         IMediator mediator,
-        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) 
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options, operationalStoreOptions)
     {
         _mediator = mediator;
@@ -60,6 +61,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Family> Families => Set<Family>();
     public DbSet<Degree> Degrees => Set<Degree>();
 
+    public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -154,7 +156,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 FatherName = "Test",
                 MotherName = "Test",
-                NumberOfDependents =  3,
+                NumberOfDependents = 3,
                 HomeTown = "Test",
                 Created = DateTime.Parse("9/9/9999"),
                 CreatedBy = "Test",
@@ -230,8 +232,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
            {
                Id = Guid.Parse("c0d544cb-a345-490d-8ba3-d1c63e497eb2"),
                EmployeeContractId = Guid.Parse("42c05e21-2931-4d71-8735-1f17508621a7"),
-               Name= "test",
-               Type= AllowanceType.Meal_Allowance,
+               Name = "test",
+               Type = AllowanceType.Meal_Allowance,
                Amount = 1200000,
                Eligibility_Criteria = "test",
                Requirements = "test",
@@ -397,7 +399,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                CreatedBy = "test",
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
-           }); 
+           });
 
         builder.Entity<TaxInCome>()
        .HasData(

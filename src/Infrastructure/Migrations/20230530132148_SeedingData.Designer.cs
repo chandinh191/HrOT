@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530100946_SeedingData")]
+    [Migration("20230530132148_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -531,7 +531,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.ToTable("CompanyContracts");
                 });
 
-            modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
+            modelBuilder.Entity("hrOT.Domain.Entities.Degree", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -541,9 +541,6 @@ namespace hrOT.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("EmployeeId")
@@ -562,14 +559,64 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PositionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("PositionId");
+                    b.ToTable("Degrees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d10de52b-58a1-43e8-9ab6-5651693341f8"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "Test",
+                            EmployeeId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "Test",
+                            Name = "Test",
+                            Status = 1
+                        });
+                });
+
+            modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Departments");
 
@@ -580,12 +627,10 @@ namespace hrOT.Infrastructure.Migrations
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
                             Description = "Đảm nhận công việc liên quan phần mềm",
-                            EmployeeId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "Test",
-                            Name = "Phòng IT",
-                            PositionId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143")
+                            Name = "Phòng IT"
                         });
                 });
 
@@ -632,6 +677,9 @@ namespace hrOT.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -651,16 +699,19 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CVPath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CitizenIdentificationNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Diploma")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("CreatedDateCIN")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("IdentityImage")
+                    b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -672,9 +723,21 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PlaceForCIN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Province")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
+                    b.HasIndex("PositionId")
                         .IsUnique();
 
                     b.ToTable("Employees");
@@ -683,17 +746,22 @@ namespace hrOT.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
+                            Address = "123, Lê Văn Việt, Tăng Nhơn Phú",
                             ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                             BankAccountName = "LUONG THE DAN",
                             BankAccountNumber = "123456789",
                             BankName = "TECHCOMBANK",
+                            CitizenIdentificationNumber = "0931248141241231",
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
-                            Diploma = "TEST",
-                            IdentityImage = "IMGTEST",
+                            CreatedDateCIN = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            District = "Quận nine",
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastModifiedBy = "Test"
+                            LastModifiedBy = "Test",
+                            PlaceForCIN = "TP HCM",
+                            PositionId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                            Province = "TP Hồ Chí Minh"
                         });
                 });
 
@@ -978,6 +1046,65 @@ namespace hrOT.Infrastructure.Migrations
                             Status = true,
                             TeamSize = 4,
                             TechStack = "MSSQL, .NET 7, MVC"
+                        });
+                });
+
+            modelBuilder.Entity("hrOT.Domain.Entities.Family", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HomeTown")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MotherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumberOfDependents")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Families");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("668d6b8b-7997-40fc-9454-036158af413b"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "Test",
+                            EmployeeId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
+                            FatherName = "Test",
+                            HomeTown = "Test",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "Test",
+                            MotherName = "Test",
+                            NumberOfDependents = 3
                         });
                 });
 
@@ -1479,6 +1606,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1494,6 +1624,8 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("Positions");
 
                     b.HasData(
@@ -1502,6 +1634,7 @@ namespace hrOT.Infrastructure.Migrations
                             Id = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
+                            DepartmentId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "Test",
@@ -2087,23 +2220,22 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("InterviewProcess");
                 });
 
-            modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
+            modelBuilder.Entity("hrOT.Domain.Entities.Degree", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
-                        .WithMany("Departments")
+                        .WithMany("Degrees")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("hrOT.Domain.Entities.Position", "Position")
-                        .WithMany("Departments")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Employee");
+                });
 
-                    b.Navigation("Position");
+            modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
+                {
+                    b.HasOne("hrOT.Domain.Entities.Employee", null)
+                        .WithMany("Departments")
+                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>
@@ -2125,7 +2257,15 @@ namespace hrOT.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("hrOT.Domain.Entities.Position", "Position")
+                        .WithOne("Employee")
+                        .HasForeignKey("hrOT.Domain.Entities.Employee", "PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
@@ -2143,6 +2283,17 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
                         .WithMany("Experiences")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("hrOT.Domain.Entities.Family", b =>
+                {
+                    b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
+                        .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2246,6 +2397,17 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("CompanyContract");
                 });
 
+            modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
+                {
+                    b.HasOne("hrOT.Domain.Entities.Department", "Department")
+                        .WithMany("Positionss")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("hrOT.Domain.Entities.Skill_Employee", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
@@ -2343,8 +2505,15 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("PaymentHistories");
                 });
 
+            modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
+                {
+                    b.Navigation("Positionss");
+                });
+
             modelBuilder.Entity("hrOT.Domain.Entities.Employee", b =>
                 {
+                    b.Navigation("Degrees");
+
                     b.Navigation("Departments");
 
                     b.Navigation("EmployeeContracts");
@@ -2381,7 +2550,7 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
                 {
-                    b.Navigation("Departments");
+                    b.Navigation("Employee");
 
                     b.Navigation("Levels");
                 });
