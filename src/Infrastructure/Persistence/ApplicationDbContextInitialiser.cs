@@ -53,16 +53,13 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
-
         // Roles
-        var roles = new List<IdentityRole>
-    {
-        new IdentityRole("Manager"),
-        new IdentityRole("Staff"),
-        new IdentityRole("Employee")
-    };
-
-        
+        /*var roles = new List<IdentityRole>
+        {
+            new IdentityRole("Manager"),
+            new IdentityRole("Staff"),
+            new IdentityRole("Employee")
+        };
 
         foreach (var role in roles)
         {
@@ -76,15 +73,12 @@ public class ApplicationDbContextInitialiser
         // Manager
         var administrator = new ApplicationUser
         {
-            UserName = "administrator@localhost",
-           
+            UserName = "administrator@localhost",          
             Fullname = "sinh",
             Email = "administrator@localhost",
             Image = "123",
             
         };
-
-   
 
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
@@ -97,34 +91,11 @@ public class ApplicationDbContextInitialiser
             }
         }
 
-        // Staff
-        var staff = new ApplicationUser
-        {
-            UserName = "staff@localhost",
-            Email = "staff@localhost",
-            Fullname = "sinh",
-          
-            Image = "123",
-            
-        };
-
-        if (_userManager.Users.All(u => u.UserName != staff.UserName))
-        {
-            await _userManager.CreateAsync(staff, "Aa123@");
-
-            var staffRole = roles.FirstOrDefault(r => r.Name == "Staff");
-            if (staffRole != null)
-            {
-                await _userManager.AddToRoleAsync(staff, staffRole.Name);
-            }
-        }
-
         // Employee
         var employee = new ApplicationUser
         {
             UserName = "employee@localhost",
-            Email = "employee@localhost",
-           
+            Email = "employee@localhost",           
             Fullname = "sinh",
             Image = "123",
             
@@ -140,7 +111,7 @@ public class ApplicationDbContextInitialiser
                 await _userManager.AddToRoleAsync(employee, employeeRole.Name);
             }
         }
-
+*/
         if (!_context.TodoLists.Any())
         {
             _context.TodoLists.Add(new TodoList

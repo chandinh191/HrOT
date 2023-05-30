@@ -9,6 +9,7 @@ using hrOT.Domain.IdentityModel;
 using hrOT.Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -69,22 +70,35 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        //Seeding database
+        builder.Entity<IdentityRole>()
+            .HasData(
+            new IdentityRole
+            {
+                Id = "12d0cad0-91be-4c7d-91f3-11eb0d626dd4",
+                Name = "Manager",
+                NormalizedName = "MANAGER"
+            },
+            new IdentityRole
+            {
+                Id = "d05c7a66-6126-4f93-ad49-fe3b97cee5d2",
+                Name = "Employee",
+                NormalizedName = "EMPLOYEE"
+            });
+
         builder.Entity<ApplicationUser>()
             .HasData(
             new ApplicationUser
             {
                 Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 Fullname = "Lewis",
-                
                 Image = "TESTIMAGE",
-                UserName = "test",
+                UserName = "admin",
                 BirthDay = DateTime.Parse("9/9/9999"),
                 NormalizedUserName = "test",
                 Email = "test@gmail.com",
                 NormalizedEmail = "test@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = "098f6bcd4621d373cade4e832627b4f6",
+                PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
                 SecurityStamp = "test",
                 ConcurrencyStamp = "test",
                 PhoneNumber = "123456789",
@@ -93,15 +107,50 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
                 LockoutEnabled = false,
                 AccessFailedCount = 0
+            },
+            new ApplicationUser
+            {
+                Id = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
+                Fullname = "Lewis2",
+                Image = "TESTIMAGE2",
+                UserName = "employee",
+                BirthDay = DateTime.Parse("9/9/9999"),
+                NormalizedUserName = "test2",
+                Email = "test2@gmail.com",
+                NormalizedEmail = "test2@gmail.com",
+                EmailConfirmed = true,
+                PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
+                SecurityStamp = "test2",
+                ConcurrencyStamp = "test2",
+                PhoneNumber = "123456788",
+                PhoneNumberConfirmed = true,
+                TwoFactorEnabled = false,
+                LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
+                LockoutEnabled = false,
+                AccessFailedCount = 0
             }
         );
+
+        builder.Entity<IdentityUserRole<string>>()
+            .HasData(
+            new IdentityUserRole<string>
+            {
+                UserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
+                RoleId = "12d0cad0-91be-4c7d-91f3-11eb0d626dd4"
+            },
+            new IdentityUserRole<string>
+            {
+                UserId = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
+                RoleId = "d05c7a66-6126-4f93-ad49-fe3b97cee5d2"
+            }
+        );
+        
 
         builder.Entity<Department>()
             .HasData(
             new Department
             {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
-               
+                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),            
                 Name = "Phòng IT",
                 Description = "Đảm nhận công việc liên quan phần mềm",
                 Created = DateTime.Parse("9/9/9999"),
@@ -134,8 +183,27 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                //IdentityImage = "IMGTEST",
                 CitizenIdentificationNumber = "0931248141241231",
+                CreatedDateCIN = DateTime.Parse("1/1/2023"),
+                PlaceForCIN = "TP HCM",
+                Address = "123, Lê Văn Việt, Tăng Nhơn Phú",
+                District = "Quận nine",
+                Province = "TP Hồ Chí Minh",
+                BankAccountNumber = "123456789",
+                BankAccountName = "LUONG THE DAN",
+                BankName = "TECHCOMBANK",
+                Created = DateTime.Parse("9/9/9999"),
+                CreatedBy = "Test",
+                LastModified = DateTime.Parse("9/9/9999"),
+                LastModifiedBy = "Test",
+                IsDeleted = false
+            },
+            new Employee
+            {
+                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894149"),
+                ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
+                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                CitizenIdentificationNumber = "0931248141241286",
                 CreatedDateCIN = DateTime.Parse("1/1/2023"),
                 PlaceForCIN = "TP HCM",
                 Address = "123, Lê Văn Việt, Tăng Nhơn Phú",
