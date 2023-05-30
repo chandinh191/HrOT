@@ -53,16 +53,13 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
-
         // Roles
-        var roles = new List<IdentityRole>
+        /*var roles = new List<IdentityRole>
         {
             new IdentityRole("Manager"),
             new IdentityRole("Staff"),
             new IdentityRole("Employee")
         };
-
-        
 
         foreach (var role in roles)
         {
@@ -83,8 +80,6 @@ public class ApplicationDbContextInitialiser
             
         };
 
-   
-
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
             await _userManager.CreateAsync(administrator, "Aa123@");
@@ -93,28 +88,6 @@ public class ApplicationDbContextInitialiser
             if (administratorRole != null)
             {
                 await _userManager.AddToRoleAsync(administrator, administratorRole.Name);
-            }
-        }
-
-        // Staff
-        var staff = new ApplicationUser
-        {
-            UserName = "staff@localhost",
-            Email = "staff@localhost",
-            Fullname = "sinh",
-          
-            Image = "123",
-            
-        };
-
-        if (_userManager.Users.All(u => u.UserName != staff.UserName))
-        {
-            await _userManager.CreateAsync(staff, "Aa123@");
-
-            var staffRole = roles.FirstOrDefault(r => r.Name == "Staff");
-            if (staffRole != null)
-            {
-                await _userManager.AddToRoleAsync(staff, staffRole.Name);
             }
         }
 
@@ -138,7 +111,7 @@ public class ApplicationDbContextInitialiser
                 await _userManager.AddToRoleAsync(employee, employeeRole.Name);
             }
         }
-
+*/
         if (!_context.TodoLists.Any())
         {
             _context.TodoLists.Add(new TodoList

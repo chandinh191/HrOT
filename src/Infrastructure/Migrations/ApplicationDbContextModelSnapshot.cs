@@ -188,6 +188,20 @@ namespace hrOT.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "12d0cad0-91be-4c7d-91f3-11eb0d626dd4",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = "d05c7a66-6126-4f93-ad49-fe3b97cee5d2",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -277,6 +291,18 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
+                            RoleId = "12d0cad0-91be-4c7d-91f3-11eb0d626dd4"
+                        },
+                        new
+                        {
+                            UserId = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
+                            RoleId = "d05c7a66-6126-4f93-ad49-fe3b97cee5d2"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -595,11 +621,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-
-
                     b.Property<Guid?>("EmployeeId")
-
-
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -618,10 +640,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
-
-
-                    b.HasIndex("PositionId");
-
 
                     b.ToTable("Departments");
 
@@ -742,12 +760,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-
-
-                    b.HasIndex("PositionId")
-                        .IsUnique();
-
-
+                    b.HasIndex("PositionId");
 
                     b.ToTable("Employees");
 
@@ -761,6 +774,26 @@ namespace hrOT.Infrastructure.Migrations
                             BankAccountNumber = "123456789",
                             BankName = "TECHCOMBANK",
                             CitizenIdentificationNumber = "0931248141241231",
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "Test",
+                            CreatedDateCIN = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            District = "Quận nine",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "Test",
+                            PlaceForCIN = "TP HCM",
+                            PositionId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                            Province = "TP Hồ Chí Minh"
+                        },
+                        new
+                        {
+                            Id = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894149"),
+                            Address = "123, Lê Văn Việt, Tăng Nhơn Phú",
+                            ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
+                            BankAccountName = "LUONG THE DAN",
+                            BankAccountNumber = "123456789",
+                            BankName = "TECHCOMBANK",
+                            CitizenIdentificationNumber = "0931248141241286",
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
                             CreatedDateCIN = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2138,12 +2171,33 @@ namespace hrOT.Infrastructure.Migrations
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             NormalizedEmail = "test@gmail.com",
                             NormalizedUserName = "test",
-                            PasswordHash = "098f6bcd4621d373cade4e832627b4f6",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "test",
                             TwoFactorEnabled = false,
-                            UserName = "test"
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
+                            AccessFailedCount = 0,
+                            BirthDay = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ConcurrencyStamp = "test2",
+                            Email = "test2@gmail.com",
+                            EmailConfirmed = true,
+                            Fullname = "Lewis2",
+                            Image = "TESTIMAGE2",
+                            LockoutEnabled = false,
+                            LockoutEnd = new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
+                            NormalizedEmail = "test2@gmail.com",
+                            NormalizedUserName = "test2",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
+                            PhoneNumber = "123456788",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "test2",
+                            TwoFactorEnabled = false,
+                            UserName = "employee"
                         });
                 });
 
@@ -2237,11 +2291,9 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
-
                     b.HasOne("hrOT.Domain.Entities.Employee", null)
                         .WithMany("Departments")
                         .HasForeignKey("EmployeeId");
-
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>
@@ -2263,10 +2315,9 @@ namespace hrOT.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-
                     b.HasOne("hrOT.Domain.Entities.Position", "Position")
-                        .WithOne("Employee")
-                        .HasForeignKey("hrOT.Domain.Entities.Employee", "PositionId")
+                        .WithMany("Employee")
+                        .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2404,7 +2455,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("CompanyContract");
                 });
 
-
             modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.Department", "Department")
@@ -2415,7 +2465,6 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.Navigation("Department");
                 });
-
 
             modelBuilder.Entity("hrOT.Domain.Entities.Skill_Employee", b =>
                 {
@@ -2514,12 +2563,10 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("PaymentHistories");
                 });
 
-
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
                     b.Navigation("Positionss");
                 });
-
 
             modelBuilder.Entity("hrOT.Domain.Entities.Employee", b =>
                 {
@@ -2561,9 +2608,7 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
                 {
-
                     b.Navigation("Employee");
-
 
                     b.Navigation("Levels");
                 });
