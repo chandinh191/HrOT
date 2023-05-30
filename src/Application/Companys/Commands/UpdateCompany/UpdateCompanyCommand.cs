@@ -12,7 +12,7 @@ namespace hrOT.Application.Companys.Commands.UpdateCompany;
 
 public record UpdateCompanyCommand : IRequest
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? Address { get; set; }
     public string? AccountEmail { get; set; }
