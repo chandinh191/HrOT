@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using hrOT.Application.Common.Interfaces;
+using hrOT.Application.EmployeeContracts.Commands.Add;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace hrOT.Application.EmployeeContracts.Commands.Update;
 
@@ -23,11 +25,14 @@ public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_Up
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
 
-    public Employee_UpdateContractCommandHandler(IApplicationDbContext context, IMapper mapper)
+
+    public Employee_UpdateContractCommandHandler(IApplicationDbContext context, IMapper mapper, IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;
+        _configuration = configuration;
     }
 
     public async Task<bool> Handle(Employee_UpdateContractCommand request, CancellationToken cancellationToken)
@@ -44,7 +49,7 @@ public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_Up
 
             if (contract != null)
             {
-                contract.File = request.EmployeeContract.File;
+                contract.File = UploadFile(request);
                 contract.StartDate = request.EmployeeContract.StartDate;
                 contract.EndDate = request.EmployeeContract.EndDate;
                 contract.Job = request.EmployeeContract.Job;
@@ -63,5 +68,32 @@ public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_Up
         }
 
         return false;
+    }
+
+    private String UploadFile(Employee_UpdateContractCommand request)
+    {
+        var file = request.EmployeeContract.File;
+        if (file != null && file.Length > 0)
+        {
+            // Generate a unique file name
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+
+            // Specify the directory to save the CV files
+            string uploadDirectory = _configuration.GetSection("UploadDirectory").Value;
+
+            // Combine the directory and file name to get the full file path
+            var filePath = Path.Combine(uploadDirectory, fileName);
+
+            // Save the file to the specified path
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyToAsync(stream);
+            }
+
+            // Update the CVPath property of the employee
+            return filePath;
+
+        }
+        return null;
     }
 }

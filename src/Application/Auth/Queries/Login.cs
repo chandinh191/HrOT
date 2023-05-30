@@ -39,65 +39,80 @@ namespace hrOT.Application.Auth.Queries
 
         public async Task<string> Handle(Login request, CancellationToken cancellationToken)
         {
-            var result = await _identityService.AuthenticateAsync(request.Username.Trim(), request.Password.Trim());
-
-            if (result.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.FindByNameAsync(request.Username);
+                var user = await _userManager.FindByNameAsync(request.Username.Trim());
                 if (user == null)
+                {
                     throw new NotFoundException(nameof(ApplicationUser), request.Username);
-
-                var httpContext = _httpContextAccessor.HttpContext;
-                var response = httpContext.Response;
-                var userManager = _userManager;
-
-                var roles = await userManager.GetRolesAsync(user);
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim("Id", user.Id),
-                };
-
-                response.Cookies.Append("FullName", user.Fullname);
-                response.Cookies.Append("Image", user.Image);
-
-                foreach (var role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
                 }
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
+                var passwordHasher = new PasswordHasher<ApplicationUser>();
+                var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password.Trim());
 
-                await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                /*var employee = await _context.Employees.FirstOrDefaultAsync(e => e.ApplicationUserId == user.Id);
-                var employeeId = employee.Id;
-                response.Cookies.Append("EmployeeId", employeeId.ToString());*/
-
-                if (await userManager.IsInRoleAsync(user, "Manager"))
+                if (passwordVerificationResult == PasswordVerificationResult.Success)
                 {
+                    var httpContext = _httpContextAccessor.HttpContext;
+                    var response = httpContext.Response;
+                    var userManager = _userManager;
 
+                    var roles = await userManager.GetRolesAsync(user);
 
-                    return "Đăng nhập thành công với quyền quản lý";
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim("Id", user.Id),
+           
+                    };
+                   
+                    response.Cookies.Append("FullName", user.Fullname);
+
+                    //Lấy role 
+                    foreach (var role in roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                        response.Cookies.Append("Role", role);
+                    }
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+
+                    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    //Lấy id của Employee
+                    var employee = await _context.Employees.FirstOrDefaultAsync(e => e.ApplicationUserId == user.Id);
+
+                    if (employee != null)
+                    {
+                        var employeeId = employee.Id;
+                       
+                        response.Cookies.Append("EmployeeId", employeeId.ToString());
+                    }
+                    //Thông báo role khi đăng nhập
+
+                    if (await userManager.IsInRoleAsync(user, "Manager"))
+                    {
+                        return "Đăng nhập thành công với quyền quản lý";
+                    }
+                    else if (await userManager.IsInRoleAsync(user, "Staff"))
+                    {
+                        return "Đăng nhập thành công với quyền nhân viên";
+                    }
+                    else if (await userManager.IsInRoleAsync(user, "Employee"))
+                    {
+                        return "Đăng nhập thành công với quyền người dùng";
+                    }
                 }
-                else if (await userManager.IsInRoleAsync(user, "Staff"))
-                {
 
-
-                    return "Đăng nhập thành công với quyền nhân viên";
-                }
-                else if (await userManager.IsInRoleAsync(user, "Employee"))
-                {
-
-
-                    return "Đăng nhập thành công với quyền người dùng";
-                }
+            }catch(Exception ex)
+            {
+                return("Thông tin người dùng không hợp lệ");
             }
 
-            throw new AuthenticationException("Invalid user details");
+
+           return("Thông tin người dùng không hợp lệ");
         }
+
     }
 }

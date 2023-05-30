@@ -1,5 +1,6 @@
 ﻿using hrOT.Application.Auth.Queries;
 using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Common.Models;
 using hrOT.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -27,38 +28,17 @@ namespace WebUI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromForm] LoginWithPassword model)
         {
-            try
-            {
-                var user = await _mediator.Send(new Login { Username = model.Username, Password = model.Password });         
 
+            if (User.Identity.IsAuthenticated)
+            {
                 
-                // Xử lý thành công, thực hiện các hành động khác
-                
-
-                return Ok(user);
-
-              
-            }
-            catch (NotFoundException ex)
-            {
-                // Xử lý khi người dùng không tồn tại
-                _logger.LogError(ex, "User not found");
-                return Ok("Đăng nhập tài khoản thất bại");
-            }
-            catch (AuthenticationException ex)
-            {
-                // Xử lý khi xác thực không thành công
-                _logger.LogError(ex, "Authentication failed");
-                return Ok("Đăng nhập mật khẩu thất bại");
-            }
-            catch (Exception ex)
-            {
-                // Xử lý khi có lỗi xảy ra
-                _logger.LogError(ex, "Error during login");
-                return Ok("Đăng nhập cả hai thất bại");
+                return BadRequest("Bạn đã đăng nhập.");
             }
 
-          
+            var user = await _mediator.Send(new Login { Username = model.Username, Password = model.Password });
+
+            return Ok(user);
+
         }
         [HttpPost("change-password")]
         
@@ -78,13 +58,9 @@ namespace WebUI.Controllers
             catch (NotFoundException ex)
             {
                 _logger.LogError(ex, "User not found");
-                return Ok("Người dùng không tồn tại.");
+                return BadRequest("Người dùng không tồn tại.");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during password change");
-                return Ok("Lỗi khi đổi mật khẩu.");
-            }
+            
         }
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromForm] ResetPassword model)
@@ -98,13 +74,9 @@ namespace WebUI.Controllers
             catch (NotFoundException ex)
             {
                 _logger.LogError(ex, "User not found");
-                return Ok("Người dùng không tồn tại.");
+                return BadRequest("Người dùng không tồn tại.");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during password reset");
-                return Ok("Lỗi khi đặt lại mật khẩu.");
-            }
+            
         }
         [HttpGet("logout")]
         public async Task<IActionResult> Logout()
@@ -114,5 +86,14 @@ namespace WebUI.Controllers
             return Ok("Đăng xuát thành công"); // Chuyển hướng người dùng đến trang đăng nhập
             
         }
+        private async Task<Employee> FindUserByUsername(Guid Id)
+        {
+            // Thực hiện logic để tìm người dùng dựa trên username
+            // Ví dụ:
+            var employee = await _mediator.Send(new FindUserByUsernameQuery { Id = Id });
+
+            return employee;
+        }
+
     }
 }
