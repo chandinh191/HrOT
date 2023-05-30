@@ -10,27 +10,32 @@ using hrOT.Application.Common.Interfaces;
 using hrOT.Application.TodoLists.Queries.GetTodos;
 using hrOT.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace hrOT.Application.Employees.Queries;
 public record Employee_GetEmployeeQuery : IRequest<EmployeeVm>
 {
-    public Guid Id { get; set; }
+    
 }
 
 public class Employee_GetEmployeeQueryHandler : IRequestHandler<Employee_GetEmployeeQuery, EmployeeVm>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public Employee_GetEmployeeQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public Employee_GetEmployeeQueryHandler(IApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<EmployeeVm> Handle(Employee_GetEmployeeQuery request, CancellationToken cancellationToken)
     {
-        var employee = await _context.Employees.FindAsync(request.Id);
+        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = Guid.Parse(employeeIdCookie);
+        var employee = await _context.Employees.FindAsync(employeeId);
 
         if (employee == null || employee.IsDeleted)
         {
@@ -38,7 +43,7 @@ public class Employee_GetEmployeeQueryHandler : IRequestHandler<Employee_GetEmpl
         }
 
         var employeeVm = _context.Employees
-            .Where(e => e.Id == request.Id)
+            .Where(e => e.Id == employeeId)
             .ProjectTo<EmployeeVm>(_mapper.ConfigurationProvider)
             .FirstOrDefault();
 

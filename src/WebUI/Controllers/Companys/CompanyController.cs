@@ -1,4 +1,4 @@
-﻿/*using hrOT.Application.Departments.Commands.CreateDepartment;
+﻿using hrOT.Application.Departments.Commands.CreateDepartment;
 using hrOT.Application.Departments.Commands.DeleteDepartment;
 using hrOT.Application.Departments.Commands.UpdateDepartment;
 using hrOT.Application.Departments.Queries.GetDepartment;
@@ -78,4 +78,3 @@ public class CompanyController : ApiControllerBase
     }
 }
 
-*/
