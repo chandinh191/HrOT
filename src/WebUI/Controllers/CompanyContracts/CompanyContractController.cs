@@ -1,4 +1,4 @@
-﻿/*using hrOT.Application.CompanyContracts.Commands.Create;
+﻿using hrOT.Application.CompanyContracts.Commands.Create;
 using hrOT.Application.CompanyContracts.Commands.Delete;
 using hrOT.Application.CompanyContracts.Commands.Update;
 using hrOT.Application.CompanyContracts.Queries;
@@ -67,4 +67,3 @@ public class CompanyContractController : ApiControllerBase
         }
     }
 }
-*/
