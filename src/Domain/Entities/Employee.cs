@@ -9,19 +9,22 @@ public class Employee : BaseAuditableEntity
     public string ApplicationUserId { get; set; }
 
     // Bằng cấp
-    public string? Diploma { get; set; }
+    //public string? Diploma { get; set; }
 
     // Thẻ căn cước
-    public string? IdentityImage { get; set; }
-
+    public string? CitizenIdentificationNumber { get; set; }
+    public DateTime? CreatedDateCIN { get; set; }
+    public string? PlaceForCIN { get; set; }
     // Ngân Hàng
     public string BankName { get; set; }
-
     public string BankAccountNumber { get; set; }
-
     public string BankAccountName { get; set; }
-
     public string? CVPath { get; set; }
+
+    //Địa chỉ
+    public string? Address { get; set; }
+    public string? District { get; set; }
+    public string? Province { get; set; }
 
     // Relationship
     public IList<Experience> Experiences { get; private set; }
@@ -36,4 +39,6 @@ public class Employee : BaseAuditableEntity
 
     public virtual ApplicationUser ApplicationUser { get; set; }
     public IList<TimeAttendanceLog> TimeAttendanceLogs { get; private set; }
+
+    public IList<Degree> Degrees { get; private set; }
 }

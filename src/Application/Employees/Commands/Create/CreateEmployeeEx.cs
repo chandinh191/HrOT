@@ -90,8 +90,8 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
                             {
                                 //PositionId = Guid.Parse(worksheet.Cells[row, 15].Value?.ToString()),
                                 ApplicationUserId = user.Id,
-                                IdentityImage = worksheet.Cells[row, 7].Value?.ToString(),
-                                Diploma = worksheet.Cells[row, 6].Value?.ToString(),
+                                //IdentityImage = worksheet.Cells[row, 7].Value?.ToString(),
+                                //Diploma = worksheet.Cells[row, 6].Value?.ToString(),
                                 BankName = worksheet.Cells[row, 9].Value?.ToString(),
                                 BankAccountNumber = worksheet.Cells[row, 10].Value?.ToString(),
                                 BankAccountName = worksheet.Cells[row, 11].Value?.ToString(),

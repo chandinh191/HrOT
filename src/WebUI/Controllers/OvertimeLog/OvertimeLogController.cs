@@ -7,6 +7,8 @@ using hrOT.Application.OvertimeLogs.Commands.Create;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers.OvertimeLog;
+[Route("api/[controller]")]
+[ApiController]
 public class OvertimeLogController : ApiControllerBase
 {
 
