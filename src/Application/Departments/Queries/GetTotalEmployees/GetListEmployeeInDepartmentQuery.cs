@@ -25,8 +25,10 @@ public class GetListEmployeeInDepartmentQueryHandler : IRequestHandler<GetListEm
 
     public async Task<int> Handle(GetListEmployeeInDepartmentQuery request, CancellationToken cancellationToken)
     {
-        var employeeHolder = await _context.Departments
-            .Where(d => d.Id == request.DepartmentID)
+        var employeeHolder = await _context.Employees
+            .Include(e => e.Position)
+            .ThenInclude(e => e.Department)
+            .Where(e => e.Position.Department.Id == request.DepartmentID)
             .CountAsync(cancellationToken);
 
         return employeeHolder;

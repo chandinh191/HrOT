@@ -595,7 +595,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("EmployeeId")
+                    b.Property<Guid?>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -611,14 +611,9 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PositionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("PositionId");
 
                     b.ToTable("Departments");
 
@@ -629,12 +624,10 @@ namespace hrOT.Infrastructure.Migrations
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
                             Description = "Đảm nhận công việc liên quan phần mềm",
-                            EmployeeId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "Test",
-                            Name = "Phòng IT",
-                            PositionId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143")
+                            Name = "Phòng IT"
                         });
                 });
 
@@ -730,12 +723,18 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("PlaceForCIN")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Province")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
+                    b.HasIndex("PositionId")
                         .IsUnique();
 
                     b.ToTable("Employees");
@@ -758,6 +757,7 @@ namespace hrOT.Infrastructure.Migrations
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "Test",
                             PlaceForCIN = "TP HCM",
+                            PositionId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
                             Province = "TP Hồ Chí Minh"
                         });
                 });
@@ -1603,6 +1603,9 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1618,6 +1621,8 @@ namespace hrOT.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("Positions");
 
                     b.HasData(
@@ -1626,6 +1631,7 @@ namespace hrOT.Infrastructure.Migrations
                             Id = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
+                            DepartmentId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "Test",
@@ -2219,21 +2225,9 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
                 {
-                    b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
+                    b.HasOne("hrOT.Domain.Entities.Employee", null)
                         .WithMany("Departments")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("hrOT.Domain.Entities.Position", "Position")
-                        .WithMany("Departments")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Position");
+                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>
@@ -2255,7 +2249,15 @@ namespace hrOT.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("hrOT.Domain.Entities.Position", "Position")
+                        .WithOne("Employee")
+                        .HasForeignKey("hrOT.Domain.Entities.Employee", "PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
@@ -2387,6 +2389,17 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("CompanyContract");
                 });
 
+            modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
+                {
+                    b.HasOne("hrOT.Domain.Entities.Department", "Department")
+                        .WithMany("Positionss")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("hrOT.Domain.Entities.Skill_Employee", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
@@ -2484,6 +2497,11 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("PaymentHistories");
                 });
 
+            modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
+                {
+                    b.Navigation("Positionss");
+                });
+
             modelBuilder.Entity("hrOT.Domain.Entities.Employee", b =>
                 {
                     b.Navigation("Degrees");
@@ -2524,7 +2542,7 @@ namespace hrOT.Infrastructure.Migrations
 
             modelBuilder.Entity("hrOT.Domain.Entities.Position", b =>
                 {
-                    b.Navigation("Departments");
+                    b.Navigation("Employee");
 
                     b.Navigation("Levels");
                 });

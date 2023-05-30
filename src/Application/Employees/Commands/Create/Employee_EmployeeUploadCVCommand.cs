@@ -9,30 +9,34 @@ using hrOT.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace hrOT.Application.Employees.Commands.Create;
 public class Employee_EmployeeUploadCVCommand : IRequest
 {
-    public Guid Id { get; set; }
+    //public Guid Id { get; set; }
     public IFormFile CVFile { get; set; }
-
+    public Guid Id { get; set; }
 }
 
 public class Employee_EmployeeUploadCVHandler : IRequestHandler<Employee_EmployeeUploadCVCommand>
 {
     private readonly IApplicationDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public Employee_EmployeeUploadCVHandler(IApplicationDbContext context, IConfiguration configuration)
+    public Employee_EmployeeUploadCVHandler(IApplicationDbContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _configuration = configuration;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<Unit> Handle(Employee_EmployeeUploadCVCommand request, CancellationToken cancellationToken)
     {
-
-        var employee = await _context.Employees.FindAsync(request.Id);
+        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = Guid.Parse(employeeIdCookie);
+        var employee = await _context.Employees.FindAsync(employeeId);
 
         if (employee == null || employee.IsDeleted)
         {
