@@ -1,5 +1,4 @@
 ﻿using hrOT.Application.Common.Exceptions;
-using hrOT.Application.Employees;
 using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
@@ -31,14 +30,22 @@ namespace WebUI.Controllers
         {
             //var employeeIdCookie = Request.Cookies["EmployeeId"];
             return await _mediator.Send(new GetAllEmployeeQuery());
+        }
 
+        [HttpGet("GetTotalEmployee")]
+        [Authorize(Policy = "manager")]
+        public async Task<IActionResult> GetTotalEmployee()
+        {
+            var result = await Mediator.Send(new Staff_GetTotalEmployeeQuery());
+            return result > 0
+                ? Ok(result)
+                : BadRequest("Không tồn tại nhân viên nào trong công ty");
         }
 
         [HttpPost("create")]
         [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
-
             if (ModelState.IsValid && createModel != null)
             {
                 var entityId = await _mediator.Send(createModel);
@@ -47,7 +54,6 @@ namespace WebUI.Controllers
             }
 
             return BadRequest("Thêm thất bại");
-
         }
 
         [HttpPut("{id}")]
@@ -132,7 +138,6 @@ namespace WebUI.Controllers
             return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
         }
 
-
         [HttpGet("GetEmployeeById")]
         [Authorize(Policy = "employee")]
         public async Task<IActionResult> GetEmployee(Guid id)
@@ -194,7 +199,7 @@ namespace WebUI.Controllers
 
             var result = await Mediator.Send(new Employee_GetByMatchingJobDescriptionSkillQuery(SkillName));
 
-            return (result != null )
+            return (result != null)
                 ? Ok(result)
                 : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
         }
