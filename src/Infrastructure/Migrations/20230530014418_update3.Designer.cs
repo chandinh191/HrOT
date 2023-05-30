@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hrOT.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230530014418_update3")]
+    partial class update3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,41 +367,6 @@ namespace hrOT.Infrastructure.Migrations
                             Requirements = "test",
                             Type = 0
                         });
-                });
-
-            modelBuilder.Entity("hrOT.Domain.Entities.AnnualWorkingDay", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Coefficients")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TypeDate")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AnnualWorkingDays");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.Company", b =>
@@ -1171,8 +1139,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("LeaveHours")
-                        .HasColumnType("float");
+                    b.Property<int>("LeaveHours")
+                        .HasColumnType("int");
 
                     b.Property<string>("Reason")
                         .IsRequired()
@@ -1201,7 +1169,7 @@ namespace hrOT.Infrastructure.Migrations
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "test",
-                            LeaveHours = 1.0,
+                            LeaveHours = 1,
                             Reason = "test",
                             StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 0
@@ -1302,7 +1270,7 @@ namespace hrOT.Infrastructure.Migrations
                             LastModifiedBy = "test",
                             StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 0,
-                            TotalHours = 9.0
+                            TotalHours = 0.0
                         });
                 });
 
@@ -1785,46 +1753,6 @@ namespace hrOT.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("hrOT.Domain.Entities.TimeAttendanceLog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Ducation")
-                        .HasColumnType("float");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("TimeAttendanceLogs");
-                });
-
             modelBuilder.Entity("hrOT.Domain.Entities.TodoItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2281,17 +2209,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("Skill");
                 });
 
-            modelBuilder.Entity("hrOT.Domain.Entities.TimeAttendanceLog", b =>
-                {
-                    b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
-                        .WithMany("TimeAttendanceLogs")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("hrOT.Domain.Entities.TodoItem", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.TodoList", "List")
@@ -2358,8 +2275,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("OvertimeLogs");
 
                     b.Navigation("Skill_Employees");
-
-                    b.Navigation("TimeAttendanceLogs");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
