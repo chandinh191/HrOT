@@ -5,11 +5,11 @@ using MediatR;
 
 namespace hrOT.Application.Experiences.Commands;
 
-public class Employee_ExperienceUpdateCommand : IRequest<bool>
+public class Employee_ExperienceUpdateCommand : IRequest<string>
 {
     public ExperienceCommandDTO Experience { get; set; }
     public Guid EmployeeID { get; set; }
-    public Guid ExperienceID { get; set; } 
+    public Guid ExperienceID { get; set; }
 
     public Employee_ExperienceUpdateCommand(Guid ExperienceID, Guid EmployeeID, ExperienceCommandDTO experience)
     {
@@ -19,7 +19,7 @@ public class Employee_ExperienceUpdateCommand : IRequest<bool>
     }
 }
 
-public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_ExperienceUpdateCommand, bool>
+public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_ExperienceUpdateCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -30,7 +30,7 @@ public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_
         _mapper = mapper;
     }
 
-    public async Task<bool> Handle(Employee_ExperienceUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(Employee_ExperienceUpdateCommand request, CancellationToken cancellationToken)
     {
         var employee = _context.Employees
             .Where(e => e.Id == request.EmployeeID)
@@ -42,7 +42,7 @@ public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_
             .Where(exp => exp.Id == request.ExperienceID)
             .FirstOrDefault();
 
-            if (updateExp != null)
+            if (updateExp != null && updateExp.IsDeleted == false)
             {
                 updateExp.NameProject = request.Experience.NameProject;
                 updateExp.TeamSize = request.Experience.TeamSize;
@@ -55,10 +55,14 @@ public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_
 
                 _context.Experiences.Update(updateExp);
                 await _context.SaveChangesAsync(cancellationToken);
-                return true;
+                return "Cập nhật thành công";
+            }
+            else
+            {
+                return "Kinh nghiệm này đã bị xóa!";
             }
         }
 
-        return false;
+        return "Cập nhật thất bại";
     }
 }

@@ -1,11 +1,11 @@
 ﻿using hrOT.Application.TimeAttendanceLogs.Commands.Create;
 using hrOT.Application.TimeAttendanceLogs.Commands.Update;
 using hrOT.WebUI.Controllers;
-using LogOT.Application.Employees.Commands.Create;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.TimeAttendanceLogs;
+
 public class TimeAttendanceLogController : ApiControllerBase
 {
     [HttpPost("ImportExcel")]
@@ -37,6 +37,7 @@ public class TimeAttendanceLogController : ApiControllerBase
 
         return BadRequest("Thêm thất bại");
     }
+
     private bool IsExcelFile(IFormFile file)
     {
         // Kiểm tra phần mở rộng của tệp tin có phải là .xls hoặc .xlsx không
@@ -51,8 +52,8 @@ public class TimeAttendanceLogController : ApiControllerBase
     {
         if (ModelState.IsValid && command != null)
         {
-            await Mediator.Send(command);
-            return Ok("Tính chấm công thành công");
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
         return BadRequest("Tính chấm công thất bại");
     }

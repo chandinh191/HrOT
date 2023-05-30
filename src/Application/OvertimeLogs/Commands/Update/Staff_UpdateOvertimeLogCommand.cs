@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using hrOT.Application.Common.Exceptions;
+﻿using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.TodoLists.Commands.UpdateTodoList;
 using hrOT.Domain.Entities;
 using hrOT.Domain.Enums;
 using MediatR;
 
 namespace hrOT.Application.OvertimeLogs.Commands.Update;
 
-public record Staff_UpdateOvertimeLogCommand : IRequest
+public record Staff_UpdateOvertimeLogCommand : IRequest<string>
 {
     public Guid Id { get; init; }
     public OvertimeLogStatus Status { get; init; }
 }
-public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_UpdateOvertimeLogCommand>
+
+public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_UpdateOvertimeLogCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -26,7 +21,7 @@ public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_Updat
         _context = context;
     }
 
-    public async Task<Unit> Handle(Staff_UpdateOvertimeLogCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(Staff_UpdateOvertimeLogCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.OvertimeLogs
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -35,6 +30,10 @@ public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_Updat
         {
             throw new NotFoundException(nameof(OvertimeLog), request.Id);
         }
+        else if (entity.IsDeleted == true)
+        {
+            return "Log làm thêm giờ này đã bị xóa";
+        }
 
         entity.Status = request.Status;
         entity.LastModified = DateTime.Now;
@@ -42,6 +41,6 @@ public class Staff_UpdateOvertimeLogCommandHandler : IRequestHandler<Staff_Updat
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Cập nhật thành công";
     }
 }

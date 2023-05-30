@@ -48,8 +48,8 @@ public class DepartmentController : ApiControllerBase
         }
         try
         {
-            await Mediator.Send(command);
-            return Ok("Cập nhật thành công");
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
         catch (Exception ex)
         {

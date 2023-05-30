@@ -50,8 +50,8 @@ public class DegreeController : ApiControllerBase
         }
         try
         {
-            await _mediator.Send(command);
-            return Ok("Cập nhật thành công");
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
         catch (Exception ex)
         {

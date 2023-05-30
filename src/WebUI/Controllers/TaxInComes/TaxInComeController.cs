@@ -1,14 +1,13 @@
-﻿using hrOT.Application.Exchanges.Commands.DeleteExchange;
-using hrOT.Application.TaxInComes.Commands.CreateTaxInCome;
+﻿using hrOT.Application.TaxInComes.Commands.CreateTaxInCome;
 using hrOT.Application.TaxInComes.Commands.DeleteTaxInCome;
 using hrOT.Application.TaxInComes.Commands.UpdateTaxInCome;
 using hrOT.Application.TaxInComes.Queries;
 using hrOT.Domain.Entities;
 using hrOT.WebUI.Controllers;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.TaxInComes;
+
 public class TaxInComeController : ApiControllerBase
 {
     [HttpGet]
@@ -37,9 +36,8 @@ public class TaxInComeController : ApiControllerBase
         }
         try
         {
-            await Mediator.Send(command);
-            return Ok("Cập nhật thành công");
-
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
         catch (Exception ex)
         {

@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530132148_SeedingData")]
+    [Migration("20230530153345_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -2048,10 +2048,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("BirthDay")
                         .HasColumnType("datetime2");
 
@@ -2123,7 +2119,6 @@ namespace hrOT.Infrastructure.Migrations
                         {
                             Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                             AccessFailedCount = 0,
-                            Address = "TEST",
                             BirthDay = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ConcurrencyStamp = "test",
                             Email = "test@gmail.com",

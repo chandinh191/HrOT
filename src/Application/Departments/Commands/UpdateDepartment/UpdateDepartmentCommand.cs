@@ -10,7 +10,7 @@ using MediatR;
 
 namespace hrOT.Application.Departments.Commands.UpdateDepartment;
 
-public record UpdateDepartmentCommand : IRequest
+public record UpdateDepartmentCommand : IRequest<string>
 {
     public Guid Id { get; init; }
     public Guid PositionId { get; set; }
@@ -19,7 +19,7 @@ public record UpdateDepartmentCommand : IRequest
     public string? Description { get; init; }
 }
 
-public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand>
+public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -28,7 +28,7 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Departments
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -36,6 +36,9 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
         if (entity == null)
         {
             throw new NotFoundException(nameof(Department), request.Id);
+        } else if (entity.IsDeleted == true)
+        {
+            return "Phòng ban này đã bị xóa!";
         }
 
         entity.Name = request.Name;
@@ -43,7 +46,7 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Cập nhật thành công.";
     }
 }
 
