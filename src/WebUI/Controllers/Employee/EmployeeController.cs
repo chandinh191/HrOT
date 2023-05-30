@@ -102,7 +102,7 @@ namespace WebUI.Controllers
                 // Kiểm tra kiểu tệp tin
                 if (!IsExcelFile(file))
                 {
-                    return BadRequest("Chỉ cho phép sử dụng file Excel");
+                    return BadRequest("Bạn phải import bằng file Excel");
                 }
 
                 var filePath = Path.GetTempFileName(); // Tạo một tệp tạm để lưu trữ tệp Excel
