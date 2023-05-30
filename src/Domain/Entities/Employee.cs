@@ -35,4 +35,5 @@ public class Employee : BaseAuditableEntity
     public IList<Skill_Employee> Skill_Employees { get; private set; }
 
     public virtual ApplicationUser ApplicationUser { get; set; }
+    public IList<TimeAttendanceLog> TimeAttendanceLogs { get; private set; }
 }
