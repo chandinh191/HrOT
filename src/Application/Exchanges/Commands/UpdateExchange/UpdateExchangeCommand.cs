@@ -9,7 +9,7 @@ using hrOT.Domain.Entities;
 using MediatR;
 
 namespace hrOT.Application.Exchanges.Commands.UpdateExchange;
-public record UpdateExchangeCommand : IRequest
+public record UpdateExchangeCommand : IRequest<string>
 {
     public Guid Id { get; init; }
     public double? Muc_quy_doi { get; init; }
@@ -17,7 +17,7 @@ public record UpdateExchangeCommand : IRequest
     public double? Thue_suat { get; init; }
 }
 
-public class UpdateExchangeCommandHandler : IRequestHandler<UpdateExchangeCommand>
+public class UpdateExchangeCommandHandler : IRequestHandler<UpdateExchangeCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -26,7 +26,7 @@ public class UpdateExchangeCommandHandler : IRequestHandler<UpdateExchangeComman
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateExchangeCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateExchangeCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Exchanges
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -34,6 +34,9 @@ public class UpdateExchangeCommandHandler : IRequestHandler<UpdateExchangeComman
         if (entity == null)
         {
             throw new NotFoundException(nameof(TodoList), request.Id);
+        } else if (entity.IsDeleted == true)
+        {
+            return "Bảng quy đổi này đã bị xóa";
         }
 
         entity.Muc_Quy_Doi = request.Muc_quy_doi;
@@ -44,6 +47,6 @@ public class UpdateExchangeCommandHandler : IRequestHandler<UpdateExchangeComman
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Cập nhật thành công";
     }
 }

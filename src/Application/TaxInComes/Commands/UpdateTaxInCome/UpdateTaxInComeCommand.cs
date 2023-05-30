@@ -9,14 +9,14 @@ using hrOT.Domain.Entities;
 using MediatR;
 
 namespace hrOT.Application.TaxInComes.Commands.UpdateTaxInCome;
-public record UpdateTaxInComeCommand : IRequest
+public record UpdateTaxInComeCommand : IRequest<string>
 {
     public Guid Id { get; init; }
     public double? Muc_chiu_thue { get; init; }
     public double? Thue_suat { get; init; }
 }
 
-public class UpdateTaxInComeCommandHandler : IRequestHandler<UpdateTaxInComeCommand>
+public class UpdateTaxInComeCommandHandler : IRequestHandler<UpdateTaxInComeCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -25,7 +25,7 @@ public class UpdateTaxInComeCommandHandler : IRequestHandler<UpdateTaxInComeComm
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateTaxInComeCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateTaxInComeCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.TaxInComes
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -33,6 +33,9 @@ public class UpdateTaxInComeCommandHandler : IRequestHandler<UpdateTaxInComeComm
         if (entity == null)
         {
             throw new NotFoundException(nameof(TodoList), request.Id);
+        } else if (entity.IsDeleted == true)
+        {
+            return "Bảng thuế lũy tiến này đã bị xóa!";
         }
 
         entity.Muc_chiu_thue = request.Muc_chiu_thue;
@@ -42,6 +45,6 @@ public class UpdateTaxInComeCommandHandler : IRequestHandler<UpdateTaxInComeComm
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Cập nhật thành công";
     }
 }

@@ -12,7 +12,7 @@ using MediatR;
 
 namespace hrOT.Application.Allowances.Command.Update;
 
-public record UpdateAllowanceCommand : IRequest
+public record UpdateAllowanceCommand : IRequest<string>
 {
     public Guid Id { get; init; }
     public Guid EmployeeContractId { get; init; }
@@ -23,7 +23,7 @@ public record UpdateAllowanceCommand : IRequest
     public string Requirements { get; init; }
     //public bool IsDeleted { get; init; }
 }
-public class UpdateAllowanceCommandHandler : IRequestHandler<UpdateAllowanceCommand>
+public class UpdateAllowanceCommandHandler : IRequestHandler<UpdateAllowanceCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -32,7 +32,7 @@ public class UpdateAllowanceCommandHandler : IRequestHandler<UpdateAllowanceComm
         _context = context;
     }
 
-    public async Task<Unit> Handle(UpdateAllowanceCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpdateAllowanceCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Allowances
             .FindAsync(new object[] { request.Id }, cancellationToken);
@@ -40,6 +40,9 @@ public class UpdateAllowanceCommandHandler : IRequestHandler<UpdateAllowanceComm
         if (entity == null)
         {
             throw new NotFoundException(nameof(Allowance), request.Id);
+        } else if (entity.IsDeleted == true)
+        {
+            return "Khoảng trợ cấp này đã bị xóa!";
         }
 
         entity.EmployeeContractId = request.EmployeeContractId;
@@ -49,9 +52,9 @@ public class UpdateAllowanceCommandHandler : IRequestHandler<UpdateAllowanceComm
         entity.Eligibility_Criteria = request.Eligibility_Criteria;
         entity.Requirements = request.Requirements;
         //entity.IsDeleted = request.IsDeleted;
-
+        
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Cập nhật thành công";
     }
 }
