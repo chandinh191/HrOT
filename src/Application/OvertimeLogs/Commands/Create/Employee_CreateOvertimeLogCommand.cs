@@ -15,6 +15,7 @@ public record Employee_CreateOvertimeLogCommand : IRequest<Guid>
     public Guid EmployeeId { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
+    public double TotalHours { get; init; }
 }
 
 
@@ -33,6 +34,7 @@ public class Employee_CreateOvertimeLogCommandHandler : IRequestHandler<Employee
         entity.EmployeeId = request.EmployeeId;
         entity.StartDate = request.StartDate;
         entity.EndDate = request.EndDate;
+        entity.TotalHours = request.TotalHours;
         entity.Status = OvertimeLogStatus.Pending;
         entity.CreatedBy = "Employee";
         entity.LastModified = DateTime.Now;

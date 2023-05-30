@@ -56,6 +56,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Skill_JD> Skill_JDs => Set<Skill_JD>();
 
     public DbSet<TaxInCome> TaxInComes => Set<TaxInCome>();
+    public DbSet<TimeAttendanceLog> TimeAttendanceLogs => Set<TimeAttendanceLog>();
 
 
     protected override void OnModelCreating(ModelBuilder builder)

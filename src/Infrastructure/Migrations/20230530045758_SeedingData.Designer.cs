@@ -12,8 +12,8 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230529093037_Update")]
-    partial class Update
+    [Migration("20230530045758_SeedingData")]
+    partial class SeedingData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -413,6 +413,36 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6b36c601-4a2b-47a2-b607-3597f3049f75"),
+                            AccountEmail = "congtya@gmail.com",
+                            Address = "Quận 9, Tp HCM",
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            HREmail = "HRcongtyA@gmail.com",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Name = "CÔNG TY A",
+                            Phone = "0987654321"
+                        },
+                        new
+                        {
+                            Id = new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                            AccountEmail = "congtyb@gmail.com",
+                            Address = "Quận 10, Tp HCM",
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            HREmail = "HRcongtyB@gmail.com",
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Name = "CÔNG TY B",
+                            Phone = "0123456789"
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.CompanyContract", b =>
@@ -1048,6 +1078,38 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("JobDescriptions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                            CompanyId = new Guid("6b36c601-4a2b-47a2-b607-3597f3049f75"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            Description = "Thích thì dô làm",
+                            EndDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Đang tuyển dụng",
+                            Title = "Job Back-end C#"
+                        },
+                        new
+                        {
+                            Id = new Guid("06a99eff-b374-4a5e-a3fc-58e8defecfe6"),
+                            CompanyId = new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            Description = "Doooooooooooooooooooooooo",
+                            EndDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Đang tuyển dụng",
+                            Title = "Job Back-end Java"
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.LeaveLog", b =>
@@ -1077,8 +1139,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LeaveHours")
-                        .HasColumnType("int");
+                    b.Property<double>("LeaveHours")
+                        .HasColumnType("float");
 
                     b.Property<string>("Reason")
                         .IsRequired()
@@ -1107,7 +1169,7 @@ namespace hrOT.Infrastructure.Migrations
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "test",
-                            LeaveHours = 1,
+                            LeaveHours = 1.0,
                             Reason = "test",
                             StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 0
@@ -1208,7 +1270,7 @@ namespace hrOT.Infrastructure.Migrations
                             LastModifiedBy = "test",
                             StartDate = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = 0,
-                            TotalHours = 0.0
+                            TotalHours = 9.0
                         });
                 });
 
@@ -1552,6 +1614,32 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("SkillId");
 
                     b.ToTable("Skill_JDs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("bb499b5d-69f1-4a9e-958a-f1c3bebd7350"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            JobDescriptionId = new Guid("06a99eff-b374-4a5e-a3fc-58e8defecfe6"),
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Level = "Tạm",
+                            SkillId = new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac")
+                        },
+                        new
+                        {
+                            Id = new Guid("318d7891-7119-4543-ab13-e4e61333ea08"),
+                            Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "test",
+                            IsDeleted = false,
+                            JobDescriptionId = new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                            LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = "test",
+                            Level = "Đỉnh kao",
+                            SkillId = new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac")
+                        });
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.TaxInCome", b =>
@@ -1663,6 +1751,46 @@ namespace hrOT.Infrastructure.Migrations
                             Mucchiuthue = 1.7976931348623157E+308,
                             Thuesuat = 0.34999999999999998
                         });
+                });
+
+            modelBuilder.Entity("hrOT.Domain.Entities.TimeAttendanceLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Ducation")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("TimeAttendanceLogs");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.TodoItem", b =>
@@ -2121,6 +2249,17 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("Skill");
                 });
 
+            modelBuilder.Entity("hrOT.Domain.Entities.TimeAttendanceLog", b =>
+                {
+                    b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
+                        .WithMany("TimeAttendanceLogs")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("hrOT.Domain.Entities.TodoItem", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.TodoList", "List")
@@ -2187,6 +2326,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("OvertimeLogs");
 
                     b.Navigation("Skill_Employees");
+
+                    b.Navigation("TimeAttendanceLogs");
                 });
 
             modelBuilder.Entity("hrOT.Domain.Entities.EmployeeContract", b =>
