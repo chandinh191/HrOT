@@ -62,8 +62,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Family> Families => Set<Family>();
     public DbSet<Degree> Degrees => Set<Degree>();
 
-
-
     public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -98,14 +96,14 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Email = "test@gmail.com",
                 NormalizedEmail = "test@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
-                SecurityStamp = "test",
-                ConcurrencyStamp = "test",
+                PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
+                SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
+                ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
                 PhoneNumber = "123456789",
                 PhoneNumberConfirmed = true,
                 TwoFactorEnabled = false,
                 LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
-                LockoutEnabled = false,
+                LockoutEnabled = true,
                 AccessFailedCount = 0
             },
             new ApplicationUser
@@ -119,14 +117,14 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Email = "test2@gmail.com",
                 NormalizedEmail = "test2@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
-                SecurityStamp = "test2",
-                ConcurrencyStamp = "test2",
+                PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
+                SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
+                ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
                 PhoneNumber = "123456788",
                 PhoneNumberConfirmed = true,
                 TwoFactorEnabled = false,
                 LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
-                LockoutEnabled = false,
+                LockoutEnabled = true,
                 AccessFailedCount = 0
             }
         );

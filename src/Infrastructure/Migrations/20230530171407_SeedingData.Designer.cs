@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530164642_SeedingData")]
+    [Migration("20230530171407_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -2165,19 +2165,19 @@ namespace hrOT.Infrastructure.Migrations
                             Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                             AccessFailedCount = 0,
                             BirthDay = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "test",
+                            ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
                             Email = "test@gmail.com",
                             EmailConfirmed = true,
                             Fullname = "Lewis",
                             Image = "TESTIMAGE",
-                            LockoutEnabled = false,
+                            LockoutEnabled = true,
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             NormalizedEmail = "test@gmail.com",
                             NormalizedUserName = "test",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "test",
+                            SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -2186,19 +2186,19 @@ namespace hrOT.Infrastructure.Migrations
                             Id = "fe30e976-2640-4d35-8334-88e7c3b1eac2",
                             AccessFailedCount = 0,
                             BirthDay = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "test2",
+                            ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
                             Email = "test2@gmail.com",
                             EmailConfirmed = true,
                             Fullname = "Lewis2",
                             Image = "TESTIMAGE2",
-                            LockoutEnabled = false,
+                            LockoutEnabled = true,
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             NormalizedEmail = "test2@gmail.com",
                             NormalizedUserName = "test2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHUySgPRZmVvXfI6cpHTAh+VRgtVveydPD7cYCdFFRe0fBaxuSt/t1ioyt4aBCedCg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
                             PhoneNumber = "123456788",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "test2",
+                            SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
                             TwoFactorEnabled = false,
                             UserName = "employee"
                         });
