@@ -29,7 +29,7 @@ public class JobDescriptionController : ApiControllerBase
             await Mediator.Send(command);
             return Ok("Thêm thành công");
         }
-        return Ok("Thêm thất bại");
+        return BadRequest("Thêm thất bại");
     }
 
 
@@ -38,7 +38,7 @@ public class JobDescriptionController : ApiControllerBase
     {
         if (id != command.Id)
         {
-            return Ok("Lỗi! Không tìm thấy Id");
+            return BadRequest("Lỗi! Không tìm thấy Id");
         }
         try
         {
@@ -48,7 +48,7 @@ public class JobDescriptionController : ApiControllerBase
         }
         catch (Exception ex)
         {
-            return Ok("Cập nhật thất bại");
+            return BadRequest("Cập nhật thất bại");
         }
     }
 
@@ -62,7 +62,7 @@ public class JobDescriptionController : ApiControllerBase
         }
         catch (Exception ex)
         {
-            return Ok("Xóa thất bại");
+            return BadRequest("Xóa thất bại");
         }
 
     }

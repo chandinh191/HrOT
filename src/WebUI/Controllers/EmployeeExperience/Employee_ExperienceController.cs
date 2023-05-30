@@ -28,7 +28,7 @@ public class Employee_ExperienceController : ApiControllerBase
 
         return result.Count > 0
             ? Ok(result) 
-            : BadRequest($"Không tìm thấy bất kì kinh nghiệm bản thân nào của EmployeeID: {EmployeeID}");
+            : BadRequest("Không tìm thấy bất kì kinh nghiệm bản thân nào");
     }
 
 
@@ -45,8 +45,8 @@ public class Employee_ExperienceController : ApiControllerBase
             .Send(new Employee_ExperienceCreateCommand(experienceDTO, EmployeeID));
 
         return result == true
-            ? Ok($"Thêm thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}")
-            : BadRequest($"Không tìm thấy EmployeeID: {EmployeeID}");
+            ? Ok("Thêm thành công")
+            : BadRequest("Không tìm thấy EmployeeID");
     }
 
 
@@ -68,8 +68,8 @@ public class Employee_ExperienceController : ApiControllerBase
             .Send(new Employee_ExperienceUpdateCommand(ExperienceID, EmployeeID, experienceDTO));
 
         return result == true
-            ? Ok($"Cập nhật thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}")
-            : BadRequest($"Không tìm thấy kinh nghiệm với : \nEmployeeID: {EmployeeID}\n ExperienceID: {ExperienceID}");
+            ? Ok("Cập nhật thành công")
+            : BadRequest("Không tìm thấy kinh nghiệm");
     }
 
     // Xóa
@@ -90,7 +90,7 @@ public class Employee_ExperienceController : ApiControllerBase
             .Send(new Employee_ExperienceDeleteCommand(ExperienceID, EmployeeID));
 
         return result == true
-            ? Ok($"Xóa thành công kinh nghiệm bản thân cho EmployeeID: {EmployeeID}")
-            : BadRequest($"Không tìm thấy kinh nghiệm với : \nEmployeeID: {EmployeeID}\n ExperienceID: {ExperienceID}");
+            ? Ok("Xóa thành công")
+            : BadRequest("Không tìm thấy kinh nghiệm");
     }
 }

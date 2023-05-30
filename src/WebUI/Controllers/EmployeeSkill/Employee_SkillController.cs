@@ -26,7 +26,7 @@ public class Employee_SkillController : ApiControllerBase
 
         return result.Count > 0
             ? Ok(result)
-            : BadRequest($"Không tìm thấy bất kì kĩ năng bản thân nào của EmployeeID: {EmployeeID}");
+            : BadRequest("Không tìm thấy bất kì kĩ năng bản thân nào");
     }
 
     [HttpPost("CreateSkill")]
@@ -45,9 +45,9 @@ public class Employee_SkillController : ApiControllerBase
 
         if (result == true)
         {
-            return Ok($"Thêm thành công kĩ năng bản thân cho EmployeeID: {EmployeeId}");
+            return Ok("Thêm thành công");
         }
-        return BadRequest($"Không tìm thấy EmployeeID: {EmployeeId}");
+        return BadRequest("Không tìm thấy EmployeeID");
     }
 
        
@@ -70,8 +70,8 @@ public class Employee_SkillController : ApiControllerBase
 
         if (result == true)
         {
-            return Ok($"Xóa thành công kĩ năng bản thân cho EmployeeID: {EmployeeId}");
+            return Ok("Xóa thành công");
         }
-        return BadRequest($"Không tìm thấy kĩ năng bản thân cần xóa của EmployeeID: {EmployeeId}");
+        return BadRequest("Không tìm thấy kĩ năng bản thân cần xóa");
     }
 }

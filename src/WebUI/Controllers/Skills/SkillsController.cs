@@ -31,7 +31,7 @@ public class SkillsController : ApiControllerBase
         var result = await Mediator.Send(new CreateSkillCommand(skillDTO));
 
         return result == true
-            ? Ok(result)
+            ? Ok("Thêm thành công")
             : BadRequest("Lỗi xảy ra, không thể thêm kĩ năng.");
     }
 
@@ -45,8 +45,8 @@ public class SkillsController : ApiControllerBase
         var result = await Mediator.Send(new UpdateSkillCommand(SkillId, skill));
 
         return result == true
-            ? Ok("Cập nhật kĩ năng thành công.")
-            : BadRequest($"Cập nhật kĩ năng thất bại cho SkillId: {SkillId}");
+            ? Ok("Cập nhật thành công.")
+            : BadRequest("Cập nhật thất bại");
     }
 
     [HttpDelete("DeleteSkill")]
@@ -59,7 +59,7 @@ public class SkillsController : ApiControllerBase
         var result = await Mediator.Send(new DeleteSkillCommand(SkillId));
 
         return result == true
-            ? Ok("Cập nhật kĩ năng thành công.")
-            : BadRequest($"Cập nhật kĩ năng thất bại cho SkillId: {SkillId}");
+            ? Ok("Xóa thành công.")
+            : BadRequest("Xóa thất bại");
     }
 }
