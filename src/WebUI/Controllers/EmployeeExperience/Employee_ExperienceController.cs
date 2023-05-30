@@ -4,12 +4,14 @@ using hrOT.Application.EmployeeExperience.Commands.Delete;
 using hrOT.Application.Experiences.Commands;
 using hrOT.Application.Experiences.Queries;
 using hrOT.WebUI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.EmployeeExperience;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Policy = "ManagerOrStaff")]
 public class Employee_ExperienceController : ApiControllerBase
 {
     // Xuất danh sách

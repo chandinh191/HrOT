@@ -8,7 +8,6 @@ using hrOT.Application.LeaveLogs.Commands.Delete;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers.LeaveLog;
-
 public class LeaveLogController : ApiControllerBase
 {
     [HttpGet]
@@ -18,7 +17,7 @@ public class LeaveLogController : ApiControllerBase
         return await Mediator.Send(new Staff_GetListLeaveLogQuery());
     }
     [HttpPost]
-    [Authorize(Policy = "employee")]
+    [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult<Guid>> Create(Employee_CreateLeaveLogCommand command)
     {
         if (ModelState.IsValid && command != null)
@@ -48,7 +47,7 @@ public class LeaveLogController : ApiControllerBase
         }
     }
     [HttpPut("Employee/{id}")]
-    [Authorize(Policy = "employee")]
+    [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult> Update(Guid id, Employee_UpdateLeaveLogCommand command)
     {
         if (id != command.Id)
@@ -69,7 +68,7 @@ public class LeaveLogController : ApiControllerBase
     
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = "employee")]
+    [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult> Delete(Guid id, DeleteLeaveLogCommand command)
     {
         if (id != command.Id)

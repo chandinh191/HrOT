@@ -19,7 +19,7 @@ public class OvertimeLogController : ApiControllerBase
         return await Mediator.Send(new Staff_GetListOvertimeLogQuery());
     }
     [HttpPost]
-    [Authorize(Policy = "employee")]
+    [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult<Guid>> Create(Employee_CreateOvertimeLogCommand command)
     {
         if (ModelState.IsValid && command != null)
@@ -49,7 +49,7 @@ public class OvertimeLogController : ApiControllerBase
         }
     }
     [HttpPut("Employee/{id}")]
-    [Authorize(Policy = "employee")]
+    [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult> Update(Guid id, Employee_UpdateOvertimeLogCommand command)
     {
         if (id != command.Id)
@@ -70,7 +70,7 @@ public class OvertimeLogController : ApiControllerBase
 
     
      [HttpDelete("{id}")]
-    [Authorize(Policy = "employee")]
+    [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult> Delete(Guid id, DeleteOvertimeLogCommand command)
      {
         if (id != command.Id)

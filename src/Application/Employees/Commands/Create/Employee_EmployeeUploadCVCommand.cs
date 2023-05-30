@@ -16,7 +16,7 @@ public class Employee_EmployeeUploadCVCommand : IRequest
 {
     //public Guid Id { get; set; }
     public IFormFile CVFile { get; set; }
-    public Guid Id { get; set; }
+    
 }
 
 public class Employee_EmployeeUploadCVHandler : IRequestHandler<Employee_EmployeeUploadCVCommand>

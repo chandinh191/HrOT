@@ -1,4 +1,5 @@
 ﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Employees;
 using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
@@ -30,22 +31,14 @@ namespace WebUI.Controllers
         {
             //var employeeIdCookie = Request.Cookies["EmployeeId"];
             return await _mediator.Send(new GetAllEmployeeQuery());
-        }
 
-        [HttpGet("GetTotalEmployee")]
-        [Authorize(Policy = "manager")]
-        public async Task<IActionResult> GetTotalEmployee()
-        {
-            var result = await Mediator.Send(new Staff_GetTotalEmployeeQuery());
-            return result > 0
-                ? Ok(result)
-                : BadRequest("Không tồn tại nhân viên nào trong công ty");
         }
 
         [HttpPost("create")]
-        [Authorize(Policy = "manager")]
+        //[Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
+
             if (ModelState.IsValid && createModel != null)
             {
                 var entityId = await _mediator.Send(createModel);
@@ -54,19 +47,17 @@ namespace WebUI.Controllers
             }
 
             return BadRequest("Thêm thất bại");
+
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] UpdateEmployee command)
+        public async Task<IActionResult> Edit( [FromForm] UpdateEmployee command)
         {
-            if (id != command.Id)
-            {
-                return BadRequest("Không tìm thấy Id");
-            }
+           
             try
             {
-                //command.Image = image;
+                
 
                 await _mediator.Send(command);
                 return Ok("Cập nhật thành công");
@@ -108,7 +99,7 @@ namespace WebUI.Controllers
                 // Kiểm tra kiểu tệp tin
                 if (!IsExcelFile(file))
                 {
-                    return BadRequest("Bạn phải import bằng file Excel");
+                    return BadRequest("Chỉ cho phép sử dụng file Excel");
                 }
 
                 var filePath = Path.GetTempFileName(); // Tạo một tệp tạm để lưu trữ tệp Excel
@@ -138,13 +129,14 @@ namespace WebUI.Controllers
             return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
         }
 
+
         [HttpGet("GetEmployeeById")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> GetEmployee(Guid id)
+        public async Task<IActionResult> GetEmployee()
         {
             try
             {
-                var query = new Employee_GetEmployeeQuery { Id = id };
+                var query = new Employee_GetEmployeeQuery {  };
                 var employeeVm = await _mediator.Send(query);
 
                 if (employeeVm == null)
@@ -188,7 +180,7 @@ namespace WebUI.Controllers
             }
         }
 
-        [HttpGet("GetEmployeeByMatchingJobSkill")]
+        /*[HttpGet("GetEmployeeByMatchingJobSkill")]
         [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> GetEmployeeByMatchingJobSkill(string SkillName)
         {
@@ -199,14 +191,14 @@ namespace WebUI.Controllers
 
             var result = await Mediator.Send(new Employee_GetByMatchingJobDescriptionSkillQuery(SkillName));
 
-            return (result != null)
+            return (result != null )
                 ? Ok(result)
                 : BadRequest("Không tìm thấy nhân viên có kĩ năng phù hợp với công việc.");
-        }
+        }*/
 
-        /*[HttpPost("{id}/uploadImage")]
-        [Authorize(Policy = "employee")]
-        public async Task<IActionResult> UploadImage(Guid id, IFormFile imageFile)
+        [HttpPost("uploadImage")]
+        [Authorize(Policy = "ManagerOrStaff")]
+        public async Task<IActionResult> UploadImage(IFormFile imageFile)
         {
             try
             {
@@ -214,16 +206,19 @@ namespace WebUI.Controllers
                 {
                     return BadRequest("Không tìm thấy hình ảnh");
                 }
-
+                if (!IsImageFile(imageFile))
+                {
+                    return BadRequest("Bạn phải sử dụng file hình ảnh");
+                }
                 var command = new UpLoadImage
                 {
-                    Id = id,
                     File = imageFile
                 };
 
                 await _mediator.Send(command);
 
                 return Ok("Cập nhật ảnh đại diện thành công");
+
             }
             catch (Exception ex)
             {
@@ -231,7 +226,14 @@ namespace WebUI.Controllers
                 return BadRequest("Lỗi cập nhật hình ảnh");
             }
         }
-        [HttpPost("{id}/uploadIdentityImage")]
+        private bool IsImageFile(IFormFile file)
+        {
+            // Kiểm tra phần mở rộng của tệp tin có phải là hình ảnh không
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName);
+            return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
+        }
+        /*[HttpPost("{id}/uploadIdentityImage")]
         [Authorize(Policy = "employee")]
         public async Task<IActionResult> UploadIdentityImage(Guid id, IFormFile imageFile)
         {

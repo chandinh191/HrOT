@@ -7,10 +7,12 @@ using hrOT.Application.Degrees.Commands.Create;
 using hrOT.Application.Degrees.Commands.Update;
 using hrOT.Application.Degrees.Commands.Delete;
 using hrOT.WebUI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebUI.Controllers.Degree;
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Policy = "ManagerOrStaff")]
 public class DegreeController : ApiControllerBase
 {
     private readonly IMediator _mediator;

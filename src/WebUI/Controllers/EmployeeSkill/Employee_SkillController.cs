@@ -5,12 +5,14 @@ using hrOT.Application.EmployeeSkill.Commands.Add;
 using hrOT.Application.EmployeeSkill.Commands.Delete;
 using hrOT.Domain.Entities;
 using hrOT.WebUI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.EmployeeSkill;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Policy = "ManagerOrStaff")]
 public class Employee_SkillController : ApiControllerBase
 {
     [HttpGet("GetListSKill")]

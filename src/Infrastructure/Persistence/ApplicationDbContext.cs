@@ -9,6 +9,7 @@ using hrOT.Domain.IdentityModel;
 using hrOT.Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -61,36 +62,32 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<Family> Families => Set<Family>();
     public DbSet<Degree> Degrees => Set<Degree>();
 
-
     public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        //Seeding database
         builder.Entity<ApplicationUser>()
             .HasData(
             new ApplicationUser
             {
                 Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 Fullname = "Lewis",
-                
                 Image = "TESTIMAGE",
-                UserName = "test",
+                UserName = "admin",
                 BirthDay = DateTime.Parse("9/9/9999"),
                 NormalizedUserName = "test",
                 Email = "test@gmail.com",
                 NormalizedEmail = "test@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = "098f6bcd4621d373cade4e832627b4f6",
-                SecurityStamp = "test",
-                ConcurrencyStamp = "test",
+                PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
+                SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
+                ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
                 PhoneNumber = "123456789",
                 PhoneNumberConfirmed = true,
                 TwoFactorEnabled = false,
                 LockoutEnd = DateTimeOffset.Parse("9/9/9999 12:00:00 AM +07:00"),
-                LockoutEnabled = false,
+                LockoutEnabled = true,
                 AccessFailedCount = 0
             }
         );
@@ -99,8 +96,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             .HasData(
             new Department
             {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
-               
+                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),            
                 Name = "Phòng IT",
                 Description = "Đảm nhận công việc liên quan phần mềm",
                 Created = DateTime.Parse("9/9/9999"),
@@ -133,7 +129,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                 PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                //IdentityImage = "IMGTEST",
                 CitizenIdentificationNumber = "0931248141241231",
                 CreatedDateCIN = DateTime.Parse("1/1/2023"),
                 PlaceForCIN = "TP HCM",
