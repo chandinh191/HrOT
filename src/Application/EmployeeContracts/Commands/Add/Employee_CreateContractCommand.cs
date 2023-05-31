@@ -40,7 +40,7 @@ public class Employee_CreateContractCommandHandler : IRequestHandler<Employee_Cr
         var employeeContract = await _context.EmployeeContracts
             .Where(e => e.EmployeeId == request.EmployeeId && e.Status == EmployeeContractStatus.Effective)
             .FirstOrDefaultAsync(cancellationToken);
-        if(employeeContract == null)
+        if(employeeContract != null)
         {
             return "Nhân viên này đang có hợp đồng chưa hết hạn, không thể tạo hợp đồng mới";
         }
@@ -53,7 +53,6 @@ public class Employee_CreateContractCommandHandler : IRequestHandler<Employee_Cr
             EndDate = request.EmployeeContractDTO.EndDate,
             Job = request.EmployeeContractDTO.Job,
             Salary = request.EmployeeContractDTO.Salary,
-            Number_Of_Dependents = request.EmployeeContractDTO.Number_Of_Dependents,
             InsuranceType = request.EmployeeContractDTO.InsuranceType,
             CustomSalary = request.EmployeeContractDTO.CustomSalary,
             Status = EmployeeContractStatus.Effective,

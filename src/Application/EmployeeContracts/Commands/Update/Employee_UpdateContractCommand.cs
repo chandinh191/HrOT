@@ -52,7 +52,6 @@ public class Employee_UpdateContractCommandHandler : IRequestHandler<Employee_Up
                 contract.Job = request.EmployeeContract.Job;
                 contract.Salary = request.EmployeeContract.Salary;
                 contract.CustomSalary = request.EmployeeContract.CustomSalary;
-                contract.Number_Of_Dependents = request.EmployeeContract.Number_Of_Dependents;
                 contract.Status = request.EmployeeContract.Status;
                 contract.InsuranceType = request.EmployeeContract.InsuranceType;
                 contract.SalaryType = request.EmployeeContract.SalaryType;
