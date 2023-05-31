@@ -69,8 +69,8 @@ public class Employee_ContractController : ApiControllerBase
         var result = await Mediator.Send(new Employee_CreateContractCommand(EmployeeId, employeeContractDTO));
 
         return result != null
-            ? Ok("Thêm thành công")
-            : BadRequest("Không tìm thấy bất kì hợp đồng nào");
+            ? Ok(result)
+            : BadRequest(result);
     }
 
     //Cập nhật hợp đồng cho nhân viên
