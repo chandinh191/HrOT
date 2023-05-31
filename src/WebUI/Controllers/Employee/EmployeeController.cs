@@ -35,7 +35,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost("create")]
-        //[Authorize(Policy = "manager")]
+        [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
 

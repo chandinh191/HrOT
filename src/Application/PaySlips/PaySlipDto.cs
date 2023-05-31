@@ -10,7 +10,7 @@ namespace hrOT.Application.PaySlips;
 public class PaySlipDto : IMapFrom<PaySlip>
 {
     public int? Standard_Work_Hours { get; set; }
-    public int? Actual_Work_Hours { get; set; }
+    public double? Actual_Work_Hours { get; set; }
     public int? Ot_Hours { get; set; }
     public int? Leave_Hours { get; set; }
     public double? Salary { get; set; }

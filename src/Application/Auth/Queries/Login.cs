@@ -93,15 +93,15 @@ namespace hrOT.Application.Auth.Queries
 
                     if (await userManager.IsInRoleAsync(user, "Manager"))
                     {
-                        return "Đăng nhập thành công với quyền quản lý";
+                        return "Đăng nhập thành công";
                     }
                     else if (await userManager.IsInRoleAsync(user, "Staff"))
                     {
-                        return "Đăng nhập thành công với quyền nhân viên";
+                        return "Đăng nhập thành công";
                     }
                     else if (await userManager.IsInRoleAsync(user, "Employee"))
                     {
-                        return "Đăng nhập thành công với quyền người dùng";
+                        return "Đăng nhập thành công";
                     }
                 }
 

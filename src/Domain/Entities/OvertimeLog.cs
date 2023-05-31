@@ -16,6 +16,7 @@ public class OvertimeLog : BaseAuditableEntity
 
     // Tổng số giờ làm việc
     public double TotalHours { get; set; }
+    public double? Coefficients { get; set; }
 
     // Trạng thái kiểm duyệt
     public OvertimeLogStatus Status { get; set; }
