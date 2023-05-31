@@ -6,8 +6,8 @@ namespace hrOT.Application.Degrees.Commands.Update
     {
         public UpdateDegreeCommandValidator()
         {
-            RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Degree ID không được bỏ trống.");
+            /*RuleFor(x => x.EmployeeId)
+                .NotEmpty().WithMessage("Degree ID không được bỏ trống.");*/
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Tên bằng cấp không được bỏ trống.")

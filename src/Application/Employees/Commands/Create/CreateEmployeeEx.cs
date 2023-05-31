@@ -51,7 +51,14 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
         using (var package = new ExcelPackage(new FileInfo(filePath)))
         {
             var worksheet = package.Workbook.Worksheets[0];
-            var rowCount = worksheet.Dimension.Rows;
+            int rowCount = 1;
+            int currentRow = 2;
+
+            while (worksheet.Cells[currentRow, 1].Value != null)
+            {
+                rowCount++;
+                currentRow++;
+            }
 
             var employees = new List<Employee>();
 
@@ -81,8 +88,7 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
 
                         var result = await userManager.CreateAsync(user, worksheet.Cells[row, 13].Value?.ToString());
 
-                        if (result.Succeeded)
-                        {
+                       
                             await userManager.AddToRoleAsync(user, worksheet.Cells[row, 14].Value?.ToString());
                             await _signInManager.SignInAsync(user, isPersistent: false);
 
@@ -102,12 +108,9 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
                             };
 
                             employees.Add(employee);
-                        }
-                        else
-                        {
-                            // Xử lý khi không thể tạo người dùng mới
-                        }
+                       
                     }
+                    
                 }
                 else
                 {

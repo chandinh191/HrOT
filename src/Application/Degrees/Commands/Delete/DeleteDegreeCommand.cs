@@ -7,6 +7,7 @@ using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace hrOT.Application.Degrees.Commands.Delete;
 
@@ -19,10 +20,12 @@ public record DeleteDegreeCommand : IRequest
 public class DeleteOvertimeLogCommandHandler : IRequestHandler<DeleteDegreeCommand>
 {
     private readonly IApplicationDbContext _context;
+   
 
     public DeleteOvertimeLogCommandHandler(IApplicationDbContext context)
     {
         _context = context;
+        
     }
 
     public async Task<Unit> Handle(DeleteDegreeCommand request, CancellationToken cancellationToken)

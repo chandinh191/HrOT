@@ -70,16 +70,25 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
           .NotEmpty().WithMessage("Số tài khoản không được để trống.")
           .MaximumLength(20).WithMessage("Bank Account Number must not exceed 20 characters.");
 
+        RuleFor(e => e.District)
+            .NotEmpty().WithMessage("Quận/Huyện không được để trống.")
+            .MaximumLength(50).WithMessage("Quận/Huyện không quá 50 ký tự.");
 
-        /*RuleFor(e => e.IdentityImage)
-            .NotNull().WithMessage("Hình không được để trống");
+        RuleFor(e => e.Province)
+            .NotEmpty().WithMessage("Tỉnh/Thành phố không được để trống.")
+            .MaximumLength(50).WithMessage("Tỉnh/Thành phố không quá 50 ký tự.");
 
-        RuleFor(e => e.Diploma)
-            .NotNull().WithMessage("Hình không được để trống");*/
+        RuleFor(e => e.PositionId)
+           .NotEmpty().WithMessage("PositionId không được để trống.");
 
-        /*RuleFor(e => e.Image)
-            .NotNull().WithMessage("Hình không được để trống");*/
+        RuleFor(e => e.CitizenIdentificationNumber)
+            .MaximumLength(20).WithMessage("CitizenIdentificationNumber không quá 20 ký tự.");
 
+        RuleFor(e => e.CreatedDateCIN)
+            .NotEmpty().WithMessage("CreatedDateCIN không được để trống.");
+
+        RuleFor(e => e.PlaceForCIN)
+            .MaximumLength(50).WithMessage("PlaceForCIN không quá 50 ký tự.");
         RuleFor(e => e.SelectedRole)
             .NotNull().WithMessage("Quyền không được để trống");
 
