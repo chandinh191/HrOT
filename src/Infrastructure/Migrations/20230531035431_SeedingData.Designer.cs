@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530153345_SeedingData")]
+    [Migration("20230531035431_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -737,8 +737,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.HasIndex("PositionId")
-                        .IsUnique();
+                    b.HasIndex("PositionId");
 
                     b.ToTable("Employees");
 
@@ -2120,21 +2119,21 @@ namespace hrOT.Infrastructure.Migrations
                             Id = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
                             AccessFailedCount = 0,
                             BirthDay = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "test",
+                            ConcurrencyStamp = "40495f9c-e853-41e8-8c5b-6b3c93d3791b",
                             Email = "test@gmail.com",
                             EmailConfirmed = true,
                             Fullname = "Lewis",
                             Image = "TESTIMAGE",
-                            LockoutEnabled = false,
+                            LockoutEnabled = true,
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)),
                             NormalizedEmail = "test@gmail.com",
                             NormalizedUserName = "test",
-                            PasswordHash = "098f6bcd4621d373cade4e832627b4f6",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "test",
+                            SecurityStamp = "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6",
                             TwoFactorEnabled = false,
-                            UserName = "test"
+                            UserName = "admin"
                         });
                 });
 
@@ -2253,8 +2252,8 @@ namespace hrOT.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("hrOT.Domain.Entities.Position", "Position")
-                        .WithOne("Employee")
-                        .HasForeignKey("hrOT.Domain.Entities.Employee", "PositionId")
+                        .WithMany("Employee")
+                        .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
