@@ -9,8 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="AnnualWorkingDays\Commands\**" />
       <Compile Remove="Skill_JD\**" />
+      <EmbeddedResource Remove="AnnualWorkingDays\Commands\**" />
       <EmbeddedResource Remove="Skill_JD\**" />
+      <None Remove="AnnualWorkingDays\Commands\**" />
       <None Remove="Skill_JD\**" />
     </ItemGroup>
 
@@ -35,7 +38,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="AnnualWorkingDays\Commands\" />
       <Folder Include="Auth\Commands\" />
     </ItemGroup>
 

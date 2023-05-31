@@ -12,8 +12,8 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230531110503_Update")]
-    partial class Update
+    [Migration("20230531132534_SeedingData")]
+    partial class SeedingData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -776,9 +776,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Number_Of_Dependents")
-                        .HasColumnType("float");
-
                     b.Property<double?>("Salary")
                         .HasColumnType("float");
 
@@ -813,7 +810,6 @@ namespace hrOT.Infrastructure.Migrations
                             Job = "test",
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "test",
-                            NumberOfDependents = 0.0,
                             Salary = 20000000.0,
                             SalaryType = 0,
                             StartDate = new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),

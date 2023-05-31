@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace hrOT.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Update : Migration
+    public partial class SeedingData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -663,7 +663,6 @@ namespace hrOT.Infrastructure.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Job = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Salary = table.Column<double>(type: "float", nullable: true),
-                    NumberOfDependents = table.Column<double>(name: "Number_Of_Dependents", type: "float", nullable: true),
                     CustomSalary = table.Column<double>(type: "float", nullable: true),
                     InsuranceType = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true),
@@ -1020,8 +1019,8 @@ namespace hrOT.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "EmployeeContracts",
-                columns: new[] { "Id", "ContractType", "Created", "CreatedBy", "CustomSalary", "EmployeeId", "EndDate", "File", "InsuranceType", "IsDeleted", "Job", "LastModified", "LastModifiedBy", "Number_Of_Dependents", "Salary", "SalaryType", "StartDate", "Status" },
-                values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, 20000000.0, 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
+                columns: new[] { "Id", "ContractType", "Created", "CreatedBy", "CustomSalary", "EmployeeId", "EndDate", "File", "InsuranceType", "IsDeleted", "Job", "LastModified", "LastModifiedBy", "Salary", "SalaryType", "StartDate", "Status" },
+                values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 20000000.0, 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
 
             migrationBuilder.InsertData(
                 table: "Experiences",
