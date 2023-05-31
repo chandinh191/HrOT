@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace hrOT.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedingData : Migration
+    public partial class Update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -722,9 +722,9 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FatherName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MotherName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfDependents = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Relationship = table.Column<int>(type: "int", nullable: false),
                     HomeTown = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -1030,8 +1030,8 @@ namespace hrOT.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Families",
-                columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "FatherName", "HomeTown", "IsDeleted", "LastModified", "LastModifiedBy", "MotherName", "NumberOfDependents" },
-                values: new object[] { new Guid("668d6b8b-7997-40fc-9454-036158af413b"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "Test", "Test", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Test", 3 });
+                columns: new[] { "Id", "Created", "CreatedBy", "DateOfBirth", "EmployeeId", "HomeTown", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "Relationship" },
+                values: new object[] { new Guid("668d6b8b-7997-40fc-9454-036158af413b"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new DateTime(1999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "Test", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Test", 0 });
 
             migrationBuilder.InsertData(
                 table: "Skill_Employees",

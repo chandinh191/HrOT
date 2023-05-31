@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Application.Degrees.Commands.Create;
 using hrOT.Domain.Entities;
+using hrOT.Domain.Enums;
 using MediatR;
 
 namespace hrOT.Application.Families.Commands.Create;
 public record CreateFamilyCommand : IRequest<Guid>
 {
     public Guid EmployeeId { get; init; }
-    public string? FatherName { get; init; }
-    public string? MotherName { get; init; }
-    public int? NumberOfDependents { get; init; }
+    public string? Name { get; init; }
+    public DateTime? DateOfBirth { get; init; }
+    public Relationship Relationship { get; init; }
     public string? HomeTown { get; init; }
-    
 }
 
 public class CreateFamilyCommandHandler : IRequestHandler<CreateFamilyCommand, Guid>
@@ -32,9 +32,9 @@ public class CreateFamilyCommandHandler : IRequestHandler<CreateFamilyCommand, G
     {
         var entity = new Family();
         entity.EmployeeId = request.EmployeeId;
-        entity.FatherName = request.FatherName;
-        entity.MotherName = request.MotherName;
-        entity.NumberOfDependents = request.NumberOfDependents;
+        entity.DateOfBirth = request.DateOfBirth;
+        entity.Name = request.Name;
+        entity.Relationship = request.Relationship;
         entity.HomeTown = request.HomeTown;
         entity.CreatedBy = "test";
         entity.LastModified = DateTime.Now;
