@@ -57,8 +57,6 @@ namespace WebUI.Controllers
            
             try
             {
-                
-
                 await _mediator.Send(command);
                 return Ok("Cập nhật thành công");
             }

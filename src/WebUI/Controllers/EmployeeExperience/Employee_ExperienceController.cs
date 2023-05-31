@@ -41,7 +41,7 @@ public class Employee_ExperienceController : ApiControllerBase
         }
 
         var result = await Mediator
-            .Send(new Employee_ExperienceCreateCommand(experienceDTO, EmployeeID));
+            .Send(new Employee_ExperienceCreateCommand(experienceDTO));
 
         return result == true
             ? Ok("Thêm thành công")
