@@ -16,7 +16,7 @@ public class LeaveLogController : ApiControllerBase
     {
         return await Mediator.Send(new Staff_GetListLeaveLogQuery());
     }
-    [HttpPost]
+    /*[HttpPost]
     [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult<Guid>> Create(Employee_CreateLeaveLogCommand command)
     {
@@ -85,5 +85,5 @@ public class LeaveLogController : ApiControllerBase
         {
             return BadRequest("Xóa thất bại");
         }
-    }
+    }*/
 }

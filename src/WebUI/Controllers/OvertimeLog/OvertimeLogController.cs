@@ -18,7 +18,7 @@ public class OvertimeLogController : ApiControllerBase
     {
         return await Mediator.Send(new Staff_GetListOvertimeLogQuery());
     }
-    [HttpPost]
+   /* [HttpPost]
     [Authorize(Policy = "ManagerOrStaff")]
     public async Task<ActionResult<Guid>> Create(Employee_CreateOvertimeLogCommand command)
     {
@@ -87,6 +87,6 @@ public class OvertimeLogController : ApiControllerBase
         {
             return BadRequest("Xóa thất bại");
         }
-    }
+    }*/
 
 }
