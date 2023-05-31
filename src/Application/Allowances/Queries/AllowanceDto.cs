@@ -13,21 +13,13 @@ public class AllowanceDto : IMapFrom<Allowance>
 {
     public Guid Id { get; set; }
     public Guid EmployeeContractId { get; set; }
-
     public string Name { get; set; }
     public AllowanceType Type { get; set; }
-    public decimal Amount { get; set; }
+    public double Amount { get; set; }
 
-    // Tiêu chí đủ điều kiện nhận trợ cấp
-    [Required]
     public string Eligibility_Criteria { get; set; }
 
-    // Yêu cầu tài liệu phụ cấp
-    [Required]
     public string Requirements { get; set; }
 
-    // Relationship
-    public bool IsDeleted { get; set; }
-    public virtual EmployeeContract? EmployeeContract { get; set; }
 }
 
