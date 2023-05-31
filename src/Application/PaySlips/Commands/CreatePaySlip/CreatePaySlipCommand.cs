@@ -65,12 +65,26 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
             .SingleOrDefaultAsync(cancellationToken);
         //Nếu chưa có Payslip nào thì FromDate == StartDate trong EmployeeContract
         if (Last_PaySlip == null)
-        {
-            FromDate = EmployeeContract.StartDate;
+        {   
+            if (EmployeeContract.StartDate >= request.ToDate)
+            {
+                return $"{request.ToDate.ToString("dd/MM/yyyy")} là ngày bắt đầu của hợp đồng chưa thể tính lương";
+            }
+            else
+            {
+                FromDate = EmployeeContract.StartDate;
+            }
         }
         else
         {
-            FromDate = Last_PaySlip.Paid_date;
+            if(Last_PaySlip.Paid_date == request.ToDate)
+            {
+                return $"Hợp đồng này đã được tính lương ngày: {request.ToDate.ToString("dd/MM/yyyy")}";
+            }
+            else
+            {
+                FromDate = Last_PaySlip.Paid_date;
+            }        
         }
 
         //lấy ra số giờ làm việc tiêu chuẩn của tháng đó
@@ -94,9 +108,12 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
 
         //tính tiền lương cơ bản cho nhân viên
         var TimeAttendanceLog = await _context.TimeAttendanceLogs
-            .Where(x => x.StartTime >= FromDate && x.StartTime < request.ToDate)
+            .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.StartTime >= FromDate && x.StartTime < request.ToDate)
             .ToListAsync(cancellationToken);
-
+        if(TimeAttendanceLog.Count == 0)
+        {
+            return "Không tìm thấy lịch sử chấm công của nhân viên";
+        }
         foreach (var Log in TimeAttendanceLog)
         {
             if(Log.Ducation == 0)
@@ -116,10 +133,10 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
         Salary = Actual_Work_Hours * Salary_1Hour;
 
         var OvertimeLog = await _context.OvertimeLogs
-            .Where(x => x.Status == OvertimeLogStatus.Approved && x.IsDeleted == false)
+            .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == OvertimeLogStatus.Approved && x.IsDeleted == false)
             .ToListAsync(cancellationToken);
         var LeaveLog = await _context.LeaveLogs
-            .Where(x => x.Status == LeaveLogStatus.Approved && x.IsDeleted == false)
+            .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == LeaveLogStatus.Approved && x.IsDeleted == false)
             .ToListAsync(cancellationToken);
         Ot_Hours = OvertimeLog.Sum(x => x.TotalHours);
         foreach (var overtimeLog in OvertimeLog)

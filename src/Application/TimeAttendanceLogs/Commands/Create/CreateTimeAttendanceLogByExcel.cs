@@ -10,6 +10,7 @@ using hrOT.Domain.IdentityModel;
 using LogOT.Application.Employees.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 
 namespace hrOT.Application.TimeAttendanceLogs.Commands.Create;
@@ -48,6 +49,15 @@ public class CreateTimeAttendanceLogByExcelHandler : IRequestHandler<CreateTimeA
                 var employeeId = worksheet.Cells[row, 1].GetValue<string>();
                 var startTime = worksheet.Cells[row, 2].GetValue<DateTime>();
                 var endTime = worksheet.Cells[row, 3].GetValue<DateTime>();
+
+                var logExists = await _context.TimeAttendanceLogs
+                    .AnyAsync(log => log.EmployeeId == Guid.Parse(employeeId) && log.StartTime == startTime && log.EndTime == endTime);
+
+                if (logExists)
+                {
+                    // Bỏ qua dòng dữ liệu đã tồn tại và tiếp tục với dòng dữ liệu tiếp theo
+                    continue;
+                }
 
                 var log = new TimeAttendanceLog
                 {
