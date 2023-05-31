@@ -10,9 +10,9 @@ public class Family: BaseAuditableEntity
 {
     [ForeignKey("Employee")]
     public Guid EmployeeId { get; set; }
-    public string? FatherName { get; set; }
-    public string? MotherName { get; set; }
-    public int? NumberOfDependents { get; set; }
+    public string? Name { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+    public Relationship Relationship { get; set; }
     public string? HomeTown { get; set; }
     public virtual Employee Employee { get; set; }
 }
