@@ -1027,11 +1027,11 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FatherName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HomeTown")
                         .HasColumnType("nvarchar(max)");
@@ -1045,10 +1045,10 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MotherName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NumberOfDependents")
+                    b.Property<int>("Relationship")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1063,14 +1063,14 @@ namespace hrOT.Infrastructure.Migrations
                             Id = new Guid("668d6b8b-7997-40fc-9454-036158af413b"),
                             Created = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "Test",
+                            DateOfBirth = new DateTime(1999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmployeeId = new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
-                            FatherName = "Test",
                             HomeTown = "Test",
                             IsDeleted = false,
                             LastModified = new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = "Test",
-                            MotherName = "Test",
-                            NumberOfDependents = 3
+                            Name = "Test",
+                            Relationship = 0
                         });
                 });
 
@@ -2166,7 +2166,7 @@ namespace hrOT.Infrastructure.Migrations
             modelBuilder.Entity("hrOT.Domain.Entities.Family", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("Families")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2392,6 +2392,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("EmployeeContracts");
 
                     b.Navigation("Experiences");
+
+                    b.Navigation("Families");
 
                     b.Navigation("InterviewProcesses");
 

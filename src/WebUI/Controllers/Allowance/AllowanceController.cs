@@ -10,12 +10,25 @@ namespace WebUI.Controllers.Allowance;
 
 public class AllowanceController : ApiControllerBase
 {
-    [HttpGet]
+    [HttpGet("GetAllAllowance")]
     [Authorize(Policy = "Manager")]
     public async Task<List<AllowanceDto>> GetList()
     {
         return await Mediator.Send(new GetListAllowanceQuery());
     }
+
+  /*  [HttpGet("GetListAllowance")]
+    [Authorize(Policy = "Manager")]
+    public async Task<ActionResult<AllowanceList>> GetList(Guid EmployeeContractId)
+    {
+        if (EmployeeContractId.ToString() == null)
+        {
+            return BadRequest("Vui lòng nhập EmployeeContractId !");
+        }
+        return await Mediator.Send(new GetListAllowanceQuery());
+    }*/
+
+
     [HttpPost]
     [Authorize(Policy = "Manager")]
     public async Task<ActionResult<Guid>> Create(CreateAllowanceCommand command)

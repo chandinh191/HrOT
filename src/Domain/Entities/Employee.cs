@@ -34,6 +34,7 @@ public class Employee : BaseAuditableEntity
     public string? Province { get; set; }
 
     // Relationship
+    public IList<Family> Families { get; private set; }
     public IList<Experience> Experiences { get; private set; }
 
     public IList<OvertimeLog> OvertimeLogs { get; private set; }
@@ -49,4 +50,6 @@ public class Employee : BaseAuditableEntity
     public IList<Degree> Degrees { get; private set; }
     public virtual ApplicationUser ApplicationUser { get; set; }
     public virtual Position Position { get; set; }
+
+
 }
