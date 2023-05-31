@@ -12,7 +12,7 @@ public class AllowanceController : ApiControllerBase
 {
     [HttpGet("GetAllAllowance")]
     [Authorize(Policy = "Manager")]
-    public async Task<ActionResult<AllowanceList>> GetAll()
+    public async Task<List<AllowanceDto>> GetList()
     {
         return await Mediator.Send(new GetListAllowanceQuery());
     }
