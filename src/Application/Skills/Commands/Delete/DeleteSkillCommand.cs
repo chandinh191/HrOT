@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.Skills.Commands.Delete;
 
-public class DeleteSkillCommand : IRequest<bool>
+public class DeleteSkillCommand : IRequest<string>
 {
     public Guid SkillId { get; set; }
 
@@ -15,7 +15,7 @@ public class DeleteSkillCommand : IRequest<bool>
     }
 }
 
-public class DeleteSkillCommandHandler : IRequestHandler<DeleteSkillCommand, bool>
+public class DeleteSkillCommandHandler : IRequestHandler<DeleteSkillCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -26,20 +26,18 @@ public class DeleteSkillCommandHandler : IRequestHandler<DeleteSkillCommand, boo
         _mapper = mapper;
     }
 
-    public async Task<bool> Handle(DeleteSkillCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(DeleteSkillCommand request, CancellationToken cancellationToken)
     {
         var skill = await _context.Skills
             .Where(s => s.Id == request.SkillId)
             .FirstOrDefaultAsync();
+        if (skill == null) { return "Id kĩ năng không tồn tại"; }
+        if (skill.IsDeleted) { return "Kĩ năng này đã bị xóa!"; }
 
-        if (skill != null)
-        {
-            skill.IsDeleted = true;
+        skill.IsDeleted = true;
 
-            _context.Skills.Update(skill);
-            await _context.SaveChangesAsync(cancellationToken);
-            return true;
-        }
-        return false;
+        _context.Skills.Update(skill);
+        await _context.SaveChangesAsync(cancellationToken);
+        return "Xóa thành công";
     }
 }
