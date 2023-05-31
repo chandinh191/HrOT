@@ -6,21 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.EmployeeSkill.Commands.Add;
 
-public class Employee_CreateSkillCommand : IRequest<bool>
+public class Employee_CreateSkillCommand : IRequest<string>
 {
     public Guid EmployeeId { get; set; }
-    public string SkillName { get; set; }
+    public Guid SkillId { get; set; }
     public Skills_EmployeeCommandDTO Skill_EmployeeDTO { get; set; }
 
-    public Employee_CreateSkillCommand(Guid EmployeeID, string skillName, Skills_EmployeeCommandDTO skill_EmployeeDTO)
+    public Employee_CreateSkillCommand(Guid EmployeeID, Guid SkillID, Skills_EmployeeCommandDTO skill_EmployeeDTO)
     {
         EmployeeId = EmployeeID;
-        SkillName = skillName;
+        SkillId = SkillID;
         Skill_EmployeeDTO = skill_EmployeeDTO;
     }
 }
 
-public class Employee_CreateSkillCommandHandler : IRequestHandler<Employee_CreateSkillCommand, bool>
+public class Employee_CreateSkillCommandHandler : IRequestHandler<Employee_CreateSkillCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -31,33 +31,30 @@ public class Employee_CreateSkillCommandHandler : IRequestHandler<Employee_Creat
         _mapper = mapper;
     }
 
-    public async Task<bool> Handle(Employee_CreateSkillCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(Employee_CreateSkillCommand request, CancellationToken cancellationToken)
     {
+        var skill = await _context.Skills
+            .Where(s => s.Id == request.SkillId)
+            .FirstOrDefaultAsync();
+        if (skill == null) { return "Id Kĩ năng không tồn tại!"; }
+        if (skill.IsDeleted) { return "Kĩ năng này đã bị xóa!"; }
+
         var employee = await _context.Employees
             .Where(e => e.Id == request.EmployeeId)
             .FirstOrDefaultAsync();
+        if (employee == null) { return "Id nhân viên không tồn tại!"; }
+        if (employee.IsDeleted) { return "Nhân viên này đã bị xóa!"; }
 
-        if (employee != null)
+        var empskill = new Skill_Employee
         {
-            var skill = _context.Skills
-                .Where(s => s.SkillName == request.SkillName)
-                .FirstOrDefault();
+            Id = Guid.NewGuid(),
+            Level = request.Skill_EmployeeDTO.Level,
+            EmployeeId = request.EmployeeId,
+            SkillId = request.SkillId
+        };
 
-            if (skill != null)
-            {
-                var empSkill = new Skill_Employee
-                {
-                    Id = new Guid(),
-                    SkillId = skill.Id,
-                    EmployeeId = employee.Id,
-                    Level = request.Skill_EmployeeDTO.Level
-                };
-                await _context.Skill_Employees.AddAsync(empSkill);
-                await _context.SaveChangesAsync(cancellationToken);
-                return true;
-            }
-        }
-
-        return false;
+        await _context.Skill_Employees.AddAsync(empskill);
+        await _context.SaveChangesAsync(cancellationToken);
+        return "Thêm thành công";
     }
 }

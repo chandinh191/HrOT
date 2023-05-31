@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.EmployeeExperience.Commands.Delete;
 
-public class Employee_ExperienceDeleteCommand : IRequest<bool>
+public class Employee_ExperienceDeleteCommand : IRequest<string>
 {
     public Guid EmployeeID { get; set; }
     public Guid ExperienceID { get; set; }
@@ -17,7 +17,7 @@ public class Employee_ExperienceDeleteCommand : IRequest<bool>
     }
 }
 
-public class Employee_ExperienceDeleteCommandHandler : IRequestHandler<Employee_ExperienceDeleteCommand, bool>
+public class Employee_ExperienceDeleteCommandHandler : IRequestHandler<Employee_ExperienceDeleteCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -28,27 +28,23 @@ public class Employee_ExperienceDeleteCommandHandler : IRequestHandler<Employee_
         _mapper = mapper;
     }
 
-    public async Task<bool> Handle(Employee_ExperienceDeleteCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(Employee_ExperienceDeleteCommand request, CancellationToken cancellationToken)
     {
         var employee = await _context.Employees
             .Where(e => e.Id == request.EmployeeID)
             .FirstOrDefaultAsync();
+        if (employee == null) { return "Id nhân viên không tồn tại"; }
+        if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
 
-        if (employee != null)
-        {
-            var deleteExp = await _context.Experiences
-                .Where(exp => exp.Id == request.ExperienceID)
-                .FirstOrDefaultAsync();
+        var deleteExp = await _context.Experiences
+            .Where(exp => exp.Id == request.ExperienceID)
+            .FirstOrDefaultAsync();
+        if (deleteExp == null) { return "Id kinh nghiệm không tồn tại"; }
+        if (deleteExp.IsDeleted) { return "Kinh nghiệm này đã bị xóa"; }
 
-            if (deleteExp != null)
-            {
-                deleteExp.IsDeleted = true;
-                _context.Experiences.Update(deleteExp);
-                await _context.SaveChangesAsync(cancellationToken);
-                return true;
-            }
-        }
-
-        return false;
+        deleteExp.IsDeleted = true;
+        _context.Experiences.Update(deleteExp);
+        await _context.SaveChangesAsync(cancellationToken);
+        return "Xóa thành công";
     }
 }
