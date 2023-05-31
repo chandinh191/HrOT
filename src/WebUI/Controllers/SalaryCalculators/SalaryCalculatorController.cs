@@ -1,4 +1,5 @@
-﻿using hrOT.Application.SalaryCalculators;
+﻿using hrOT.Application.Common.Exceptions;
+using hrOT.Application.SalaryCalculators;
 using hrOT.Application.SalaryCalculators.Commands;
 using hrOT.Application.SalaryCalculators.Queries;
 using hrOT.WebUI.Controllers;
@@ -24,7 +25,7 @@ public class SalaryCalculatorController : ApiControllerBase
         return await Mediator.Send(command);
     }
 
-    [HttpGet]
+    [HttpGet("TotalSalaryOfCompany")]
     public async Task<ActionResult<double>> GetTotalSalaryOfCompany()
     {
         var query = new GetTotalSalaryOfCompanyQueries();
@@ -32,6 +33,29 @@ public class SalaryCalculatorController : ApiControllerBase
 
         return totalSalary;
     }
+
+    [HttpGet("TotalSalaryOfDepartment")]
+    public async Task<ActionResult<double>> GetTotalSalaryOfDepartment(Guid id)
+    {
+        try
+        {
+            var query = new GetTotalSalaryOfDepartmentQuery(id);
+            var totalSalary = await _mediator.Send(query);
+
+            return totalSalary;
+        }
+        catch (NotFoundException ex)
+        {
+            // Handle the NotFoundException
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            return StatusCode(500, "An error occurred.");
+        }
+    }
+
 
 
 }

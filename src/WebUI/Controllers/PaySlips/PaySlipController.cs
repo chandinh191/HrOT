@@ -19,11 +19,23 @@ public class PaySlipController : ApiControllerBase
     {
         _mediator = mediator;
     }
-    [HttpGet]
+    [HttpGet("TotalSalary")]
     [Authorize(Policy = "manager")]
     public async Task<ActionResult<double?>> GetTotalSalary(DateTime FromDate, DateTime ToDate)
     {
         return await Mediator.Send(new GetTotalSalaryPayForEmployeeQuery(FromDate, ToDate));
+    }
+    [HttpGet("TotalCostOfInsurance")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<double?>> GetTotalCostOfInsurance(DateTime FromDate, DateTime ToDate)
+    {
+        return await Mediator.Send(new GetTotalCostOfInsurance(FromDate, ToDate));
+    }
+    [HttpGet("TotalTaxIncome")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<double?>> GetTotalTaxIncome(DateTime FromDate, DateTime ToDate)
+    {
+        return await Mediator.Send(new GetTotalTaxIncomeQuery(FromDate, ToDate));
     }
     [HttpGet("{EmployeeId}")]
     [Authorize(Policy = "ManagerOrStaff")]

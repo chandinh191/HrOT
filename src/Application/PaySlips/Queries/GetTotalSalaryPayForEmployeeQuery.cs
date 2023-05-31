@@ -7,6 +7,7 @@ using AutoMapper;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.PaySlips.Queries;
@@ -24,8 +25,10 @@ public class GetTotalSalaryPayForEmployeeQueryHandler : IRequestHandler<GetTotal
 
     public async Task<double?> Handle(GetTotalSalaryPayForEmployeeQuery request, CancellationToken cancellationToken)
     {
-        return await _context.PaySlips
+        double? totalSalaryPayForEmployee = await _context.PaySlips
             .Where(x => x.Paid_date >= request.FromDate && x.Paid_date <= request.ToDate)
             .SumAsync(x => x.Company_Paid, cancellationToken);
+
+        return totalSalaryPayForEmployee;
     }
 }
