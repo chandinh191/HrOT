@@ -12,7 +12,7 @@ public class PaySlip : BaseAuditableEntity
     [ForeignKey("EmployeeContract")]
     public Guid EmployeeContractId { get; set; }
     public int? Standard_Work_Hours { get; set; }
-    public int? Actual_Work_Hours { get; set; }
+    public double? Actual_Work_Hours { get; set; }
     public int? Ot_Hours { get; set; }
     public int? Leave_Hours { get; set; }
     public double? Salary { get; set; }
