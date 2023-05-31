@@ -734,9 +734,7 @@ namespace hrOT.Infrastructure.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-
                     b.HasIndex("PositionId");
-
 
                     b.ToTable("Employees");
 
