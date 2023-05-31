@@ -15,8 +15,8 @@ public class UpdateSkillCommandValidator : AbstractValidator<UpdateSkillCommand>
     {
         _context = context;
         RuleFor(v => v.SkillDTO.SkillName)
-                   .NotEmpty().WithMessage("Tên kĩ năng không được để trống.")
-                   .MustAsync(BeUniqueName).WithMessage("Tên kĩ năng đã tồn tại.");
+                   .NotEmpty().WithMessage("Tên kĩ năng không được để trống.");
+                   //.MustAsync(BeUniqueName).WithMessage("Tên kĩ năng đã tồn tại.");
 
         RuleFor(v => v.SkillDTO.Skill_Description)
             .NotEmpty().WithMessage("Mô tả kĩ năng không được để trống.");
