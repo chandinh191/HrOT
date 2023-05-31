@@ -53,7 +53,6 @@ public class Employee_CreateContractCommandHandler : IRequestHandler<Employee_Cr
             EndDate = request.EmployeeContractDTO.EndDate,
             Job = request.EmployeeContractDTO.Job,
             Salary = request.EmployeeContractDTO.Salary,
-            Number_Of_Dependents = request.EmployeeContractDTO.Number_Of_Dependents,
             InsuranceType = request.EmployeeContractDTO.InsuranceType,
             CustomSalary = request.EmployeeContractDTO.CustomSalary,
             Status = EmployeeContractStatus.Effective,

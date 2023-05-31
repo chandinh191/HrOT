@@ -36,12 +36,8 @@ public class Employee_UpdateContractCommandValidator : AbstractValidator<Employe
 
         // Validate CustomSalary
         RuleFor(v => v.EmployeeContract.CustomSalary)
-            .NotNull().WithMessage("CustomSalary không được để trống.")
-            .GreaterThan(0).WithMessage("CustomSalary không được âm.");
-
-        // Validate Number_Of_Dependents
-        RuleFor(v => v.EmployeeContract.Number_Of_Dependents)
-            .NotNull().WithMessage("Số người phụ thuộc không được để trống.");
+            .NotNull().WithMessage("Lương đóng bảo hiểm khác không được để trống.")
+            .GreaterThan(0).WithMessage("Lương đóng bảo hiểm khác không được âm.");
 
         // Validate Status
         RuleFor(v => v.EmployeeContract.Status)

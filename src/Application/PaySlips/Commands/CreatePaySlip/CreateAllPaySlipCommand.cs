@@ -75,6 +75,10 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             double? SalaryFinal = 0;
             double? Company_Paid = 0;
 
+            var NumberOfDependencies = await _context.Families
+            .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.IsDeleted == false)
+            .ToListAsync(cancellationToken);
+
             var Last_PaySlip = await _context.PaySlips
                 .Where(x => x.EmployeeContractId == EmployeeContract.Id)
                 .SingleOrDefaultAsync(cancellationToken);
@@ -113,9 +117,11 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             Standard_Work_Hours = AnnualWorkingDays.Count * 8;
 
             var List_TaxInCome = await _context.TaxInComes
-                .OrderBy(t => t.Muc_chiu_thue)
-                .ToListAsync(cancellationToken);
+            .Where(t => t.IsDeleted == false)
+            .OrderBy(t => t.Muc_chiu_thue)
+            .ToListAsync(cancellationToken);
             var List_Exchange = await _context.Exchanges
+                .Where(t => t.IsDeleted == false)
                 .OrderBy(e => e.Muc_Quy_Doi)
                 .ToListAsync(cancellationToken);
 
@@ -148,10 +154,10 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             Salary = Actual_Work_Hours * Salary_1Hour;
 
             var OvertimeLog = await _context.OvertimeLogs
-                .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == OvertimeLogStatus.Approved && x.IsDeleted == false)
+                .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == OvertimeLogStatus.Approved && x.IsDeleted == false && x.StartDate >= FromDate && x.StartDate < request.ToDate)
                 .ToListAsync(cancellationToken);
             var LeaveLog = await _context.LeaveLogs
-                .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == LeaveLogStatus.Approved && x.IsDeleted == false)
+                .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == LeaveLogStatus.Approved && x.IsDeleted == false && x.StartDate >= FromDate && x.StartDate < request.ToDate)
                 .ToListAsync(cancellationToken);
             Ot_Hours = OvertimeLog.Sum(x => x.TotalHours);
             foreach (var overtimeLog in OvertimeLog)
@@ -183,8 +189,8 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             }
 
             var Total_Allowance = await _context.Allowances
-                .Where(x => x.EmployeeContractId == EmployeeContract.Id)
-                .SumAsync(x => x.Amount, cancellationToken);
+            .Where(x => x.EmployeeContractId == EmployeeContract.Id && x.IsDeleted == false)
+            .SumAsync(x => x.Amount, cancellationToken);
 
             //nếu là lương NET
             if (EmployeeContract.SalaryType == SalaryType.Net)
@@ -233,7 +239,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 //tính thu nhập trước thuế
                 TNTT = Gross - BHXH_Emp - BHYT_Emp - BHTN_Emp;
                 //tính thu nhập chịu thuế
-                TNCT = (double)(TNTT - 11000000 - EmployeeContract.Number_Of_Dependents * 4400000);
+                TNCT = (double)(TNTT - 11000000 - NumberOfDependencies.Count * 4400000);
                 // nếu thu nhập chịu thuế > 0 thì tính thuế thu nhập cá nhân
                 if (TNCT > 0)
                 {
@@ -294,7 +300,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 //tính lương Net = thu nhập 
                 Net = Salary;
                 //tính lương quy đổi
-                Exchange_Salary = (double)(Net - 11000000 - EmployeeContract.Number_Of_Dependents * 4400000);
+                Exchange_Salary = (double)(Net - 11000000 - NumberOfDependencies.Count * 4400000);
 
                 //sử dụng bảng quy đổi để tính thu nhập chịu thuế
                 if (Exchange_Salary > 0)
