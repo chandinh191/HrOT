@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace hrOT.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedingData : Migration
+    public partial class Update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
