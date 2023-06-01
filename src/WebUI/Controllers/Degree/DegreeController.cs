@@ -27,10 +27,10 @@ public class DegreeController : ApiControllerBase
     {
         return await _mediator.Send(new GetAllDegreeQuery());
     }
-    [HttpGet("{EmployeeId}")]
-    public async Task<ActionResult<List<DegreeDto>>> GetListByEmployeeId(Guid EmployeeId)
+    [HttpGet("GetListByEmployeeId")]
+    public async Task<ActionResult<List<DegreeDto>>> GetListByEmployeeId()
     {
-        return await _mediator.Send(new GetListDegreeByEmployeeIdQuery(EmployeeId));
+        return await _mediator.Send(new GetListDegreeByEmployeeIdQuery());
     }
     [HttpPost]
     //[Authorize(Policy = "employee")]
@@ -44,7 +44,7 @@ public class DegreeController : ApiControllerBase
         return BadRequest("Thêm thất bại");
     }
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateStatus(Guid id, UpdateDegreeCommand command)
+    public async Task<ActionResult> UpdateStatus([FromForm]  UpdateDegreeCommand command, Guid id)
     {
         if (id != command.Id)
         {
@@ -62,7 +62,7 @@ public class DegreeController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(Guid id, DeleteDegreeCommand command)
+    public async Task<ActionResult> Delete([FromForm]  Guid id, DeleteDegreeCommand command)
     {
         if (id != command.Id)
         {

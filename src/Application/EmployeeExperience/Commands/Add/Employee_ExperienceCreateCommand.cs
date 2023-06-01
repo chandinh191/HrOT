@@ -2,6 +2,7 @@
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.EmployeeExperience.Commands.Add;
@@ -11,10 +12,10 @@ public class Employee_ExperienceCreateCommand : IRequest<string>
     public ExperienceCommandDTO Experience { get; set; }
     public Guid EmployeeId { get; set; }
 
-    public Employee_ExperienceCreateCommand(ExperienceCommandDTO experience, Guid EmployeeID)
+    public Employee_ExperienceCreateCommand(ExperienceCommandDTO experience)
     {
         Experience = experience;
-        EmployeeId = EmployeeID;
+       
     }
 }
 
@@ -22,15 +23,23 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public Employee_ExperienceCreateCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public Employee_ExperienceCreateCommandHandler(IApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<string> Handle(Employee_ExperienceCreateCommand request, CancellationToken cancellationToken)
     {
+        if (request.EmployeeId == null)
+        {
+            // Lấy Id từ cookie
+            var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+            request.EmployeeId = Guid.Parse(employeeIdCookie);
+        }
         var employee = await _context.Employees
             .Include(a => a.ApplicationUser)
             .Where(e => e.Id == request.EmployeeId)

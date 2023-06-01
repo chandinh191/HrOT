@@ -10,14 +10,14 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.Employees.Commands.Delete;
-public record DeleteEmployee : IRequest
+public record DeleteEmployee : IRequest<string>
 {
     public Guid Id { get; set; }
    
   
 }
 
-public class DeleteEmployeeHandler : IRequestHandler<DeleteEmployee>
+public class DeleteEmployeeHandler : IRequestHandler<DeleteEmployee, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -26,7 +26,7 @@ public class DeleteEmployeeHandler : IRequestHandler<DeleteEmployee>
         _context = context;
     }
 
-    public async Task<Unit> Handle(DeleteEmployee request, CancellationToken cancellationToken)
+    public async Task<string> Handle(DeleteEmployee request, CancellationToken cancellationToken)
     {
         var entity = await _context.Employees
                .Include(e => e.ApplicationUser) // Include the ApplicationUser
@@ -45,7 +45,7 @@ public class DeleteEmployeeHandler : IRequestHandler<DeleteEmployee>
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return "Xóa thành công";
     }
 }
 

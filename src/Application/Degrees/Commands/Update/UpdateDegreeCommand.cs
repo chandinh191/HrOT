@@ -15,7 +15,7 @@ namespace hrOT.Application.Degrees.Commands.Update;
 public record UpdateDegreeCommand : IRequest<string>
 {
     public Guid Id { get; init; }
-    public Guid EmployeeId { get; init; }
+    
     public string Name { get; init; }
     public DegreeStatus Status { get; init; }
 }
@@ -37,7 +37,8 @@ public class UpdateDegreeCommandHandler : IRequestHandler<UpdateDegreeCommand, s
         if (entity == null)
         {
             throw new NotFoundException(nameof(Degree), request.Id);
-        }else if (entity.IsDeleted == true)
+        }
+        else if (entity.IsDeleted == true)
         {
             return "Bằng cấp đã bị xóa!";
         }
