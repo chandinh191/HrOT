@@ -12,8 +12,8 @@ public class Employee_CreateSkillCommandValidator : AbstractValidator<Employee_C
     {
         _context = context;
         RuleFor(v => v.SkillId)
-            .NotEmpty().WithMessage("Id kĩ năng không được để trống.")
-            .MustAsync(BeUniqueName).WithMessage("Nhân viên đã tồn tại kĩ năng này.");
+            .NotEmpty().WithMessage("Id kĩ năng không được để trống.");
+            //.MustAsync(BeUniqueName).WithMessage("Nhân viên đã tồn tại kĩ năng này.");
         RuleFor(v => v.Skill_EmployeeDTO.Level)
             .NotEmpty().WithMessage("Cấp bậc không được để trống.");
     }
