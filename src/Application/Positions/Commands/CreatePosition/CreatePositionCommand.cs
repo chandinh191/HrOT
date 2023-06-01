@@ -9,13 +9,13 @@ using MediatR;
 
 namespace hrOT.Application.Positions.Commands.CreatePosition;
 
-public record CreatePositionCommand : IRequest<Guid>
+public record CreatePositionCommand : IRequest<string>
 {
-    
+    public Guid DepartmentId { get; set; }
     public string? Name { get; set; }
 }
 
-public class CreatePositionCommandHandler : IRequestHandler<CreatePositionCommand, Guid>
+public class CreatePositionCommandHandler : IRequestHandler<CreatePositionCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -24,17 +24,18 @@ public class CreatePositionCommandHandler : IRequestHandler<CreatePositionComman
         _context = context;
     }
 
-    public async Task<Guid> Handle(CreatePositionCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreatePositionCommand request, CancellationToken cancellationToken)
     {
         var entity = new Position();
       
+        entity.DepartmentId = request.DepartmentId;
         entity.Name = request.Name;
 
         _context.Positions.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id;
+        return "Thêm thành công";
     }
 }
 

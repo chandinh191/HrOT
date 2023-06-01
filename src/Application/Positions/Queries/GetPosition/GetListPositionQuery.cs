@@ -29,6 +29,7 @@ public class GetListPositionQueryHandler : IRequestHandler<GetListPositionQuery,
     public async Task<List<PositionDTO>> Handle(GetListPositionQuery request, CancellationToken cancellationToken)
     {
         return await _context.Positions
+               .Where(x => x.IsDeleted == false)
                .ProjectTo<PositionDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
     }

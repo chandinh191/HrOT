@@ -20,16 +20,9 @@ public class OvertimeLogDto : IMapFrom<OvertimeLog>
     public DateTime EndDate { get; set; }
 
     // Tổng số giờ làm việc
-    public double TotalHours
-    {
-        get { return EndDate.Subtract(StartDate).TotalHours; }
-        set { }
-    }
+    public double TotalHours { get ; set; }
 
     // Trạng thái kiểm duyệt
     public OvertimeLogStatus Status { get; set; }
 
-    public bool IsDeleted { get; set; }
-
-    public virtual Employee? Employee { get; set; }
 }
