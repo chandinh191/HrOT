@@ -15,7 +15,7 @@ namespace hrOT.Application.Allowances.Command.Update;
 public record UpdateAllowanceCommand : IRequest<string>
 {
     public Guid Id { get; init; }
-    public Guid EmployeeContractId { get; init; }
+    //public Guid EmployeeContractId { get; init; }
     public string Name { get; init; }
     public AllowanceType Type { get; init; }
     public double Amount { get; init; }
@@ -45,13 +45,12 @@ public class UpdateAllowanceCommandHandler : IRequestHandler<UpdateAllowanceComm
             return "Khoảng trợ cấp này đã bị xóa!";
         }
 
-        entity.EmployeeContractId = request.EmployeeContractId;
+        //entity.EmployeeContractId = request.EmployeeContractId;
         entity.Name = request.Name;
         entity.Type = request.Type;
         entity.Amount = request.Amount;
         entity.Eligibility_Criteria = request.Eligibility_Criteria;
         entity.Requirements = request.Requirements;
-        //entity.IsDeleted = request.IsDeleted;
         
         await _context.SaveChangesAsync(cancellationToken);
 
