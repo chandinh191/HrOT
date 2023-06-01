@@ -1,18 +1,17 @@
 ﻿using AutoMapper;
 using hrOT.Application.Common.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.EmployeeSkill.Commands.Delete;
 
-public class Employee_DeleteSkillCommand : IRequest<string>
-{
-    public Guid EmployeeId { get; set; }
+public class Employee_DeleteSkillCommand : IRequest<string> { 
+
     public Guid SkilLId { get; set; }
 
-    public Employee_DeleteSkillCommand(Guid EmployeeID, Guid SkilLID)
-    {
-        EmployeeId = EmployeeID;
+    public Employee_DeleteSkillCommand( Guid SkilLID) { 
+    
         SkilLId = SkilLID;
     }
 }
@@ -21,11 +20,13 @@ public class Employee_DeleteSkillCommandHandler : IRequestHandler<Employee_Delet
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public Employee_DeleteSkillCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public Employee_DeleteSkillCommandHandler(IApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<string> Handle(Employee_DeleteSkillCommand request, CancellationToken cancellationToken)
@@ -36,8 +37,11 @@ public class Employee_DeleteSkillCommandHandler : IRequestHandler<Employee_Delet
         if (skill == null) { return "Id kĩ năng không tồn tại"; }
         if (skill.IsDeleted) { return "Kĩ năng này đã bị xóa"; }
 
+        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = Guid.Parse(employeeIdCookie);
+
         var empSkill = await _context.Skill_Employees
-            .Where(es => es.EmployeeId == request.EmployeeId
+            .Where(es => es.EmployeeId == employeeId
             && es.SkillId == request.SkilLId)
             .FirstOrDefaultAsync();
         if (empSkill == null) { return "Id nhân viên không tồn tại"; }

@@ -8,14 +8,14 @@ namespace hrOT.Application.Experiences.Commands;
 public class Employee_ExperienceUpdateCommand : IRequest<string>
 {
     public ExperienceCommandDTO Experience { get; set; }
-    public Guid EmployeeID { get; set; }
+
+    //public Guid EmployeeID { get; set; }
     public Guid ExperienceID { get; set; }
 
-    public Employee_ExperienceUpdateCommand(Guid ExperienceID, Guid EmployeeID, ExperienceCommandDTO experience)
+    public Employee_ExperienceUpdateCommand(Guid experienceID, ExperienceCommandDTO experience)
     {
         Experience = experience;
-        this.EmployeeID = EmployeeID;
-        this.ExperienceID = ExperienceID;
+        this.ExperienceID = experienceID;
     }
 }
 
@@ -32,11 +32,10 @@ public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_
 
     public async Task<string> Handle(Employee_ExperienceUpdateCommand request, CancellationToken cancellationToken)
     {
-        var employee = _context.Employees
-            .Where(e => e.Id == request.EmployeeID)
-            .FirstOrDefault();
-        if (employee == null) { return "Id nhân viên không tồn tại"; }
-        if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
+        if (request.Experience.StartDate.Year > 9999 || request.Experience.StartDate.Year <= 1990) { return "Năm bắt đầu phải nằm giữa 1990 và 9999"; }
+        if (request.Experience.EndDate.Year > 9999 || request.Experience.EndDate.Year <= 1990) { return "Năm kết thúc phải nằm giữa 1990 và 9999"; }
+        if (request.Experience.StartDate > request.Experience.EndDate) { return "Ngày bắt đầu phải sớm hơn ngày kết thúc."; }
+        if (request.Experience.EndDate < request.Experience.StartDate) { return "Ngày kết thúc phải sau ngày bắt đầu."; }
 
         var updateExp = _context.Experiences
         .Where(exp => exp.Id == request.ExperienceID)
@@ -51,7 +50,6 @@ public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_
         updateExp.Description = request.Experience.Description;
         updateExp.TechStack = request.Experience.TechStack;
         updateExp.Status = request.Experience.Status;
-        updateExp.LastModifiedBy = employee.LastModifiedBy;
 
         _context.Experiences.Update(updateExp);
         await _context.SaveChangesAsync(cancellationToken);

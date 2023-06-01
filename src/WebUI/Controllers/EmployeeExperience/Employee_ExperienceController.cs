@@ -16,72 +16,57 @@ public class Employee_ExperienceController : ApiControllerBase
 {
     // Xuất danh sách
     [HttpGet("GetListExperience")]
-    public async Task<IActionResult> GetListExperience(Guid EmployeeID)
+    public async Task<IActionResult> GetListExperience()
     {
-        if (EmployeeID == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
-
         var result = await Mediator
-            .Send(new Employee_GetListExperienceQuery(EmployeeID));
+            .Send(new Employee_GetListExperienceQuery());
 
         return result.Count > 0
             ? Ok(result)
-            : BadRequest("Id nhân viên không tồn tại!");
+            : BadRequest("Danh sách trống!");
     }
 
     // Khởi tạo
     [HttpPost("CreateExperience")]
-    public async Task<IActionResult> CreateExperience(Guid EmployeeID, [FromForm] ExperienceCommandDTO experienceDTO)
+    public async Task<IActionResult> CreateExperience([FromForm] ExperienceCommandDTO experienceDTO)
     {
-        if (EmployeeID == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
-
         var result = await Mediator
-            .Send(new Employee_ExperienceCreateCommand(experienceDTO, EmployeeID));
+            .Send(new Employee_ExperienceCreateCommand(experienceDTO));
 
         return Ok(result);
     }
 
     // Update
     [HttpPut("UpdateExperience")]
-    public async Task<IActionResult> UpdateExperience(Guid ExperienceID, Guid EmployeeID, [FromForm] ExperienceCommandDTO experienceDTO)
+    public async Task<IActionResult> UpdateExperience(Guid experienceID, [FromForm] ExperienceCommandDTO experienceDTO)
     {
-        if (EmployeeID == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
+        //if (EmployeeID == Guid.Empty)
+        //{
+        //    return BadRequest("Vui lòng nhập EmployeeId !");
+        //}
 
-        if (ExperienceID == Guid.Empty)
+        if (experienceID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập ExperienceID !");
         }
 
         var result = await Mediator
-            .Send(new Employee_ExperienceUpdateCommand(ExperienceID, EmployeeID, experienceDTO));
+            .Send(new Employee_ExperienceUpdateCommand(experienceID, experienceDTO));
 
         return Ok(result);
     }
 
     // Xóa
     [HttpDelete("DeleteExperience")]
-    public async Task<IActionResult> DeleteExperience(Guid ExperienceID, Guid EmployeeID)
+    public async Task<IActionResult> DeleteExperience(Guid experienceID)
     {
-        if (EmployeeID == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
-
-        if (ExperienceID == Guid.Empty)
+        if (experienceID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập ExperienceID !");
         }
 
         var result = await Mediator
-            .Send(new Employee_ExperienceDeleteCommand(ExperienceID, EmployeeID));
+            .Send(new Employee_ExperienceDeleteCommand(experienceID));
 
         return Ok(result);
     }

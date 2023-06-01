@@ -15,71 +15,53 @@ namespace WebUI.Controllers.EmployeeSkill;
 public class Employee_SkillController : ApiControllerBase
 {
     [HttpGet("GetListSKill")]
-    public async Task<IActionResult> GetListSKill(Guid EmployeeID)
+    public async Task<IActionResult> GetListSKill()
     {
-        if (EmployeeID == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
-
         var result = await Mediator
-            .Send(new Employee_GetListSkillQuery(EmployeeID));
+            .Send(new Employee_GetListSkillQuery());
 
         return result.Count > 0
             ? Ok(result)
-            : BadRequest("Id nhân viên không tồn tại!");
+            : BadRequest("Danh sách trống!");
     }
 
     [HttpPost("AddSkill")]
-    public async Task<IActionResult> AddSkill(Guid EmployeeId, [FromForm] Skills_EmployeeCommandDTO skill_Employee, Guid SkillId)
+    public async Task<IActionResult> AddSkill([FromForm] Skills_EmployeeCommandDTO skill_Employee, Guid SkillId)
     {
-        if (EmployeeId == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
-        else if (SkillId == Guid.Empty)
+        if (SkillId == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập SkillName !");
         }
 
         var result = await Mediator
-           .Send(new Employee_CreateSkillCommand(EmployeeId, SkillId, skill_Employee));
+           .Send(new Employee_CreateSkillCommand(SkillId, skill_Employee));
 
         return Ok(result);
     }
 
     [HttpPut("UpdateSkill")]
-    public async Task<IActionResult> UpdateSkill(Guid EmployeeId, Guid SkillId, [FromForm] Skills_EmployeeCommandDTO skills_Employee)
+    public async Task<IActionResult> UpdateSkill(Guid SkillId, [FromForm] Skills_EmployeeCommandDTO skills_Employee)
     {
-        if (EmployeeId == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
-        else if (SkillId == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập SkillId !");
-        }
-
-        var result = await Mediator
-            .Send(new Employee_UpdateSkillCommand(EmployeeId, SkillId, skills_Employee));
-        return Ok(result);
-    }
-
-    [HttpDelete("DeleteSkill")]
-    public async Task<IActionResult> DeleteSkill(Guid EmployeeId, Guid SkillId)
-    {
-        if (EmployeeId == Guid.Empty)
-        {
-            return BadRequest("Vui lòng nhập EmployeeId !");
-        }
-
         if (SkillId == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập SkillId !");
         }
 
         var result = await Mediator
-            .Send(new Employee_DeleteSkillCommand(EmployeeId, SkillId));
+            .Send(new Employee_UpdateSkillCommand(SkillId, skills_Employee));
+        return Ok(result);
+    }
+
+    [HttpDelete("DeleteSkill")]
+    public async Task<IActionResult> DeleteSkill(Guid SkillId)
+    {
+        if (SkillId == Guid.Empty)
+        {
+            return BadRequest("Vui lòng nhập SkillId !");
+        }
+
+        var result = await Mediator
+            .Send(new Employee_DeleteSkillCommand(SkillId));
 
         return Ok(result);
     }
