@@ -14,7 +14,7 @@ public class OvertimeLogController : ApiControllerBase
 
     [HttpGet]
     [Authorize(Policy = "manager")]
-    public async Task<ActionResult<OvertimeLogList>> GetList()
+    public async Task<ActionResult<List<OvertimeLogDto>>> GetList()
     {
         return await Mediator.Send(new Staff_GetListOvertimeLogQuery());
     }

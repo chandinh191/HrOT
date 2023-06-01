@@ -14,9 +14,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.LeaveLogs.Queries;
 
-public record Staff_GetListLeaveLogQuery : IRequest<LeaveLogList>;
+public record Staff_GetListLeaveLogQuery : IRequest<List<LeaveLogDto>>;
 
-public class Staff_GetListLeaveLogQueryHandler : IRequestHandler<Staff_GetListLeaveLogQuery, LeaveLogList>
+public class Staff_GetListLeaveLogQueryHandler : IRequestHandler<Staff_GetListLeaveLogQuery, List<LeaveLogDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -27,16 +27,13 @@ public class Staff_GetListLeaveLogQueryHandler : IRequestHandler<Staff_GetListLe
         _mapper = mapper;
     }
 
-    public async Task<LeaveLogList> Handle(Staff_GetListLeaveLogQuery request, CancellationToken cancellationToken)
+    public async Task<List<LeaveLogDto>> Handle(Staff_GetListLeaveLogQuery request, CancellationToken cancellationToken)
     {
-        return new LeaveLogList
-        {
-            Lists = await _context.LeaveLogs
+        return await _context.LeaveLogs
                 .AsNoTracking()
-                .ProjectTo<LeaveLogDto>(_mapper.ConfigurationProvider)
                 .Where(o => o.IsDeleted == false)
+                .ProjectTo<LeaveLogDto>(_mapper.ConfigurationProvider)
                 .OrderBy(t => t.Status)
-                .ToListAsync(cancellationToken)
-        };
+                .ToListAsync(cancellationToken);
     }
 }

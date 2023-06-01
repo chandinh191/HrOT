@@ -12,7 +12,7 @@ public class LeaveLogController : ApiControllerBase
 {
     [HttpGet]
     [Authorize(Policy = "manager")]
-    public async Task<ActionResult<LeaveLogList>> GetList()
+    public async Task<ActionResult<List<LeaveLogDto>>> GetList()
     {
         return await Mediator.Send(new Staff_GetListLeaveLogQuery());
     }
