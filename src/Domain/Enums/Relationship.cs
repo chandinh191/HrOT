@@ -5,12 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace hrOT.Domain.Enums;
-public enum AllowanceType
+public enum Relationship
 {
-    // Ăn uống
-    Meal_Allowance = 0,
-    
-    // Đi lại
-    Travel_Allowance =1
-
+    Parent,
+    Sibling,
+    Child,
+    Other
 }

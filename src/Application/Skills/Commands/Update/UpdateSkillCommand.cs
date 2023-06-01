@@ -30,19 +30,30 @@ public class UpdateSkillCommandHandler : IRequestHandler<UpdateSkillCommand, str
         var skill = await _context.Skills
             .Where(s => s.Id == request.SkillId)
             .FirstOrDefaultAsync();
+        if (skill == null) { return "Id kĩ năng không tồn tại"; }
+        if (skill.IsDeleted) { return "Kĩ năng này đã bị xóa!"; }
 
-        if (skill != null && skill.IsDeleted == false)
+        var tempSkillName = skill.SkillName;
+
+        skill.SkillName = request.SkillDTO.SkillName;
+        skill.Skill_Description = request.SkillDTO.Skill_Description;
+
+        _context.Skills.Update(skill);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        var existSkillNameCheck = await _context.Skills
+            .Where(s => s.SkillName == request.SkillDTO.SkillName)
+            .CountAsync();
+
+        if (existSkillNameCheck > 1)
         {
-            skill.SkillName = request.SkillDTO.SkillName;
-            skill.Skill_Description = request.SkillDTO.Skill_Description;
-
+            skill.SkillName = tempSkillName;
             _context.Skills.Update(skill);
             await _context.SaveChangesAsync(cancellationToken);
-            return "Cập nhật thành công";
-        } else
-        {
-            return "Kĩ năng này đã bị xóa!";
+
+            return "Tên kĩ năng đã tồn tại";
         }
 
+        return "Cập nhật thành công";
     }
 }

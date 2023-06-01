@@ -21,7 +21,7 @@ public class SkillsController : ApiControllerBase
 
         return result != null
             ? Ok(result)
-            : BadRequest("Danh sách list trống.");
+            : BadRequest("Danh sách kĩ năng trống.");
     }
 
     [HttpPost("AddSkill")]
@@ -55,8 +55,6 @@ public class SkillsController : ApiControllerBase
         }
         var result = await Mediator.Send(new DeleteSkillCommand(SkillId));
 
-        return result == true
-            ? Ok("Xóa thành công.")
-            : BadRequest("Xóa thất bại");
+        return Ok(result);
     }
 }

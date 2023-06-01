@@ -26,7 +26,7 @@ public class GetListPaySlipByDateHandler : IRequestHandler<GetListPaySlipByDate,
     public async Task<List<PaySlipDto>> Handle(GetListPaySlipByDate request, CancellationToken cancellationToken)
     {
         var PaySlips = await _context.PaySlips
-                .Where(p => p.Paid_date >= request.fromDate && p.Paid_date <= request.toDate)
+                .Where(p => !p.IsDeleted && p.Paid_date >= request.fromDate && p.Paid_date <= request.toDate)
                 .OrderByDescending(t => t.Paid_date)
                 .ProjectTo<PaySlipDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();

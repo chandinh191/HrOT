@@ -14,10 +14,10 @@ namespace hrOT.Application.Families.Commands.Update;
 public record UpdateFamilyCommand : IRequest
 {
     public Guid Id { get; init; }
-    public Guid EmployeeId { get; init; }
-    public string? FatherName { get; init; }
-    public string? MotherName { get; init; }
-    public int? NumberOfDependents { get; init; }
+    //public Guid EmployeeId { get; init; }
+    public string? Name { get; init; }
+    public DateTime? DateOfBirth { get; init; }
+    public Relationship Relationship { get; init; }
     public string? HomeTown { get; init; }
 }
 
@@ -39,10 +39,10 @@ public class UpdateFamilyCommandHandler : IRequestHandler<UpdateFamilyCommand>
         {
             throw new NotFoundException(nameof(Family), request.Id);
         }
-        entity.EmployeeId = request.EmployeeId;
-        entity.FatherName = request.FatherName;
-        entity.MotherName = request.MotherName;
-        entity.NumberOfDependents = request.NumberOfDependents;
+        //entity.EmployeeId = request.EmployeeId;
+        entity.DateOfBirth = request.DateOfBirth;
+        entity.Relationship = request.Relationship;
+        entity.Name = request.Name;
         entity.HomeTown = request.HomeTown;
         entity.LastModified = DateTime.Now;
         entity.LastModifiedBy = "test";

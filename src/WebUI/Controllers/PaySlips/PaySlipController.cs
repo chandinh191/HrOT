@@ -7,6 +7,7 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using hrOT.Application.PaySlips.Queries;
 using hrOT.Application.PaySlips;
+using hrOT.Application.Common.Models;
 
 namespace WebUI.Controllers.PaySlips;
 public class PaySlipController : ApiControllerBase
@@ -18,11 +19,23 @@ public class PaySlipController : ApiControllerBase
     {
         _mediator = mediator;
     }
-    [HttpGet]
+    [HttpGet("TotalSalary")]
     [Authorize(Policy = "manager")]
     public async Task<ActionResult<double?>> GetTotalSalary(DateTime FromDate, DateTime ToDate)
     {
         return await Mediator.Send(new GetTotalSalaryPayForEmployeeQuery(FromDate, ToDate));
+    }
+    [HttpGet("TotalCostOfInsurance")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<double?>> GetTotalCostOfInsurance(DateTime FromDate, DateTime ToDate)
+    {
+        return await Mediator.Send(new GetTotalCostOfInsurance(FromDate, ToDate));
+    }
+    [HttpGet("TotalTaxIncome")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<double?>> GetTotalTaxIncome(DateTime FromDate, DateTime ToDate)
+    {
+        return await Mediator.Send(new GetTotalTaxIncomeQuery(FromDate, ToDate));
     }
     [HttpGet("{EmployeeId}")]
     [Authorize(Policy = "ManagerOrStaff")]
@@ -36,10 +49,21 @@ public class PaySlipController : ApiControllerBase
     {
         if (ModelState.IsValid && command != null)
         {
-            await Mediator.Send(command);
-            return Ok("Tạo thành công");
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
-        return BadRequest("Tạo thất bại");
+        return BadRequest("Thêm thất bại");
+    }
+    [HttpPost("CreatePaySlipForAllEmployee")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<Guid>> CreatePaySlipForAllEmployee(CreateAllPaySlipCommand command)
+    {
+        if (ModelState.IsValid && command != null)
+        {
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
+        return BadRequest("Thêm thất bại");
     }
 
     /* [HttpGet]

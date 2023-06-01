@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Application.Employees;
 using hrOT.Domain.Entities;
@@ -15,32 +16,40 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace hrOT.Application.SalaryCalculators.Queries;
-public record GetTotalSalaryOfCompanyQueries() : IRequest<double?>;
+public record GetTotalSalaryOfDepartmentQuery(Guid DepartmentID) : IRequest<double>;
 
-public class GetTotalSalaryOfCompanyQueriesHandler : IRequestHandler<GetTotalSalaryOfCompanyQueries, double?>
+public class GetTotalSalaryOfDepartmentQueryHandler : IRequestHandler<GetTotalSalaryOfDepartmentQuery, double>
 {
 
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
 
-    public GetTotalSalaryOfCompanyQueriesHandler(IApplicationDbContext context, IMapper mapper, IConfiguration configuration)
+    public GetTotalSalaryOfDepartmentQueryHandler(IApplicationDbContext context, IMapper mapper, IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;
         _configuration = configuration;
     }
 
-    public async Task<double?> Handle(GetTotalSalaryOfCompanyQueries request, CancellationToken cancellationToken)
+    public async Task<double> Handle(GetTotalSalaryOfDepartmentQuery request, CancellationToken cancellationToken)
     {
         EmployeeContractStatus contractStatus = EmployeeContractStatus.Effective;
 
+        bool departmentExists = await _context.Departments.AnyAsync(d => d.Id == request.DepartmentID);
+        if (!departmentExists)
+        {
+            throw new NotFoundException("Department not found.");
+        }
+
         // get list employee
         var listEmployee = await _context.Employees
-            .Where(e => e.IsDeleted == false)
+            .Include(e => e.Position)
+            .ThenInclude(e => e.Department)
+            .Where(e => e.IsDeleted == false && e.Position.Department.Id == request.DepartmentID)
             .ToListAsync();
 
-        double? total = 0;
+        double total = 0;
 
         foreach (var employee in listEmployee)
         {
@@ -59,7 +68,7 @@ public class GetTotalSalaryOfCompanyQueriesHandler : IRequestHandler<GetTotalSal
                     .Where(p => p.EmployeeContractId == employeeContract.Id)
                     .OrderByDescending(p => p.Paid_date)
                     .FirstOrDefaultAsync();
-
+                
                 if (newestPaySlip != null)
                 {
                     if (result == null || newestPaySlip.Paid_date > result.Paid_date)
@@ -71,7 +80,7 @@ public class GetTotalSalaryOfCompanyQueriesHandler : IRequestHandler<GetTotalSal
 
             if (result != null)
             {
-                total += (double?)result.Company_Paid;
+                total += (double)result.Company_Paid;
             }
         }
 

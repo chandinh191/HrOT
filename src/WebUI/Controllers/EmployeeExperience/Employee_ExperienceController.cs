@@ -18,7 +18,7 @@ public class Employee_ExperienceController : ApiControllerBase
     [HttpGet("GetListExperience")]
     public async Task<IActionResult> GetListExperience(Guid EmployeeID)
     {
-        if (EmployeeID.ToString() == null)
+        if (EmployeeID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }
@@ -28,14 +28,14 @@ public class Employee_ExperienceController : ApiControllerBase
 
         return result.Count > 0
             ? Ok(result)
-            : BadRequest("Không tìm thấy bất kì kinh nghiệm bản thân nào");
+            : BadRequest("Id nhân viên không tồn tại!");
     }
 
     // Khởi tạo
     [HttpPost("CreateExperience")]
     public async Task<IActionResult> CreateExperience(Guid EmployeeID, [FromForm] ExperienceCommandDTO experienceDTO)
     {
-        if (EmployeeID.ToString() == null)
+        if (EmployeeID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }
@@ -43,21 +43,19 @@ public class Employee_ExperienceController : ApiControllerBase
         var result = await Mediator
             .Send(new Employee_ExperienceCreateCommand(experienceDTO));
 
-        return result == true
-            ? Ok("Thêm thành công")
-            : BadRequest("Không tìm thấy EmployeeID");
+        return Ok(result);
     }
 
     // Update
     [HttpPut("UpdateExperience")]
     public async Task<IActionResult> UpdateExperience(Guid ExperienceID, Guid EmployeeID, [FromForm] ExperienceCommandDTO experienceDTO)
     {
-        if (EmployeeID.ToString() == null)
+        if (EmployeeID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }
 
-        if (ExperienceID.ToString() == null)
+        if (ExperienceID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập ExperienceID !");
         }
@@ -72,12 +70,12 @@ public class Employee_ExperienceController : ApiControllerBase
     [HttpDelete("DeleteExperience")]
     public async Task<IActionResult> DeleteExperience(Guid ExperienceID, Guid EmployeeID)
     {
-        if (EmployeeID.ToString() == null)
+        if (EmployeeID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }
 
-        if (ExperienceID.ToString() == null)
+        if (ExperienceID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập ExperienceID !");
         }
@@ -85,8 +83,6 @@ public class Employee_ExperienceController : ApiControllerBase
         var result = await Mediator
             .Send(new Employee_ExperienceDeleteCommand(ExperienceID, EmployeeID));
 
-        return result == true
-            ? Ok("Xóa thành công")
-            : BadRequest("Không tìm thấy kinh nghiệm");
+        return Ok(result);
     }
 }

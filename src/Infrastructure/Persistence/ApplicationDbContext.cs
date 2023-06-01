@@ -151,9 +151,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             {
                 Id = Guid.Parse("668d6b8b-7997-40fc-9454-036158af413b"),
                 EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
-                FatherName = "Test",
-                MotherName = "Test",
-                NumberOfDependents = 3,
+                DateOfBirth = DateTime.Parse("9/9/1999"),
+                Name = "Test",
+                Relationship = Relationship.Parent,
                 HomeTown = "Test",
                 Created = DateTime.Parse("9/9/9999"),
                 CreatedBy = "Test",
@@ -206,11 +206,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Id = Guid.Parse("42c05e21-2931-4d71-8735-1f17508621a7"),
                 EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 File = "test",
-                StartDate = new DateTime(9999, 9, 9, 0, 0, 0),
-                EndDate = new DateTime(9999, 9, 9, 0, 0, 0),
+                StartDate = new DateTime(2023, 5, 30, 0, 0, 0),
+                EndDate = new DateTime(2023, 12, 30, 0, 0, 0),
                 Job = "test",
                 Salary = 20000000,
-                Number_Of_Dependents = 0,
                 InsuranceType = InsuranceType.Official,
                 CustomSalary = 0,
                 Status = EmployeeContractStatus.Effective,
@@ -242,25 +241,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
            }
        );
 
-        builder.Entity<LeaveLog>()
-        .HasData(
-            new LeaveLog
-            {
-                Id = Guid.Parse("93addd6c-7337-4b42-ab46-7f8b51405ea9"),
-                EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
-                StartDate = new DateTime(9999, 9, 9, 0, 0, 0),
-                EndDate = new DateTime(9999, 9, 9, 0, 0, 0),
-                LeaveHours = 1,
-                Reason = "test",
-                Status = LeaveLogStatus.Pending,
-                IsDeleted = false,
-                Created = new DateTime(9999, 9, 9, 0, 0, 0),
-                CreatedBy = "test",
-                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
-                LastModifiedBy = "test"
-            }
-        );
-
         builder.Entity<Skill>()
         .HasData(
             new Skill
@@ -291,24 +271,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 IsDeleted = false
             });
 
-        builder.Entity<OvertimeLog>()
-        .HasData(
-            new OvertimeLog
-            {
-                Id = Guid.Parse("36cb5368-1b04-4b23-bdc0-2949ae3568d7"),
-                EmployeeId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
-                StartDate = new DateTime(9999, 9, 9, 0, 0, 0),
-                EndDate = new DateTime(9999, 9, 9, 0, 0, 0),
-                TotalHours = 9,
-                Status = OvertimeLogStatus.Pending,
-                IsDeleted = false,
-                Created = new DateTime(9999, 9, 9, 0, 0, 0),
-                CreatedBy = "test",
-                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
-                LastModifiedBy = "test"
-            });
-
-        builder.Entity<Company>()
+       /* builder.Entity<Company>()
         .HasData(
             new Company
             {
@@ -396,7 +359,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                CreatedBy = "test",
                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                LastModifiedBy = "test"
-           });
+           });*/
 
         builder.Entity<TaxInCome>()
        .HasData(

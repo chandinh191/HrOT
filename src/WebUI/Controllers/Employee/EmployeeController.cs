@@ -35,7 +35,7 @@ namespace WebUI.Controllers
         }
 
         [HttpPost("create")]
-        //[Authorize(Policy = "manager")]
+        [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
 
@@ -64,10 +64,12 @@ namespace WebUI.Controllers
 
         [HttpPut("[action]")]
         [Authorize(Policy = "manager")]
+
         public async Task<IActionResult> Delete( [FromForm] DeleteEmployee command)
 
         {
             
+
                 await _mediator.Send(command);
 
                 return Ok("Xóa thành công");

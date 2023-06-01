@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace hrOT.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedingData : Migration
+    public partial class Update : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -663,7 +663,6 @@ namespace hrOT.Infrastructure.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Job = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Salary = table.Column<double>(type: "float", nullable: true),
-                    NumberOfDependents = table.Column<double>(name: "Number_Of_Dependents", type: "float", nullable: true),
                     CustomSalary = table.Column<double>(type: "float", nullable: true),
                     InsuranceType = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: true),
@@ -722,9 +721,9 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FatherName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MotherName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfDependents = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Relationship = table.Column<int>(type: "int", nullable: false),
                     HomeTown = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -814,6 +813,7 @@ namespace hrOT.Infrastructure.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalHours = table.Column<double>(type: "float", nullable: false),
+                    Coefficients = table.Column<double>(type: "float", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -896,7 +896,7 @@ namespace hrOT.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EmployeeContractId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StandardWorkHours = table.Column<int>(name: "Standard_Work_Hours", type: "int", nullable: true),
-                    ActualWorkHours = table.Column<int>(name: "Actual_Work_Hours", type: "int", nullable: true),
+                    ActualWorkHours = table.Column<double>(name: "Actual_Work_Hours", type: "float", nullable: true),
                     OtHours = table.Column<int>(name: "Ot_Hours", type: "int", nullable: true),
                     LeaveHours = table.Column<int>(name: "Leave_Hours", type: "int", nullable: true),
                     Salary = table.Column<double>(type: "float", nullable: true),
@@ -962,16 +962,7 @@ namespace hrOT.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDay", "ConcurrencyStamp", "Email", "EmailConfirmed", "Fullname", "Image", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "fe30e976-2640-4d35-8334-88e7c3b1eac1", 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "test@gmail.com", true, "Lewis", "TESTIMAGE", false, new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)), "test@gmail.com", "test", "098f6bcd4621d373cade4e832627b4f6", "123456789", true, "test", false, "test" });
-
-            migrationBuilder.InsertData(
-                table: "Companies",
-                columns: new[] { "Id", "AccountEmail", "Address", "Created", "CreatedBy", "HREmail", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "Phone" },
-                values: new object[,]
-                {
-                    { new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"), "congtyb@gmail.com", "Quận 10, Tp HCM", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "HRcongtyB@gmail.com", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "CÔNG TY B", "0123456789" },
-                    { new Guid("6b36c601-4a2b-47a2-b607-3597f3049f75"), "congtya@gmail.com", "Quận 9, Tp HCM", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "HRcongtyA@gmail.com", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "CÔNG TY A", "0987654321" }
-                });
+                values: new object[] { "fe30e976-2640-4d35-8334-88e7c3b1eac1", 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "40495f9c-e853-41e8-8c5b-6b3c93d3791b", "test@gmail.com", true, "Lewis", "TESTIMAGE", true, new DateTimeOffset(new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 7, 0, 0, 0)), "test@gmail.com", "test", "AQAAAAIAAYagAAAAEFNwXlIXp0mbDE5k1gIQdlbAczn8BwINQnF5S0qULxDK/6luT/bumpD+HFOXM0k59A==", "123456789", true, "VEPOTJNXQCZMK3J7R27HMLXD64T72GU6", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Departments",
@@ -1012,15 +1003,6 @@ namespace hrOT.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "JobDescriptions",
-                columns: new[] { "Id", "CompanyId", "Created", "CreatedBy", "Description", "EndDate", "IsDeleted", "LastModified", "LastModifiedBy", "StartDate", "Status", "Title" },
-                values: new object[,]
-                {
-                    { new Guid("06a99eff-b374-4a5e-a3fc-58e8defecfe6"), new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Doooooooooooooooooooooooo", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Đang tuyển dụng", "Job Back-end Java" },
-                    { new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"), new Guid("6b36c601-4a2b-47a2-b607-3597f3049f75"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Thích thì dô làm", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Đang tuyển dụng", "Job Back-end C#" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Positions",
                 columns: new[] { "Id", "Created", "CreatedBy", "DepartmentId", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
                 values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Nhân viên" });
@@ -1031,23 +1013,14 @@ namespace hrOT.Infrastructure.Migrations
                 values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "123, Lê Văn Việt, Tăng Nhơn Phú", "fe30e976-2640-4d35-8334-88e7c3b1eac1", "LUONG THE DAN", "123456789", "TECHCOMBANK", null, "0931248141241231", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Quận nine", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "TP HCM", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"), "TP Hồ Chí Minh" });
 
             migrationBuilder.InsertData(
-                table: "Skill_JDs",
-                columns: new[] { "Id", "Created", "CreatedBy", "IsDeleted", "JobDescriptionId", "LastModified", "LastModifiedBy", "Level", "SkillId" },
-                values: new object[,]
-                {
-                    { new Guid("318d7891-7119-4543-ab13-e4e61333ea08"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", false, new Guid("441d5aa8-9a63-49f5-9e4c-954c951e369d"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Đỉnh kao", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") },
-                    { new Guid("bb499b5d-69f1-4a9e-958a-f1c3bebd7350"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", false, new Guid("06a99eff-b374-4a5e-a3fc-58e8defecfe6"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", "Tạm", new Guid("34647606-a482-47e5-a59b-66cfbc5b66ac") }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Degrees",
                 columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "Status" },
                 values: new object[] { new Guid("d10de52b-58a1-43e8-9ab6-5651693341f8"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Test", 1 });
 
             migrationBuilder.InsertData(
                 table: "EmployeeContracts",
-                columns: new[] { "Id", "ContractType", "Created", "CreatedBy", "CustomSalary", "EmployeeId", "EndDate", "File", "InsuranceType", "IsDeleted", "Job", "LastModified", "LastModifiedBy", "Number_Of_Dependents", "Salary", "SalaryType", "StartDate", "Status" },
-                values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, 20000000.0, 0, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
+                columns: new[] { "Id", "ContractType", "Created", "CreatedBy", "CustomSalary", "EmployeeId", "EndDate", "File", "InsuranceType", "IsDeleted", "Job", "LastModified", "LastModifiedBy", "Salary", "SalaryType", "StartDate", "Status" },
+                values: new object[] { new Guid("42c05e21-2931-4d71-8735-1f17508621a7"), 1, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0.0, new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 0, false, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 20000000.0, 0, new DateTime(2023, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
 
             migrationBuilder.InsertData(
                 table: "Experiences",
@@ -1056,18 +1029,8 @@ namespace hrOT.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Families",
-                columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "FatherName", "HomeTown", "IsDeleted", "LastModified", "LastModifiedBy", "MotherName", "NumberOfDependents" },
-                values: new object[] { new Guid("668d6b8b-7997-40fc-9454-036158af413b"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "Test", "Test", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Test", 3 });
-
-            migrationBuilder.InsertData(
-                table: "LeaveLogs",
-                columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "EndDate", "IsDeleted", "LastModified", "LastModifiedBy", "LeaveHours", "Reason", "StartDate", "Status" },
-                values: new object[] { new Guid("93addd6c-7337-4b42-ab46-7f8b51405ea9"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", 1.0, "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 });
-
-            migrationBuilder.InsertData(
-                table: "OvertimeLogs",
-                columns: new[] { "Id", "Created", "CreatedBy", "EmployeeId", "EndDate", "IsDeleted", "LastModified", "LastModifiedBy", "StartDate", "Status", "TotalHours" },
-                values: new object[] { new Guid("36cb5368-1b04-4b23-bdc0-2949ae3568d7"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "test", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 9.0 });
+                columns: new[] { "Id", "Created", "CreatedBy", "DateOfBirth", "EmployeeId", "HomeTown", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "Relationship" },
+                values: new object[] { new Guid("668d6b8b-7997-40fc-9454-036158af413b"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new DateTime(1999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "Test", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Test", 0 });
 
             migrationBuilder.InsertData(
                 table: "Skill_Employees",
@@ -1173,8 +1136,7 @@ namespace hrOT.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_PositionId",
                 table: "Employees",
-                column: "PositionId",
-                unique: true);
+                column: "PositionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Experiences_EmployeeId",

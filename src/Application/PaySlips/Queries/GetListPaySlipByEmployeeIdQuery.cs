@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
 using hrOT.Domain.Enums;
@@ -27,8 +28,12 @@ public class GetListPaySlipByEmployeeIdQueryHandler : IRequestHandler<GetListPay
     public async Task<List<PaySlipDto>> Handle(GetListPaySlipByEmployeeIdQuery request, CancellationToken cancellationToken)
     {
         var EmployeeContract = await _context.EmployeeContracts
-            .Where(x => x.EmployeeId == request.EmployeeId && x.Status == EmployeeContractStatus.Effective)
+            .Where(x => x.EmployeeId == request.EmployeeId && x.Status == EmployeeContractStatus.Effective && x.IsDeleted == false)
             .SingleOrDefaultAsync(cancellationToken);
+        if (EmployeeContract == null)
+        {
+            throw new NotFoundException($"Không tìm thấy hợp đồng cho nhân viên có Id: {request.EmployeeId}");
+        }
         var PaySlips = await _context.PaySlips
                 .Where(x => x.EmployeeContractId == EmployeeContract.Id)
                 .OrderByDescending(t => t.Paid_date)
