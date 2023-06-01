@@ -12,9 +12,11 @@ public class Employee_ExperienceCreateCommand : IRequest<string>
     public ExperienceCommandDTO Experience { get; set; }
 
 
+
     public Employee_ExperienceCreateCommand(ExperienceCommandDTO experience)
     {
         Experience = experience;
+
     }
 }
 
@@ -33,6 +35,7 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
 
     public async Task<string> Handle(Employee_ExperienceCreateCommand request, CancellationToken cancellationToken)
     {
+
         if (request.Experience.StartDate.Year > 9999 || request.Experience.StartDate.Year <= 1990) { return "Năm bắt đầu phải nằm giữa 1990 và 9999"; }
         if (request.Experience.EndDate.Year > 9999 || request.Experience.EndDate.Year <= 1990) { return "Năm kết thúc phải nằm giữa 1990 và 9999"; }
         if (request.Experience.StartDate > request.Experience.EndDate) { return "Ngày bắt đầu phải sớm hơn ngày kết thúc."; }
@@ -47,6 +50,7 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
         //    .FirstOrDefaultAsync();
         //if (employee == null) { return "Id nhân viên không tồn tại"; }
         //if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
+
 
         var experience = new Experience
         {

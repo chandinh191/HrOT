@@ -31,11 +31,13 @@ public class Employee_ExperienceDeleteCommandHandler : IRequestHandler<Employee_
 
     public async Task<string> Handle(Employee_ExperienceDeleteCommand request, CancellationToken cancellationToken)
     {
+
         //var employee = await _context.Employees
         //    .Where(e => e.Id == request.EmployeeID)
         //    .FirstOrDefaultAsync();
         //if (employee == null) { return "Id nhân viên không tồn tại"; }
         //if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
+
 
         var deleteExp = await _context.Experiences
             .Where(exp => exp.Id == request.ExperienceID)

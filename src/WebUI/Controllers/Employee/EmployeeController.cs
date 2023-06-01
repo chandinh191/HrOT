@@ -39,15 +39,11 @@ namespace WebUI.Controllers
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
 
-            if (ModelState.IsValid && createModel != null)
-            {
+          
                 var entityId = await _mediator.Send(createModel);
 
                 return Ok("Thêm thành công");
-            }
-
-            return BadRequest("Thêm thất bại");
-
+            
         }
 
         [HttpPut]
@@ -57,8 +53,6 @@ namespace WebUI.Controllers
            
             try
             {
-                
-
                 await _mediator.Send(command);
                 return Ok("Cập nhật thành công");
             }
@@ -70,24 +64,16 @@ namespace WebUI.Controllers
 
         [HttpPut("[action]")]
         [Authorize(Policy = "manager")]
-        public async Task<IActionResult> Delete(Guid id, [FromForm] DeleteEmployee command)
+
+        public async Task<IActionResult> Delete( [FromForm] DeleteEmployee command)
 
         {
-            if (id != command.Id)
-            {
-                return Ok();
-            }
+            
 
-            try
-            {
                 await _mediator.Send(command);
 
                 return Ok("Xóa thành công");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Xóa thất bại");
-            }
+           
         }
 
         [HttpPost("CreateEx")]

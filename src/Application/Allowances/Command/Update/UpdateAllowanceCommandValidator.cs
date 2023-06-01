@@ -9,15 +9,16 @@ namespace hrOT.Application.Allowances.Command.Update
             RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("ID không được để trống");
 
-            RuleFor(x => x.EmployeeContractId)
-                 .NotEmpty().WithMessage("ID hợp đồng của nhân viên không được để trống");
+            /*RuleFor(x => x.EmployeeContractId)
+                 .NotEmpty().WithMessage("ID hợp đồng của nhân viên không được để trống");*/
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Tên không được để trống")
                 .MaximumLength(50).WithMessage("Tên không được vượt quá 50 kí tự");
 
             RuleFor(x => x.Type)
-                .NotEmpty().WithMessage("Loại không được để trống");
+                //.NotEmpty().WithMessage("Loại không được để trống")
+                .IsInEnum().WithMessage("Loại phụ cấp không hợp lệ.");
 
             RuleFor(x => x.Amount)
                 .NotEmpty().WithMessage("Số lượng không được để trống.")

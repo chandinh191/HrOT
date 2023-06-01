@@ -9,8 +9,8 @@ namespace hrOT.Application.Families.Commands.Update
             RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("Family ID không được bỏ trống.");
 
-            RuleFor(x => x.EmployeeId)
-               .NotEmpty().WithMessage("Employee ID không được bỏ trống.");
+            /*RuleFor(x => x.EmployeeId)
+               .NotEmpty().WithMessage("Employee ID không được bỏ trống.");*/
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Tên không được bỏ trống.")

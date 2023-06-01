@@ -75,10 +75,39 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
 
           .NotEmpty().WithMessage("Số tài khoản không được để trống.")
           .MaximumLength(20).WithMessage("Bank Account Number must not exceed 20 characters.");
+        RuleFor(e => e.District)
+           .NotEmpty().WithMessage("Quận/Huyện không được để trống.")
+           .MaximumLength(50).WithMessage("Quận/Huyện không quá 50 ký tự.");
+
+        RuleFor(e => e.Province)
+            .NotEmpty().WithMessage("Tỉnh/Thành phố không được để trống.")
+            .MaximumLength(50).WithMessage("Tỉnh/Thành phố không quá 50 ký tự.");
+
+        RuleFor(e => e.PositionId)
+           .NotEmpty().WithMessage("PositionId không được để trống.");
+
+        RuleFor(e => e.CitizenIdentificationNumber)
+            .MaximumLength(20).WithMessage("CitizenIdentificationNumber không quá 20 ký tự.");
+
+        RuleFor(e => e.CreatedDateCIN)
+            .NotEmpty().WithMessage("CreatedDateCIN không được để trống.");
+
+        RuleFor(e => e.PlaceForCIN)
+            .MaximumLength(50).WithMessage("PlaceForCIN không quá 50 ký tự.");
 
         RuleFor(e => e.SelectedRole)
             .NotNull().WithMessage("Quyền không được để trống");
 
+       /* RuleFor(query => query.EmployeeId)
+            .NotEmpty().WithMessage("Id nhân viên không được bỏ trống")
+            .MustAsync(ExistAsync).WithMessage("Id nhân viên không tồn tại");*/
+    }
+
+
+    private async Task<bool> ExistAsync(Guid employeeId, CancellationToken cancellationToken)
+    {
+        var employeeExists = await _context.Employees.AnyAsync(e => e.Id == employeeId, cancellationToken);
+        return employeeExists;
     }
 
     public async Task<bool> BeUniqueUserName(string username, CancellationToken cancellationToken)

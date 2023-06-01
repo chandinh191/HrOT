@@ -23,7 +23,7 @@ public class Employee_GetListExperienceQueryHandler : IRequestHandler<Employee_G
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public Employee_GetListExperienceQueryHandler(IApplicationDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
-  
+
 
     {
         _context = context;
@@ -33,8 +33,14 @@ public class Employee_GetListExperienceQueryHandler : IRequestHandler<Employee_G
 
     public async Task<List<ExperienceDTO>> Handle(Employee_GetListExperienceQuery request, CancellationToken cancellationToken)
     {
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-        var employeeId = Guid.Parse(employeeIdCookie);
+
+        if (request.Id == null)
+        {
+            // Lấy Id từ cookie
+            var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+            request.Id = Guid.Parse(employeeIdCookie);
+        }
+
         var list = await _context.Experiences
             .Where(exp => exp.EmployeeId.Equals(employeeId) && exp.IsDeleted == false)
             .ProjectTo<ExperienceDTO>(_mapper.ConfigurationProvider)
