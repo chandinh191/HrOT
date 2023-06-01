@@ -49,9 +49,13 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
             .Must(BeValidBirthDate).WithMessage("Invalid birth date.");
 
         RuleFor(e => e.Password)
+    .NotEmpty().WithMessage("Mật khẩu không được để trống.")
+    .MinimumLength(6).WithMessage("Mật khẩu phải có ít nhất 6 ký tự.")
+    .Matches("[A-Z]").WithMessage("Mật khẩu phải chứa ít nhất một ký tự in hoa.")
+    .Matches("[a-z]").WithMessage("Mật khẩu phải chứa ít nhất một ký tự thường.")
+    .Matches("[0-9]").WithMessage("Mật khẩu phải chứa ít nhất một chữ số.")
+    .Matches("[!@#$%^&*(),.?\":{}|<>]").WithMessage("Mật khẩu phải chứa ít nhất một ký tự đặc biệt.");
 
-            .NotEmpty().WithMessage("Mật khẩu không được để trống")
-            .MinimumLength(6).WithMessage("Password must have at least 6 characters.");
 
         RuleFor(e => e.BankName)
 

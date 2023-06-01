@@ -8,9 +8,9 @@ namespace hrOT.Domain.Enums;
 public enum AllowanceType
 {
     // Ăn uống
-    Meal_Allowance,
+    Meal_Allowance = 0,
     
     // Đi lại
-    Travel_Allowance,
+    Travel_Allowance =1
 
 }
