@@ -39,14 +39,29 @@ public class CreateTimeAttendanceLogByExcelHandler : IRequestHandler<CreateTimeA
 
         using (var package = new ExcelPackage(new FileInfo(filePath)))
         {
-            var worksheet = package.Workbook.Worksheets[0];
-            var rowCount = worksheet.Dimension.Rows;
 
+            var worksheet = package.Workbook.Worksheets[0];
+            int rowCount = 1;
+            int currentRow = 2;
+
+            while (worksheet.Cells[currentRow, 1].Value != null)
+            {
+                rowCount++;
+                currentRow++;
+            }
             var timeAttendanceLog = new List<TimeAttendanceLog>();
 
             for (int row = 2; row <= rowCount; row++)
             {
                 var employeeId = worksheet.Cells[row, 1].GetValue<string>();
+                var employeeIdGuid = Guid.Parse(employeeId);
+                var employee = await _context.Employees
+                    .Where(x => x.Id == employeeIdGuid)
+                    .FirstOrDefaultAsync(cancellationToken);
+                if (employee == null)
+                {
+                    continue;
+                }
                 var startTime = worksheet.Cells[row, 2].GetValue<DateTime>();
                 var endTime = worksheet.Cells[row, 3].GetValue<DateTime>();
 
