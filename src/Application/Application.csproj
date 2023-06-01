@@ -39,6 +39,7 @@
 
     <ItemGroup>
       <Folder Include="Auth\Commands\" />
+      <Folder Include="SalaryCalculators\Queries\" />
     </ItemGroup>
 
 </Project>
