@@ -24,37 +24,29 @@ public class PositionController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(CreatePositionCommand command)
+    public async Task<ActionResult> Create(CreatePositionCommand command)
     {
         if (ModelState.IsValid && command != null)
         {
-            await Mediator.Send(command);
-            return Ok("Thêm thành công");
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
         return BadRequest("Thêm thất bại");
     }
 
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult> Update(Guid id, UpdatePositionCommand command)
+    [HttpPut]
+    public async Task<ActionResult> Update(UpdatePositionCommand command)
     {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
-        try
+        if (ModelState.IsValid && command != null)
         {
             var result = await Mediator.Send(command);
             return Ok(result);
-
         }
-        catch (Exception ex)
-        {
-            return BadRequest("Cập nhật thất bại");
-        }
+        return BadRequest("Cập nhật thất bại");
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<ActionResult> Delete(Guid id)
     {
         try

@@ -14,9 +14,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.OvertimeLogs.Queries;
 
-public record Staff_GetListOvertimeLogQuery : IRequest<OvertimeLogList>;
+public record Staff_GetListOvertimeLogQuery : IRequest<List<OvertimeLogDto>>;
 
-public class Staff_GetListOvertimeLogQueryHandler : IRequestHandler<Staff_GetListOvertimeLogQuery, OvertimeLogList>
+public class Staff_GetListOvertimeLogQueryHandler : IRequestHandler<Staff_GetListOvertimeLogQuery, List<OvertimeLogDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -27,16 +27,13 @@ public class Staff_GetListOvertimeLogQueryHandler : IRequestHandler<Staff_GetLis
         _mapper = mapper;
     }
 
-    public async Task<OvertimeLogList> Handle(Staff_GetListOvertimeLogQuery request, CancellationToken cancellationToken)
+    public async Task<List<OvertimeLogDto>> Handle(Staff_GetListOvertimeLogQuery request, CancellationToken cancellationToken)
     {
-        return new OvertimeLogList
-        {
-            Lists = await _context.OvertimeLogs
+        return await _context.OvertimeLogs
                 .AsNoTracking()
+                .Where(o => o.IsDeleted == false)
                 .ProjectTo<OvertimeLogDto>(_mapper.ConfigurationProvider)
-                .Where(o=>o.IsDeleted==false)
                 .OrderBy(o => o.Status)
-                .ToListAsync(cancellationToken)
-        };
+                .ToListAsync(cancellationToken);
     }
 }
