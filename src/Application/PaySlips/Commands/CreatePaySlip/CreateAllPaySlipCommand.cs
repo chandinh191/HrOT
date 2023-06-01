@@ -44,7 +44,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             }
             else
             {
-                return $"Không lấy được hợp đồng của nhân viên có ID: {employeeId}";
+                continue;
             }
         }
 
@@ -275,23 +275,44 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 Net = TNTT - TTNCN + Bonus + Total_Allowance;
                 SalaryFinal = Net;
 
-                //tính các loại bảo hiểm công ty phải trả 
-                BHXH_Cmp = Gross * 0.175;
-                if (BHXH_Cmp > 5215000)
+                //tính các loại bảo hiểm công ty phải trả
+                if (EmployeeContract.InsuranceType == InsuranceType.Official)
                 {
-                    BHXH_Cmp = 5215000;
+                    BHXH_Cmp = Gross * 0.175;
+                    if (BHXH_Cmp > 5215000)
+                    {
+                        BHXH_Cmp = 5215000;
+                    }
+                    BHYT_Cmp = Gross * 0.03;
+                    if (BHYT_Cmp > 894000)
+                    {
+                        BHYT_Cmp = 894000;
+                    }
+                    BHTN_Cmp = Gross * 0.01;
+                    if (BHTN_Cmp > 884000)
+                    {
+                        BHTN_Cmp = 884000;
+                    }
                 }
-                BHYT_Cmp = Gross * 0.03;
-                if (BHYT_Cmp > 894000)
+                else
                 {
-                    BHYT_Cmp = 894000;
+                    BHXH_Cmp = EmployeeContract.CustomSalary * 0.175;
+                    if (BHXH_Cmp > 5215000)
+                    {
+                        BHXH_Cmp = 5215000;
+                    }
+                    BHYT_Cmp = EmployeeContract.CustomSalary * 0.03;
+                    if (BHYT_Cmp > 894000)
+                    {
+                        BHYT_Cmp = 894000;
+                    }
+                    BHTN_Cmp = EmployeeContract.CustomSalary * 0.01;
+                    if (BHTN_Cmp > 884000)
+                    {
+                        BHTN_Cmp = 884000;
+                    }
                 }
-                BHTN_Cmp = Gross * 0.01;
-                if (BHTN_Cmp > 884000)
-                {
-                    BHTN_Cmp = 884000;
-                }
-                Company_Paid = SalaryFinal + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp + Total_Allowance;
+                Company_Paid = SalaryFinal + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp;
             }
 
             //nếu là lương GROSS
@@ -403,23 +424,44 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 Gross = TNTT + BHXH_Emp + BHYT_Emp + BHTN_Emp + Bonus + Total_Allowance;
                 SalaryFinal = Gross;
 
-                //tính các loại bảo hiểm công ty phải trả 
-                BHXH_Cmp = Gross * 0.175;
-                if (BHXH_Cmp > 5215000)
+                //tính các loại bảo hiểm công ty phải trả
+                if (EmployeeContract.InsuranceType == InsuranceType.Official)
                 {
-                    BHXH_Cmp = 5215000;
+                    BHXH_Cmp = Gross * 0.175;
+                    if (BHXH_Cmp > 5215000)
+                    {
+                        BHXH_Cmp = 5215000;
+                    }
+                    BHYT_Cmp = Gross * 0.03;
+                    if (BHYT_Cmp > 894000)
+                    {
+                        BHYT_Cmp = 894000;
+                    }
+                    BHTN_Cmp = Gross * 0.01;
+                    if (BHTN_Cmp > 884000)
+                    {
+                        BHTN_Cmp = 884000;
+                    }
                 }
-                BHYT_Cmp = Gross * 0.03;
-                if (BHYT_Cmp > 894000)
+                else
                 {
-                    BHYT_Cmp = 894000;
+                    BHXH_Cmp = EmployeeContract.CustomSalary * 0.175;
+                    if (BHXH_Cmp > 5215000)
+                    {
+                        BHXH_Cmp = 5215000;
+                    }
+                    BHYT_Cmp = EmployeeContract.CustomSalary * 0.03;
+                    if (BHYT_Cmp > 894000)
+                    {
+                        BHYT_Cmp = 894000;
+                    }
+                    BHTN_Cmp = EmployeeContract.CustomSalary * 0.01;
+                    if (BHTN_Cmp > 884000)
+                    {
+                        BHTN_Cmp = 884000;
+                    }
                 }
-                BHTN_Cmp = Gross * 0.01;
-                if (BHTN_Cmp > 884000)
-                {
-                    BHTN_Cmp = 884000;
-                }
-                Company_Paid = SalaryFinal + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp + Total_Allowance;
+                Company_Paid = SalaryFinal + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp;
             }
 
             //tạo payslip
