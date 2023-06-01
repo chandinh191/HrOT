@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Experiences;
 using hrOT.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.EmployeeExperience.Commands.Add;
 
-public class Employee_ExperienceCreateCommand : IRequest<bool>
+public class Employee_ExperienceCreateCommand : IRequest<string>
 {
     public ExperienceCommandDTO Experience { get; set; }
     public Guid EmployeeId { get; set; }
@@ -18,10 +17,9 @@ public class Employee_ExperienceCreateCommand : IRequest<bool>
         Experience = experience;
        
     }
-
 }
 
-public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_ExperienceCreateCommand, bool>
+public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_ExperienceCreateCommand, string>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -34,7 +32,7 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<bool> Handle(Employee_ExperienceCreateCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(Employee_ExperienceCreateCommand request, CancellationToken cancellationToken)
     {
         if (request.EmployeeId == null)
         {
@@ -46,28 +44,25 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
             .Include(a => a.ApplicationUser)
             .Where(e => e.Id == request.EmployeeId)
             .FirstOrDefaultAsync();
+        if (employee == null) { return "Id nhân viên không tồn tại"; }
+        if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
 
-        if (employee != null)
+        var experience = new Experience
         {
-            var experience = new Experience
-            {
-                Id = new Guid(),
-                EmployeeId = request.EmployeeId,
-                NameProject = request.Experience.NameProject,
-                TeamSize = request.Experience.TeamSize,
-                StartDate = request.Experience.StartDate,
-                EndDate = request.Experience.EndDate,
-                Description = request.Experience.Description,
-                TechStack = request.Experience.TechStack,
-                Status = request.Experience.Status,
-                CreatedBy = employee.ApplicationUser.UserName
-            };
+            Id = new Guid(),
+            EmployeeId = request.EmployeeId,
+            NameProject = request.Experience.NameProject,
+            TeamSize = request.Experience.TeamSize,
+            StartDate = request.Experience.StartDate,
+            EndDate = request.Experience.EndDate,
+            Description = request.Experience.Description,
+            TechStack = request.Experience.TechStack,
+            Status = request.Experience.Status,
+            CreatedBy = employee.ApplicationUser.UserName
+        };
 
-            await _context.Experiences.AddAsync(experience);
-            await _context.SaveChangesAsync(cancellationToken);
-            return true;
-        }
-
-        return false;
+        await _context.Experiences.AddAsync(experience);
+        await _context.SaveChangesAsync(cancellationToken);
+        return "Thêm thành công";
     }
 }

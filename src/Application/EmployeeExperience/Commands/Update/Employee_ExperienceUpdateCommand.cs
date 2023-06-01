@@ -35,34 +35,26 @@ public class Employee_ExperienceUpdateCommandHandler : IRequestHandler<Employee_
         var employee = _context.Employees
             .Where(e => e.Id == request.EmployeeID)
             .FirstOrDefault();
+        if (employee == null) { return "Id nhân viên không tồn tại"; }
+        if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
 
-        if (employee != null)
-        {
-            var updateExp = _context.Experiences
-            .Where(exp => exp.Id == request.ExperienceID)
-            .FirstOrDefault();
+        var updateExp = _context.Experiences
+        .Where(exp => exp.Id == request.ExperienceID)
+        .FirstOrDefault();
+        if (updateExp == null) { return "Id kinh nghiệm không tồn tại"; }
+        if (updateExp.IsDeleted) { return "Kinh nghiệm này đã bị xóa"; }
 
-            if (updateExp != null && updateExp.IsDeleted == false)
-            {
-                updateExp.NameProject = request.Experience.NameProject;
-                updateExp.TeamSize = request.Experience.TeamSize;
-                updateExp.StartDate = request.Experience.StartDate;
-                updateExp.EndDate = request.Experience.EndDate;
-                updateExp.Description = request.Experience.Description;
-                updateExp.TechStack = request.Experience.TechStack;
-                updateExp.Status = request.Experience.Status;
-                updateExp.LastModifiedBy = employee.LastModifiedBy;
+        updateExp.NameProject = request.Experience.NameProject;
+        updateExp.TeamSize = request.Experience.TeamSize;
+        updateExp.StartDate = request.Experience.StartDate;
+        updateExp.EndDate = request.Experience.EndDate;
+        updateExp.Description = request.Experience.Description;
+        updateExp.TechStack = request.Experience.TechStack;
+        updateExp.Status = request.Experience.Status;
+        updateExp.LastModifiedBy = employee.LastModifiedBy;
 
-                _context.Experiences.Update(updateExp);
-                await _context.SaveChangesAsync(cancellationToken);
-                return "Cập nhật thành công";
-            }
-            else
-            {
-                return "Kinh nghiệm này đã bị xóa!";
-            }
-        }
-
-        return "Cập nhật thất bại";
+        _context.Experiences.Update(updateExp);
+        await _context.SaveChangesAsync(cancellationToken);
+        return "Cập nhật thành công";
     }
 }
