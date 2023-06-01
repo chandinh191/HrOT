@@ -5,6 +5,8 @@ using hrOT.WebUI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using hrOT.Application.Allowances.Command.Delete;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using hrOT.Application.Common.Exceptions;
 
 namespace WebUI.Controllers.Allowance;
 
@@ -29,7 +31,7 @@ public class AllowanceController : ApiControllerBase
     }*/
 
 
-    [HttpPost]
+    [HttpPost("Create")]
     [Authorize(Policy = "Manager")]
     public async Task<ActionResult<Guid>> Create(CreateAllowanceCommand command)
     {
@@ -40,27 +42,23 @@ public class AllowanceController : ApiControllerBase
         }
         return BadRequest("Thêm thất bại");
     }
-    [HttpPut("{id}")]
+    [HttpPut("Update")]
     [Authorize(Policy = "manager")]
-    public async Task<ActionResult> Update(Guid id, UpdateAllowanceCommand command)
+    public async Task<ActionResult> Update([FromForm]UpdateAllowanceCommand command)
     {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
         try
         {
             var result = await Mediator.Send(command);
             return Ok(result);
 
         }
-        catch (Exception ex)
+        catch (NotFoundException ex)
         {
-            return BadRequest("Cập nhật thất bại");
+            return NotFound("Cập nhật thất bại");
         }
     }
     
-    [HttpDelete("{id}")]
+    [HttpDelete("Delete{id}")]
     [Authorize(Policy = "manager")]
     public async Task<ActionResult> Delete(Guid id, DeleteAllowanceCommand command)
     {
@@ -74,9 +72,9 @@ public class AllowanceController : ApiControllerBase
             return Ok("Xóa thành công");
 
         }
-        catch (Exception ex)
+        catch (NotFoundException ex)
         {
-            return BadRequest("Xóa thất bại");
+            return NotFound("Xóa thất bại");
         }
     }
 }

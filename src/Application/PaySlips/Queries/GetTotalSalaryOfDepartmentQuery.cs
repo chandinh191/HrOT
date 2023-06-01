@@ -68,7 +68,7 @@ public class GetTotalSalaryOfDepartmentQueryHandler : IRequestHandler<GetTotalSa
                     .Where(p => p.EmployeeContractId == employeeContract.Id)
                     .OrderByDescending(p => p.Paid_date)
                     .FirstOrDefaultAsync();
-
+                
                 if (newestPaySlip != null)
                 {
                     if (result == null || newestPaySlip.Paid_date > result.Paid_date)
