@@ -68,14 +68,8 @@ namespace WebUI.Controllers
 
         [HttpPut("[action]")]
         [Authorize(Policy = "manager")]
-        public async Task<IActionResult> Delete(Guid id, [FromForm] DeleteEmployee command)
-
+        public async Task<IActionResult> Delete([FromForm] DeleteEmployee command)
         {
-            if (id != command.Id)
-            {
-                return Ok();
-            }
-
             try
             {
                 await _mediator.Send(command);
