@@ -87,7 +87,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             {
                 if (EmployeeContract.StartDate >= request.ToDate)
                 {
-                    return $"{request.ToDate.ToString("dd/MM/yyyy")} là ngày bắt đầu của hợp đồng chưa thể tính lương";
+                    continue;
                 }
                 else
                 {
@@ -98,7 +98,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             {
                 if (Last_PaySlip.Paid_date == request.ToDate)
                 {
-                    return $"Hợp đồng này đã được tính lương ngày: {request.ToDate.ToString("dd/MM/yyyy")}";
+                    continue;
                 }
                 else
                 {
