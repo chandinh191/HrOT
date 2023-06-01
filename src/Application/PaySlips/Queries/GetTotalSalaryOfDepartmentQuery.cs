@@ -15,7 +15,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace hrOT.Application.SalaryCalculators.Queries;
+namespace hrOT.Application.PaySlips.Queries;
 public record GetTotalSalaryOfDepartmentQuery(Guid DepartmentID) : IRequest<double>;
 
 public class GetTotalSalaryOfDepartmentQueryHandler : IRequestHandler<GetTotalSalaryOfDepartmentQuery, double>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using hrOT.Application.PaySlips.Queries;
 using hrOT.Application.PaySlips;
 using hrOT.Application.Common.Models;
+using hrOT.Application.Common.Exceptions;
 
 namespace WebUI.Controllers.PaySlips;
 public class PaySlipController : ApiControllerBase
@@ -100,6 +101,40 @@ public class PaySlipController : ApiControllerBase
     public async Task<ActionResult<List<PaySlipDto>>> GetByDateRange(DateTime fromDate, DateTime toDate)
     {
         return await _mediator.Send(new GetListPaySlipByDate(fromDate, toDate));
+    }
+
+
+    [HttpGet("TotalSalaryOfCompany")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<double>> GetTotalSalaryOfCompany()
+    {
+        var query = new GetTotalSalaryOfCompanyQuery();
+        var totalSalary = await _mediator.Send(query);
+
+        return totalSalary;
+    }
+
+    [HttpGet("TotalSalaryOfDepartment")]
+    [Authorize(Policy = "manager")]
+    public async Task<ActionResult<double>> GetTotalSalaryOfDepartment(Guid id)
+    {
+        try
+        {
+            var query = new GetTotalSalaryOfDepartmentQuery(id);
+            var totalSalary = await _mediator.Send(query);
+
+            return totalSalary;
+        }
+        catch (NotFoundException ex)
+        {
+            // Handle the NotFoundException
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            return StatusCode(500, "An error occurred.");
+        }
     }
 
 

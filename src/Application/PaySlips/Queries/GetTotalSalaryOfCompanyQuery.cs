@@ -14,10 +14,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace hrOT.Application.SalaryCalculators.Queries;
-public record GetTotalSalaryOfCompanyQueries() : IRequest<double?>;
+namespace hrOT.Application.PaySlips.Queries;
+public record GetTotalSalaryOfCompanyQuery() : IRequest<double?>;
 
-public class GetTotalSalaryOfCompanyQueriesHandler : IRequestHandler<GetTotalSalaryOfCompanyQueries, double?>
+public class GetTotalSalaryOfCompanyQueriesHandler : IRequestHandler<GetTotalSalaryOfCompanyQuery, double?>
 {
 
     private readonly IApplicationDbContext _context;
@@ -31,7 +31,7 @@ public class GetTotalSalaryOfCompanyQueriesHandler : IRequestHandler<GetTotalSal
         _configuration = configuration;
     }
 
-    public async Task<double?> Handle(GetTotalSalaryOfCompanyQueries request, CancellationToken cancellationToken)
+    public async Task<double?> Handle(GetTotalSalaryOfCompanyQuery request, CancellationToken cancellationToken)
     {
         EmployeeContractStatus contractStatus = EmployeeContractStatus.Effective;
 
