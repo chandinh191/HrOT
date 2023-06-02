@@ -1,4 +1,4 @@
-﻿using hrOT.Application.Exchanges.Commands.CreateExchange;
+﻿/*using hrOT.Application.Exchanges.Commands.CreateExchange;
 using hrOT.Application.Exchanges.Commands.DeleteExchange;
 using hrOT.Application.Exchanges.Commands.UpdateExchange;
 using hrOT.Application.Exchanges.Queries;
@@ -63,3 +63,4 @@ public class ExchangeController : ApiControllerBase
         }
     }
 }
+*/
