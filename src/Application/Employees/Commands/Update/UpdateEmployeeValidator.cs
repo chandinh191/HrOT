@@ -36,29 +36,29 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
             .Matches(@"^(03|05|07|08|09)\d{8}$").WithMessage("Invalid phone number format.")
             .MaximumLength(10).WithMessage("Phone must not exceed 10 characters.");
 
-       /* RuleFor(e => e.UserName)
+        /* RuleFor(e => e.UserName)
 
-            .NotEmpty().WithMessage("Tài khoản không được để trống")
-            .MaximumLength(50).WithMessage("Username must not exceed 50 characters.")
-            .MustAsync(BeUniqueUserName).WithMessage("The specified username is already taken.");*/
+             .NotEmpty().WithMessage("Tài khoản không được để trống")
+             .MaximumLength(50).WithMessage("Username must not exceed 50 characters.")
+             .MustAsync(BeUniqueUserName).WithMessage("The specified username is already taken.");*/
 
-       /* RuleFor(e => e.Email)
+        /* RuleFor(e => e.Email)
 
-            .NotEmpty().WithMessage("Email không được để trống.")
-            .MaximumLength(100).WithMessage("Email must not exceed 100 characters.")
-            .EmailAddress().WithMessage("Invalid email address.")
-            .MustAsync(BeUniqueEmail).WithMessage("The specified email address is already registered.");
-*/
+             .NotEmpty().WithMessage("Email không được để trống.")
+             .MaximumLength(100).WithMessage("Email must not exceed 100 characters.")
+             .EmailAddress().WithMessage("Invalid email address.")
+             .MustAsync(BeUniqueEmail).WithMessage("The specified email address is already registered.");
+ */
         RuleFor(e => e.BirthDay)
+    .NotEmpty().WithMessage("Ngày sinh không được để trống.")
+    .Must(BeValidBirthDate).WithMessage("Ngày sinh không hợp lệ.")
+    .Must(BeAtLeast18YearsOld).WithMessage("Nhập ngày sinh nhân viên chưa đủ 18 tuổi không thể tạo được.");
 
-            .NotEmpty().WithMessage("Ngày sinh không được để trống.")
-            .Must(BeValidBirthDate).WithMessage("Invalid birth date.");
+        /* RuleFor(e => e.Password)
 
-       /* RuleFor(e => e.Password)
-
-            .NotEmpty().WithMessage("Mật khẩu không được để trống")
-            .MinimumLength(6).WithMessage("Password must have at least 6 characters.");
-*/
+             .NotEmpty().WithMessage("Mật khẩu không được để trống")
+             .MinimumLength(6).WithMessage("Password must have at least 6 characters.");
+ */
         RuleFor(e => e.BankName)
 
            .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
@@ -102,7 +102,14 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
             .NotEmpty().WithMessage("Id nhân viên không được bỏ trống")
             .MustAsync(ExistAsync).WithMessage("Id nhân viên không tồn tại");*/
     }
+    private bool BeAtLeast18YearsOld(DateTime birthDate)
+    {
+        // Tính tuổi hiện tại của ngày sinh
+        int age = DateTime.Today.Year - birthDate.Year;
 
+        // Kiểm tra nếu tuổi chưa đủ 18 tuổi
+        return age >= 18;
+    }
 
     private async Task<bool> ExistAsync(Guid employeeId, CancellationToken cancellationToken)
     {

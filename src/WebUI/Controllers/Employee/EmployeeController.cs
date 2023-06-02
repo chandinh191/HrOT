@@ -46,20 +46,27 @@ namespace WebUI.Controllers
             
         }
 
-        [HttpPut]
-        [Authorize(Policy = "ManagerOrStaff")]
+        [HttpPut("EditRoleManager")]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Edit( [FromForm] UpdateEmployee command)
         {
            
-            try
-            {
+            
                 await _mediator.Send(command);
                 return Ok("Cập nhật thành công");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Cập nhật thất bại");
-            }
+            
+           
+        }
+        [HttpPut("EditRoleEmployee")]
+        [Authorize(Policy = "Employee")]
+        public async Task<IActionResult> Edit([FromForm] UpdateEmployeeRoleEmployee command)
+        {
+
+            
+                await _mediator.Send(command);
+                return Ok("Cập nhật thành công");
+            
+         
         }
 
         [HttpPut("[action]")]
@@ -76,7 +83,7 @@ namespace WebUI.Controllers
            
         }
 
-        [HttpPost("CreateEx")]
+        [HttpPost("CreateExcel")]
         [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEx(IFormFile file)
         {
@@ -98,10 +105,16 @@ namespace WebUI.Controllers
                 {
                     FilePath = filePath
                 };
-
-                await _mediator.Send(command);
-
-                return Ok("Thêm thành công");
+                try
+                {
+                    await _mediator.Send(command);
+                    return Ok("Thêm thành công");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Định dạng tệp Excel không hợp lệ.");
+                }
+               
             }
 
             return BadRequest("Thêm thất bại");

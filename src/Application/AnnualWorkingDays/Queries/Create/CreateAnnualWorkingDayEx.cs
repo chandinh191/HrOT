@@ -12,12 +12,12 @@ using OfficeOpenXml;
 using System.Globalization;
 
 namespace hrOT.Application.AnnualWorkingDays.Queries.Create;
-public class CreateAnnualWorkingDayEx : IRequest<Guid>
+public class CreateAnnualWorkingDayEx : IRequest<string>
 {
     public string FilePath { get; set; }
 }
 
-public class CreateAnnualWorkingDayExCommandHandler : IRequestHandler<CreateAnnualWorkingDayEx, Guid>
+public class CreateAnnualWorkingDayExCommandHandler : IRequestHandler<CreateAnnualWorkingDayEx, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -26,75 +26,90 @@ public class CreateAnnualWorkingDayExCommandHandler : IRequestHandler<CreateAnnu
         _context = context;
     }
 
-    public async Task<Guid> Handle(CreateAnnualWorkingDayEx request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateAnnualWorkingDayEx request, CancellationToken cancellationToken)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-        using (var package = new ExcelPackage(new FileInfo(request.FilePath)))
+        try
         {
-            var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-            if (worksheet == null)
+            using (var package = new ExcelPackage(new FileInfo(request.FilePath)))
             {
-                throw new Exception("Invalid Excel file.");
-            }
-
-            var rowCount = worksheet.Dimension.Rows;
-            var annualWorkingDays = new List<AnnualWorkingDay>();
-
-            for (int row = 2; row <= rowCount; row++) // Bắt đầu từ hàng thứ 2 để bỏ qua tiêu đề
-            {
-                var dayCell = worksheet.Cells[row, 1].Value;
-
-                if (dayCell != null)
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (worksheet == null)
                 {
-                    DateTime day;
+                    throw new Exception("Invalid Excel file.");
+                }
 
-                    if (DateTime.TryParse(dayCell.ToString(), out day))
+                var rowCount = worksheet.Dimension.Rows;
+                var annualWorkingDays = new List<AnnualWorkingDay>();
+
+                for (int row = 2; row <= rowCount; row++) // Bắt đầu từ hàng thứ 2 để bỏ qua tiêu đề
+                {
+                    var dayCell = worksheet.Cells[row, 1].Value;
+
+                    if (dayCell != null)
                     {
-                        if (_context.AnnualWorkingDays.Any(d => d.Day == day))
-                        {
-                            continue; // Skip this row and move to the next one
-                        }
-                        double coefficients;
-                        TypeDate typeDate;
+                        DateTime day;
 
-                        // Tự động tính toán hệ số lương và loại ngày dựa trên ngày
-                        //Ngày lễ
-                        if (IsHoliday(day))
+                        if (DateTime.TryParse(dayCell.ToString(), out day))
                         {
-                            coefficients = 2;
-                            typeDate = TypeDate.Holiday;
-                        }
-                        //Ngày nghĩ
-                        else if (IsWeekend(day))
-                        {
-                            coefficients = 1.5;
-                            typeDate = TypeDate.Weekend;
-                        }
-                        //Ngày thường
-                        else
-                        {
-                            coefficients = 1;
-                            typeDate = TypeDate.Weekday;
-                        }
+                            if (_context.AnnualWorkingDays.Any(d => d.Day == day))
+                            {
+                                continue; // Skip this row and move to the next one
+                            }
+                            double coefficients;
+                            TypeDate typeDate;
 
-                        var entity = new AnnualWorkingDay
-                        {
-                            Day = day,
-                            Coefficients = coefficients,
-                            TypeDate = typeDate
-                        };
+                            // Tự động tính toán hệ số lương và loại ngày dựa trên ngày
+                            //Ngày lễ
+                            if (IsHoliday(day))
+                            {
+                                coefficients = 2;
+                                typeDate = TypeDate.Holiday;
+                            }
+                            //Ngày nghĩ
+                            else if (IsWeekend(day))
+                            {
+                                coefficients = 1.5;
+                                typeDate = TypeDate.Weekend;
+                            }
+                            //Ngày thường
+                            else
+                            {
+                                coefficients = 1;
+                                typeDate = TypeDate.Weekday;
+                            }
 
-                        annualWorkingDays.Add(entity);
+                            var entity = new AnnualWorkingDay
+                            {
+                                Day = day,
+                                Coefficients = coefficients,
+                                TypeDate = typeDate
+                            };
+
+                            annualWorkingDays.Add(entity);
+                        }
                     }
                 }
+                if (annualWorkingDays.Count == 0)
+                {
+                    throw new Exception("Không tìm thấy ngày làm việc hàng năm hợp lệ trong tệp Excel.");
+                }
+                _context.AnnualWorkingDays.AddRange(annualWorkingDays);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return annualWorkingDays.FirstOrDefault()?.Id.ToString() ?? Guid.Empty.ToString();
             }
-
-            _context.AnnualWorkingDays.AddRange(annualWorkingDays);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return annualWorkingDays.FirstOrDefault()?.Id ?? Guid.Empty;
         }
+        catch (InvalidDataException ex)
+        {
+            throw new Exception("Invalid Excel file format.", ex);
+        }
+        catch (IOException ex)
+        {
+            throw new Exception("Error accessing the Excel file.", ex);
+        }
+
+
     }
     private bool IsHoliday(DateTime date)
     {
