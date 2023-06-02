@@ -30,9 +30,15 @@ public class TimeAttendanceLogController : ApiControllerBase
                 FilePath = filePath
             };
 
-            await Mediator.Send(command);
-
-            return Ok("Thêm thành công");
+            try
+            {
+                await Mediator.Send(command);
+                return Ok("Thêm thành công");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Định dạng tệp Excel không hợp lệ.");
+            }
         }
 
         return BadRequest("Thêm thất bại");

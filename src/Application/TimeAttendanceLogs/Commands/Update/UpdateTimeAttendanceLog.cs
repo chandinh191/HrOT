@@ -23,9 +23,12 @@ public class UpdateTimeAttendanceLogHandler : IRequestHandler<UpdateTimeAttendan
 
     public async Task<string> Handle(UpdateTimeAttendanceLog request, CancellationToken cancellationToken)
     {
+        //muốn tính chấm công phải dựa vào bảng ngày làm việc thực tế
+        //lấy ra lịch làm việc 365 ngày
         var AnnualWorkingDays = await _context.AnnualWorkingDays
             .Where(x => x.IsDeleted == false)
             .ToListAsync(cancellationToken);
+        //lấy ra bảng lịch sử chấm công
         var TimeAttendanceLogs = await _context.TimeAttendanceLogs
             .Where(x => x.IsDeleted == false)
             .ToListAsync(cancellationToken);
@@ -39,6 +42,8 @@ public class UpdateTimeAttendanceLogHandler : IRequestHandler<UpdateTimeAttendan
         }
         foreach (var log in TimeAttendanceLogs)
         {
+            //tính số giờ làm việc trong 1 ngày
+            //nếu nó đi làm trước 12h trưa tức là nó sẽ có nghỉ ăn cơm trưa thì phải trừ 1 tiếng đi nếu k tính cả thời gian nó nghỉ ăn cơm trưa công ty lỗ 1 tiếng
             var logDuration = (log.EndTime - log.StartTime).TotalHours;
             if (log.StartTime.TimeOfDay < new TimeSpan(12, 0, 0))
             {
@@ -82,8 +87,10 @@ public class UpdateTimeAttendanceLogHandler : IRequestHandler<UpdateTimeAttendan
                 entity.LastModifiedBy = "Admin";
                 _context.OvertimeLogs.Add(entity);
             }
+            //nếu là ngày thường
             if(!isHoliday && !isWeekend)
             {
+                // làm ít hơn 8 tiếng 1 ngày là sẽ lưu số giờ bị thiếu đó vào leavelog
                 if (log.Ducation < 8)
                 {
                     var entity = new LeaveLog();
@@ -98,6 +105,7 @@ public class UpdateTimeAttendanceLogHandler : IRequestHandler<UpdateTimeAttendan
                     entity.LastModifiedBy = "Admin";
                     _context.LeaveLogs.Add(entity);
                 }
+                // làm nhiều hơn 8 tiếng 1 ngày sẽ lưu số giờ thừa ra vào overtimelog
                 if (log.Ducation > 8)
                 {
                     var entity = new OvertimeLog();

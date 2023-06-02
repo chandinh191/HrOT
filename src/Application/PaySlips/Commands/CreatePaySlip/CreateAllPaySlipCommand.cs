@@ -24,6 +24,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
 
     public async Task<string> Handle(CreateAllPaySlipCommand request, CancellationToken cancellationToken)
     {
+        //Tính lương cho toàn bộ nhân viên thì trước tiên phải lấy ra danh sách toàn bộ id của nhân viên
         var employeeIds = await _context.Employees
             .Select(employee => employee.Id)
             .ToListAsync(cancellationToken);
@@ -31,7 +32,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
         {
             return "Không tìm thấy bất kỳ thông tin nhân viên nào";
         }
-
+        //Tính lương sẽ dựa trên hợp đồng nên phải lấy ra toàn bộ hợp đồng của nhân viên mà đang còn hạn
         var employeeContracts = new List<EmployeeContract>();
         foreach (var employeeId in employeeIds)
         {
@@ -47,7 +48,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 continue;
             }
         }
-
+        //Tính lương cho từng hợp đồng
         foreach(var EmployeeContract in employeeContracts)
         {
             //khai báo
@@ -75,14 +76,17 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             double? SalaryFinal = 0;
             double? Company_Paid = 0;
 
+            //lấy ra số người phụ thuộc của nhân viên
             var NumberOfDependencies = await _context.Families
             .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.IsDeleted == false)
             .ToListAsync(cancellationToken);
-
+             
+            //tính lương là tính từ cái ngày mà nó được trả lương gần nhất ( dựa vào paid_date trong table payslip) tới ngày mình nhập vào        
             var Last_PaySlip = await _context.PaySlips
                 .Where(x => x.EmployeeContractId == EmployeeContract.Id)
                 .SingleOrDefaultAsync(cancellationToken);
-            //Nếu chưa có Payslip nào thì FromDate == StartDate trong EmployeeContract
+            //nếu nhân viên đó chưa từng có payslip nào tức là mới vào làm
+            // => FromDate sẽ bằng cái ngày bắt đầu trong hợp đồng của nhân viên
             if (Last_PaySlip == null)
             {
                 if (EmployeeContract.StartDate >= request.ToDate)
@@ -106,7 +110,8 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 }
             }
 
-            //lấy ra số giờ làm việc tiêu chuẩn của tháng đó
+            //để tính được lương 1 giờ thì phải lấy ra số giờ làm việc tiêu chuẩn của tháng đó
+            //B1: lấy ra số ngày làm việc của tháng đó ( tức là k lấy holiday hay cuối tuần)
             var AnnualWorkingDays = await _context.AnnualWorkingDays
             .Where(x => x.Day.Month == request.ToDate.Month && x.TypeDate == TypeDate.Weekday)
             .ToListAsync(cancellationToken);
@@ -114,20 +119,23 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
             {
                 return "Vui lòng cập nhật danh sách ngày làm việc hàng năm";
             }
+            //B2: * 8 để ra tổng số giờ, và tính lương 1 giờ bằng cách lấy lương trong hợp đồng chia cho giờ làm việc của tháng đó
             Standard_Work_Hours = AnnualWorkingDays.Count * 8;
+            Salary_1Hour = EmployeeContract.Salary / Standard_Work_Hours;
 
+            //lấy ra bảng thuế thu nhập cá nhân
             var List_TaxInCome = await _context.TaxInComes
             .Where(t => t.IsDeleted == false)
             .OrderBy(t => t.Muc_chiu_thue)
             .ToListAsync(cancellationToken);
+            //lấy ra bảng quy đổi 
             var List_Exchange = await _context.Exchanges
                 .Where(t => t.IsDeleted == false)
                 .OrderBy(e => e.Muc_Quy_Doi)
                 .ToListAsync(cancellationToken);
 
-            Salary_1Hour = EmployeeContract.Salary / Standard_Work_Hours;
-
             //tính tiền lương cơ bản cho nhân viên
+            //muốn tính lương thì phải dựa vào bảng chấm công coi nó đi làm được bao nhiêu tiếng rồi nhân với lương 1 giờ
             var TimeAttendanceLog = await _context.TimeAttendanceLogs
                 .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.StartTime >= FromDate && x.StartTime < request.ToDate)
                 .ToListAsync(cancellationToken);
@@ -141,6 +149,8 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 {
                     return $"Vui lòng tính chấm công cho nhân viên có ID: {EmployeeContract.EmployeeId} trước khi tính lương";
                 }
+                //ngày làm 8 tiếng mà trong lịch sử thấy ngày làm 10 tiếng tức là dư ra 2 tiếng tăng ca
+                //thì ở đây mình chỉ tính 8 tiếng thôi còn 2 tiếng kia sẽ tính vào lương tăng ca
                 if (Log.Ducation > 8)
                 {
                     Actual_Work_Hours += 8;
@@ -150,31 +160,40 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                     Actual_Work_Hours += Log.Ducation;
                 }
             }
-            //tính lương trong tháng đó của nhân viên ( đã trừ lương ngày nghỉ chưa tính lương tăng ca)
+            //tính lương trong tháng đó của nhân viên (chưa tính lương tăng ca)
             Salary = Actual_Work_Hours * Salary_1Hour;
 
+            //lấy ra lịch sử tăng ca
             var OvertimeLog = await _context.OvertimeLogs
                 .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == OvertimeLogStatus.Approved && x.IsDeleted == false && x.StartDate >= FromDate && x.StartDate < request.ToDate)
                 .ToListAsync(cancellationToken);
+            //lấy ra lịch sử nghỉ 
             var LeaveLog = await _context.LeaveLogs
                 .Where(x => x.EmployeeId == EmployeeContract.EmployeeId && x.Status == LeaveLogStatus.Approved && x.IsDeleted == false && x.StartDate >= FromDate && x.StartDate < request.ToDate)
                 .ToListAsync(cancellationToken);
+            //tính số giờ tăng ca
             Ot_Hours = OvertimeLog.Sum(x => x.TotalHours);
             foreach (var overtimeLog in OvertimeLog)
             {
+                //tính lương tăng ca
                 Bonus += overtimeLog.TotalHours * overtimeLog.Coefficients * Salary_1Hour;
             }
+            //lấy số giờ nó nghỉ
             Leave_Hours = LeaveLog.Sum(x => x.LeaveHours);
+            //tính lương bị trừ
             Deduction = Leave_Hours * Salary_1Hour;
 
             int n = List_TaxInCome.Count();
             int m = List_Exchange.Count();
 
+            //khúc này để xử lý bảng chi tiết thuế thu nhập cá nhân
+            //đầu tiên thì mặc định gán hết cho tụi nó bằng 0
             double?[] DetailTaxInComes = new double?[n];
             for (int i = 0; i < n; i++)
             {
                 DetailTaxInComes[i] = 0;
             }
+            //tính thuế thu nhập cá nhân max cho từng mức
             double?[] DetailTaxInCome_Max = new double?[n];
             for (int i = 0; i < n - 1; i++)
             {
@@ -188,16 +207,17 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 }
             }
 
+            //tính tiền phụ cấp của hợp đồng đó
             var Total_Allowance = await _context.Allowances
             .Where(x => x.EmployeeContractId == EmployeeContract.Id && x.IsDeleted == false)
             .SumAsync(x => x.Amount, cancellationToken);
 
-            //nếu là lương NET
+            //nếu là lương GROSS -> NET
             if (EmployeeContract.SalaryType == SalaryType.Net)
             {
                 Gross = Salary;
                 //tính các loại bảo hiểm nhân viên phải trả 
-                //tính trên lương
+                //tính trên lương chính thức
                 if (EmployeeContract.InsuranceType == InsuranceType.Official)
                 {
                     BHXH_Emp = Gross * 0.08;
@@ -216,7 +236,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                         BHTN_Emp = 884000;
                     }
                 }
-                //tính trên số khác
+                //tính trên lương khác
                 else
                 {
                     BHXH_Emp = EmployeeContract.CustomSalary * 0.08;
@@ -253,6 +273,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                     }
                     else
                     {
+                        //xem thử thu nhập chịu thuế nằm ở mức nào
                         for (int i = 1; i < n; i++)
                         {
                             if (TNCT <= List_TaxInCome[i].Muc_chiu_thue)
@@ -271,11 +292,12 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                     }
                 }
 
-                //tính lương cuối
+                //tính lương cuối ( lương cuối sẽ được cộng thêm lương tăng ca và phụ cấp)
                 Net = TNTT - TTNCN + Bonus + Total_Allowance;
                 SalaryFinal = Net;
 
                 //tính các loại bảo hiểm công ty phải trả
+                //tính trên lương chính thức
                 if (EmployeeContract.InsuranceType == InsuranceType.Official)
                 {
                     BHXH_Cmp = Gross * 0.175;
@@ -294,6 +316,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                         BHTN_Cmp = 884000;
                     }
                 }
+                //tính trên lương khác
                 else
                 {
                     BHXH_Cmp = EmployeeContract.CustomSalary * 0.175;
@@ -507,7 +530,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                 _context.DetailTaxIncomes.Add(detail);
             }
 
-            //xóa hết overtimelog
+            //xóa hết overtimelog đã tính
             foreach (var item in OvertimeLog)
             {
                 if (item.IsDeleted == false)
@@ -517,7 +540,7 @@ public class CreateAllPaySlipCommandHandler : IRequestHandler<CreateAllPaySlipCo
                     item.LastModifiedBy = "Admin";
                 }
             }
-            //xóa hết Leavelog
+            //xóa hết Leavelog đã tinh
             foreach (var item in LeaveLog)
             {
                 if (item.IsDeleted == false)
