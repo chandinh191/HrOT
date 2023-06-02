@@ -31,7 +31,6 @@ public class Staff_GetListLeaveLogQueryHandler : IRequestHandler<Staff_GetListLe
     {
         return await _context.LeaveLogs
                 .AsNoTracking()
-                .Where(o => o.IsDeleted == false)
                 .ProjectTo<LeaveLogDto>(_mapper.ConfigurationProvider)
                 .OrderBy(t => t.Status)
                 .ToListAsync(cancellationToken);
