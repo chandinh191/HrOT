@@ -97,7 +97,7 @@ namespace hrOT.Application.Employees.Commands.Create
             _context.Employees.Add(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return entity.ApplicationUserId;
+            return "Thêm thành công";
         }
     }
 

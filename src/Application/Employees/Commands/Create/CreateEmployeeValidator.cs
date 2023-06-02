@@ -23,30 +23,30 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
 
         RuleFor(e => e.Address)
             .NotEmpty().WithMessage("Địa chỉ không được để trống.")
-            .MaximumLength(50).WithMessage("Address must not exceed 50 characters.");
+            .MaximumLength(50).WithMessage("Địa chỉ không được vượt quá 50 ký tự.");
         RuleFor(e => e.PhoneNumber)
 
             .NotEmpty().WithMessage("Số điện thoại không được để trống.")
-            .Matches(@"^(03|05|07|08|09)\d{8}$").WithMessage("Invalid phone number format.")
-            .MaximumLength(10).WithMessage("Phone must not exceed 10 characters.");
+            .Matches(@"^(03|05|07|08|09)\d{8}$").WithMessage("Định dạng số điện thoại không hợp lệ.")
+            .MaximumLength(10).WithMessage("Điện thoại không được vượt quá 10 ký tự.");
 
         RuleFor(e => e.UserName)
 
             .NotEmpty().WithMessage("Tài khoản không được để trống")
-            .MaximumLength(50).WithMessage("Username must not exceed 50 characters.")
-            .MustAsync(BeUniqueUserName).WithMessage("The specified username is already taken.");
+            .MaximumLength(50).WithMessage("Tên người dùng không được vượt quá 50 ký tự.")
+            .MustAsync(BeUniqueUserName).WithMessage("Tên người dùng được chỉ định đã được sử dụng.");
 
         RuleFor(e => e.Email)
 
             .NotEmpty().WithMessage("Email không được để trống.")
-            .MaximumLength(100).WithMessage("Email must not exceed 100 characters.")
-            .EmailAddress().WithMessage("Invalid email address.")
-            .MustAsync(BeUniqueEmail).WithMessage("The specified email address is already registered.");
+            .MaximumLength(100).WithMessage("Email không được vượt quá 100 ký tự.")
+            .EmailAddress().WithMessage("Địa chỉ email không hợp lệ.")
+            .MustAsync(BeUniqueEmail).WithMessage("Địa chỉ email được chỉ định đã được đăng ký.");
 
         RuleFor(e => e.BirthDay)
-
-            .NotEmpty().WithMessage("Ngày sinh không được để trống.")
-            .Must(BeValidBirthDate).WithMessage("Invalid birth date.");
+     .NotEmpty().WithMessage("Ngày sinh không được để trống.")
+     .Must(BeValidBirthDate).WithMessage("Ngày sinh không hợp lệ.")
+     .Must(BeAtLeast18YearsOld).WithMessage("Nhập ngày sinh nhân viên chưa đủ 18 tuổi không thể tạo được.");
 
         RuleFor(e => e.Password)
     .NotEmpty().WithMessage("Mật khẩu không được để trống.")
@@ -60,19 +60,19 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
         RuleFor(e => e.BankName)
 
            .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
-           .MaximumLength(20).WithMessage("Bank Name must not exceed 20 characters.");
+           .MaximumLength(20).WithMessage("Tên Ngân hàng không được vượt quá 20 ký tự.");
 
 
         RuleFor(e => e.BankAccountName)
 
           .NotEmpty().WithMessage("Tên tài khoản không được để trống")
-          .MaximumLength(50).WithMessage("Bank Account Name must not exceed 50 characters.");
+          .MaximumLength(50).WithMessage("Tên tài khoản ngân hàng không được vượt quá 50 ký tự.");
 
 
         RuleFor(e => e.BankAccountNumber)
 
           .NotEmpty().WithMessage("Số tài khoản không được để trống.")
-          .MaximumLength(20).WithMessage("Bank Account Number must not exceed 20 characters.");
+          .MaximumLength(20).WithMessage("Số Tài Khoản Ngân Hàng không được vượt quá 20 ký tự.");
 
         RuleFor(e => e.District)
             .NotEmpty().WithMessage("Quận/Huyện không được để trống.")
@@ -126,7 +126,14 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
 
         return isValidFormat;
     }
+    private bool BeAtLeast18YearsOld(DateTime birthDate)
+    {
+        // Tính tuổi hiện tại của ngày sinh
+        int age = DateTime.Today.Year - birthDate.Year;
 
+        // Kiểm tra nếu tuổi chưa đủ 18 tuổi
+        return age >= 18;
+    }
     public bool BeValidFullName(string fullName)
     {
         // Validate full name logic here

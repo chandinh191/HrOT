@@ -39,9 +39,15 @@ public class AnnualWorkingDayController : ApiControllerBase
                 FilePath = filePath
             };
 
-            await _mediator.Send(command);
-
-            return Ok("Thêm thành công");
+            try
+            {
+                await _mediator.Send(command);
+                return Ok("Thêm thành công");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Định dạng tệp Excel không hợp lệ.");
+            }
         }
 
         return BadRequest("Thêm thất bại");
