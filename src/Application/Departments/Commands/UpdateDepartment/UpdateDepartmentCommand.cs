@@ -13,8 +13,6 @@ namespace hrOT.Application.Departments.Commands.UpdateDepartment;
 public record UpdateDepartmentCommand : IRequest<string>
 {
     public Guid Id { get; init; }
-    public Guid PositionId { get; set; }
-    public Guid EmployeeId { get; set; }
     public string? Name { get; init; }
     public string? Description { get; init; }
 }
