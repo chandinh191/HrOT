@@ -1,4 +1,4 @@
-﻿using hrOT.Application.TaxInComes.Commands.CreateTaxInCome;
+﻿/*using hrOT.Application.TaxInComes.Commands.CreateTaxInCome;
 using hrOT.Application.TaxInComes.Commands.DeleteTaxInCome;
 using hrOT.Application.TaxInComes.Commands.UpdateTaxInCome;
 using hrOT.Application.TaxInComes.Queries;
@@ -62,4 +62,4 @@ public class TaxInComeController : ApiControllerBase
             return BadRequest("Xóa thất bại");
         }
     }
-}
+}*/
