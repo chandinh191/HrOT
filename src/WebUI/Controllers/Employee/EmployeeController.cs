@@ -59,7 +59,7 @@ namespace WebUI.Controllers
             
            
         }
-        [HttpPut("EditRoleEmployee")]
+/*        [HttpPut("EditRoleEmployee")]
         [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> Edit([FromForm] UpdateEmployeeRoleEmployee command)
         {
@@ -69,7 +69,7 @@ namespace WebUI.Controllers
                 return Ok("Cập nhật thành công");
             
          
-        }
+        }*/
 
         [HttpPut("[action]")]
         [Authorize(Policy = "manager")]
