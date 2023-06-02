@@ -28,18 +28,28 @@ public class CreateAnnualWorkingDayExCommandHandler : IRequestHandler<CreateAnnu
 
     public async Task<string> Handle(CreateAnnualWorkingDayEx request, CancellationToken cancellationToken)
     {
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;//sử dụng để đặt ngữ cảnh giấy phép sử dụng của gói ExcelPackage thành phi thương mại
         try
         {
             using (var package = new ExcelPackage(new FileInfo(request.FilePath)))
             {
+                //Kiểm tra trang tính có null ko
                 var worksheet = package.Workbook.Worksheets.FirstOrDefault();
                 if (worksheet == null)
                 {
                     throw new Exception("Invalid Excel file.");
                 }
 
-                var rowCount = worksheet.Dimension.Rows;
+                //Điếm số hàng có giá trị
+                int rowCount = 1;
+                int currentRow = 2;
+
+                while (worksheet.Cells[currentRow, 1].Value != null)
+                {
+                    rowCount++;
+                    currentRow++;
+                }
+
                 var annualWorkingDays = new List<AnnualWorkingDay>();
 
                 for (int row = 2; row <= rowCount; row++) // Bắt đầu từ hàng thứ 2 để bỏ qua tiêu đề
@@ -54,7 +64,7 @@ public class CreateAnnualWorkingDayExCommandHandler : IRequestHandler<CreateAnnu
                         {
                             if (_context.AnnualWorkingDays.Any(d => d.Day == day))
                             {
-                                continue; // Skip this row and move to the next one
+                                continue; // Bỏ qua hàng này và chuyển sang hàng tiếp theo
                             }
                             double coefficients;
                             TypeDate typeDate;

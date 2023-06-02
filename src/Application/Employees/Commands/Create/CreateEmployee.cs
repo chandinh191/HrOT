@@ -66,9 +66,8 @@ namespace hrOT.Application.Employees.Commands.Create
                 PhoneNumber = request.PhoneNumber,
                 BirthDay = request.BirthDay,
             };
-
+            //để tạo một người dùng mới (user) với mật khẩu được cung cấp (request.Password)
             var result = await userManager.CreateAsync(user, request.Password);
-
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(user, request.SelectedRole);
