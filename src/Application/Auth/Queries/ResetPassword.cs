@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using MimeKit;
 using MailKit.Net.Smtp;
+using Org.BouncyCastle.Crypto.Macs;
 
 namespace hrOT.Application.Auth.Queries
 {
@@ -34,7 +35,7 @@ namespace hrOT.Application.Auth.Queries
             if (user == null)
                 throw new NotFoundException(nameof(ApplicationUser), request.Email);
 
-            var newPassword = GenerateRandomPassword(); // Generate a new random password
+            var newPassword = GenerateRandomPassword(); // Tạo một mật khẩu ngẫu nhiên mới
 
             var resetPasswordResult = await _userManager.ResetPasswordAsync(user, await _userManager.GeneratePasswordResetTokenAsync(user), newPassword);
             if (!resetPasswordResult.Succeeded)
@@ -54,16 +55,16 @@ namespace hrOT.Application.Auth.Queries
             var random = new Random();
             var password = new StringBuilder();
 
-            // Generate the first part of the password
+            // Tạo phần đầu tiên của mật khẩu
             for (int i = 0; i < 5; i++)
             {
                 password.Append(validChars[random.Next(validChars.Length)]);
             }
 
-            // Generate the special character
+            // Tạo ký tự đặc biệt
             password.Append(specialChars[random.Next(specialChars.Length)]);
 
-            // Shuffle the characters in the password
+            // Xáo trộn các ký tự trong mật khẩu
             for (int i = password.Length - 1; i > 0; i--)
             {
                 int j = random.Next(i + 1);
@@ -79,7 +80,7 @@ namespace hrOT.Application.Auth.Queries
         private async Task SendEmailAsync(string email, string subject, string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("LogOT", "bishamond1108@gmail.com"));
+            message.From.Add(new MailboxAddress("LogOT", "bishamond1108@gmail.com"));// Tài khoản gmail
             message.To.Add(new MailboxAddress("", email));
             message.Subject = subject;
 
@@ -91,7 +92,7 @@ namespace hrOT.Application.Auth.Queries
             using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync("bishamond1108@gmail.com", "mznixcvlkvssfdco");
+                await client.AuthenticateAsync("bishamond1108@gmail.com", "mznixcvlkvssfdco"); //Tài khoản gmail và mạt khẩu của ứng dụng
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }

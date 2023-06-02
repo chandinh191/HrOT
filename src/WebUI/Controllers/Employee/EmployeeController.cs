@@ -26,10 +26,12 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
+        //Sử dụng chính sách (policies) cho xác thực trong identity để phân quyền 
+        // Nó nằm ở Infrastructure/ConfigureServieces
         [Authorize(Policy = "manager")]
         public async Task<ActionResult<List<EmployeeDTO>>> Get()
         {
-            //var employeeIdCookie = Request.Cookies["EmployeeId"];
+            
             return await _mediator.Send(new GetAllEmployeeQuery());
 
         }
@@ -58,7 +60,7 @@ namespace WebUI.Controllers
            
         }
         [HttpPut("EditRoleEmployee")]
-        [Authorize(Policy = "Employee")]
+        [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> Edit([FromForm] UpdateEmployeeRoleEmployee command)
         {
 

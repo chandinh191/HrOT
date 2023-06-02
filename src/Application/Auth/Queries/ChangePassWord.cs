@@ -27,11 +27,11 @@ public class ChangePasswordHandler : IRequestHandler<ChangePassWord, string>
 
     public async Task<string> Handle(ChangePassWord request, CancellationToken cancellationToken)
     {
-        
+        //Kiểm tra UserName
             var user = await _userManager.FindByNameAsync(request.Username);
             if (user == null)
                 throw new NotFoundException(nameof(ApplicationUser), request.Username);
-
+            // Đổi mật khẩu mới
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
             if (!changePasswordResult.Succeeded)
             {

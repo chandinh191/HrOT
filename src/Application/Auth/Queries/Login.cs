@@ -41,12 +41,13 @@ namespace hrOT.Application.Auth.Queries
         {
             try
             {
+                //Kiểm tra UserName
                 var user = await _userManager.FindByNameAsync(request.Username.Trim());
                 if (user == null)
                 {
                     throw new NotFoundException(nameof(ApplicationUser), request.Username);
                 }
-
+                //Kiểm tra Pass
                 var passwordHasher = new PasswordHasher<ApplicationUser>();
                 var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password.Trim());
 
@@ -57,7 +58,7 @@ namespace hrOT.Application.Auth.Queries
                     var userManager = _userManager;
 
                     var roles = await userManager.GetRolesAsync(user);
-
+                    //Tạo List Claim để lưu trữ các thông tin trong ApplicationUser
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
@@ -65,13 +66,16 @@ namespace hrOT.Application.Auth.Queries
                         new Claim("Id", user.Id),
            
                     };
-                   
+                    // Thêm FullName vào cookie
                     response.Cookies.Append("FullName", user.Fullname);
 
                     //Lấy role 
+                    //Sử dụng chính sách (policies) cho xác thực trong identity để phân quyền 
+                    // Nó nằm ở Infrastructure/ConfigureServieces
                     foreach (var role in roles)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role));
+                        //Đưa role vào cookie
                         response.Cookies.Append("Role", role);
                     }
 
