@@ -30,7 +30,7 @@ public class Employee_SkillController : ApiControllerBase
     {
         if (SkillId == Guid.Empty)
         {
-            return BadRequest("Vui lòng nhập SkillName !");
+            return BadRequest("Vui lòng nhập SkillId !");
         }
 
         var result = await Mediator

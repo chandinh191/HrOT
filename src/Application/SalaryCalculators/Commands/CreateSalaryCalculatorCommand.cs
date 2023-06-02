@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using hrOT.Application.Common.Interfaces;
+using hrOT.Domain.Entities;
+using hrOT.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -154,21 +156,42 @@ public class CreateSalaryCalculatorCommandHandler : IRequestHandler<CreateSalary
             //tính lương cuối
             Net = TNTT - TTNCN;
 
-            //tính các loại bảo hiểm công ty phải trả 
-            BHXH_Cmp = Gross * 0.175;
-            if (BHXH_Cmp > 5215000)
+            //tính các loại bảo hiểm công ty phải trả
+            if (request.InsuranceType == "Official")
             {
-                BHXH_Cmp = 5215000;
+                BHXH_Cmp = Gross * 0.175;
+                if (BHXH_Cmp > 5215000)
+                {
+                    BHXH_Cmp = 5215000;
+                }
+                BHYT_Cmp = Gross * 0.03;
+                if (BHYT_Cmp > 894000)
+                {
+                    BHYT_Cmp = 894000;
+                }
+                BHTN_Cmp = Gross * 0.01;
+                if (BHTN_Cmp > 884000)
+                {
+                    BHTN_Cmp = 884000;
+                }
             }
-            BHYT_Cmp = Gross * 0.03;
-            if (BHYT_Cmp > 894000)
+            else
             {
-                BHYT_Cmp = 894000;
-            }
-            BHTN_Cmp = Gross * 0.01;
-            if (BHTN_Cmp > 884000)
-            {
-                BHTN_Cmp = 884000;
+                BHXH_Cmp = request.CustomSalary * 0.175;
+                if (BHXH_Cmp > 5215000)
+                {
+                    BHXH_Cmp = 5215000;
+                }
+                BHYT_Cmp = request.CustomSalary * 0.03;
+                if (BHYT_Cmp > 894000)
+                {
+                    BHYT_Cmp = 894000;
+                }
+                BHTN_Cmp = request.CustomSalary * 0.01;
+                if (BHTN_Cmp > 884000)
+                {
+                    BHTN_Cmp = 884000;
+                }
             }
             //tính lương phía công ty phải chi trả
             CmpSalaryFinal = Gross + BHXH_Cmp + BHYT_Cmp + BHTN_Cmp;
