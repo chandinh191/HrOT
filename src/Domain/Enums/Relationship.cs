@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace hrOT.Domain.Enums;
 public enum Relationship
 {
-    Parent,
-    Sibling,
-    Child,
-    Other
+    Parent = 0,
+    Sibling = 1,
+    Child = 2,
 }
