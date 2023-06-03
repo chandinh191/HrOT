@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace hrOT.Application.Auth.Queries
 {
-    public class Login : IRequest<string>
+    public class Login : IRequest<bool>
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
 
-    public class LoginHandler : IRequestHandler<Login, string>
+    public class LoginHandler : IRequestHandler<Login, bool>
     {
 
         private readonly IIdentityService _identityService;
@@ -37,10 +37,11 @@ namespace hrOT.Application.Auth.Queries
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<string> Handle(Login request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(Login request, CancellationToken cancellationToken)
         {
             try
             {
+                bool result = false;
                 //Kiểm tra UserName
                 var user = await _userManager.FindByNameAsync(request.Username.Trim());
                 if (user == null)
@@ -63,7 +64,7 @@ namespace hrOT.Application.Auth.Queries
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.Email, user.Email),
-                        new Claim("Id", user.Id),
+                        new Claim("Id", user.Id)
            
                     };
                     // Thêm FullName vào cookie
@@ -95,27 +96,17 @@ namespace hrOT.Application.Auth.Queries
                     }
                     //Thông báo role khi đăng nhập
 
-                    if (await userManager.IsInRoleAsync(user, "Manager"))
-                    {
-                        return "Đăng nhập thành công";
-                    }
-                    else if (await userManager.IsInRoleAsync(user, "Staff"))
-                    {
-                        return "Đăng nhập thành công";
-                    }
-                    else if (await userManager.IsInRoleAsync(user, "Employee"))
-                    {
-                        return "Đăng nhập thành công";
-                    }
+                    result= true;
+                        return result;
                 }
 
             }catch(Exception ex)
             {
-                return("Thông tin người dùng không hợp lệ");
+                throw new ("Thông tin người dùng không hợp lệ");
             }
 
 
-           return("Thông tin người dùng không hợp lệ");
+            throw new("Thông tin người dùng không hợp lệ");
         }
 
     }
