@@ -52,12 +52,15 @@ public class CreatePaySlipCommandHandler : IRequestHandler<CreatePaySlipCommand,
         double? TTNCN = 0;
         double? SalaryFinal = 0;
         double? Company_Paid = 0;
+
         var NumberOfDependencies = await _context.Families
             .Where(x => x.EmployeeId == request.EmployeeId && x.IsDeleted == false)
             .ToListAsync(cancellationToken);
+
         var EmployeeContract = await _context.EmployeeContracts
             .Where(x => x.EmployeeId == request.EmployeeId && x.Status == EmployeeContractStatus.Effective)
             .SingleOrDefaultAsync(cancellationToken);
+
         if( EmployeeContract == null)
         {
             return "Không tìm thấy hợp đồng của nhân viên";

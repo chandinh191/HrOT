@@ -1,13 +1,9 @@
-﻿using FluentValidation;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using FluentValidation;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Update;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 public class UpdateEmployeeRoleEmployeeValidator : AbstractValidator<UpdateEmployeeRoleEmployee>
 {
@@ -19,46 +15,41 @@ public class UpdateEmployeeRoleEmployeeValidator : AbstractValidator<UpdateEmplo
 
         RuleFor(e => e.Fullname)
 
-            .NotEmpty().WithMessage("Tên không được để trống.")
+            .NotNull().WithMessage("Tên không được để trống.")
             .MaximumLength(50).WithMessage("Tên không quá 50 ký tự.")
             .Must(BeValidFullName).WithMessage("Định dạng tên đầy đủ không hợp lệ hoặc chứa các ký tự không hợp lệ.");
 
         RuleFor(e => e.Address)
 
             .NotEmpty().WithMessage("Địa chỉ không được để trống.")
-            .MaximumLength(50).WithMessage("Address must not exceed 50 characters.");
-
-
+            .MaximumLength(50).WithMessage("Địa chỉ không được vượt quá 50 kí tự.");
 
         RuleFor(e => e.PhoneNumber)
 
             .NotEmpty().WithMessage("Số điện thoại không được để trống.")
-            .Matches(@"^(03|05|07|08|09)\d{8}$").WithMessage("Invalid phone number format.")
-            .MaximumLength(10).WithMessage("Phone must not exceed 10 characters.");
-
+            .Matches(@"^(03|05|07|08|09)\d{8}$").WithMessage("Không đúng định dạng số!")
+            .MinimumLength(10).WithMessage("Số điện thoại phải đủ 10 số.")
+            .MaximumLength(10).WithMessage("Số điện thoại không được vượt quá 10 số.");
 
         RuleFor(e => e.BirthDay)
      .NotEmpty().WithMessage("Ngày sinh không được để trống.")
      .Must(BeValidBirthDate).WithMessage("Ngày sinh không hợp lệ.")
      .Must(BeAtLeast18YearsOld).WithMessage("Nhập ngày sinh nhân viên chưa đủ 18 tuổi không thể tạo được.");
 
-
         RuleFor(e => e.BankName)
 
            .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
-           .MaximumLength(20).WithMessage("Bank Name must not exceed 20 characters.");
-
+           .MaximumLength(20).WithMessage("Tên ngân hàng không được vượt quá 20 kí tự");
 
         RuleFor(e => e.BankAccountName)
 
           .NotEmpty().WithMessage("Tên tài khoản không được để trống")
-          .MaximumLength(50).WithMessage("Bank Account Name must not exceed 50 characters.");
-
+          .MaximumLength(50).WithMessage("Tên tài khoản không được vượt quá 50 kí tự");
 
         RuleFor(e => e.BankAccountNumber)
 
           .NotEmpty().WithMessage("Số tài khoản không được để trống.")
-          .MaximumLength(20).WithMessage("Bank Account Number must not exceed 20 characters.");
+          .MaximumLength(20).WithMessage("Số tài khoản không được vượt quá 20 kí tự");
         RuleFor(e => e.District)
            .NotEmpty().WithMessage("Quận/Huyện không được để trống.")
            .MaximumLength(50).WithMessage("Quận/Huyện không quá 50 ký tự.");
@@ -78,10 +69,6 @@ public class UpdateEmployeeRoleEmployeeValidator : AbstractValidator<UpdateEmplo
 
         RuleFor(e => e.PlaceForCIN)
             .MaximumLength(50).WithMessage("PlaceForCIN không quá 50 ký tự.");
-
-        
-
-       
     }
 
     private bool BeAtLeast18YearsOld(DateTime birthDate)
@@ -92,6 +79,7 @@ public class UpdateEmployeeRoleEmployeeValidator : AbstractValidator<UpdateEmplo
         // Kiểm tra nếu tuổi chưa đủ 18 tuổi
         return age >= 18;
     }
+
     private async Task<bool> ExistAsync(Guid employeeId, CancellationToken cancellationToken)
     {
         var employeeExists = await _context.Employees.AnyAsync(e => e.Id == employeeId, cancellationToken);
@@ -137,9 +125,9 @@ public class UpdateEmployeeRoleEmployeeValidator : AbstractValidator<UpdateEmplo
         string vietnamesePattern = @"^[\p{L}\s]+$";
 
         // Check if the full name matches the pattern and does not contain single characters that are not letters
-        return Regex.IsMatch(fullName, vietnamesePattern) &&
-            !Regex.IsMatch(fullName, @"\b\p{L}{1}\b");
+        return fullName != null 
+            ? Regex.IsMatch(fullName, vietnamesePattern) &&
+            !Regex.IsMatch(fullName, @"\b\p{L}{1}\b")
+            : false;
     }
-
-
 }
