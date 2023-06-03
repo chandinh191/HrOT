@@ -1,23 +1,17 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using hrOT.Application.Common.Exceptions;
+﻿using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Domain.Entities;
 using hrOT.Domain.IdentityModel;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.Employees.Commands.Update
 {
     public record UpdateEmployeeRoleEmployee : IRequest<string>
     {
-
         public Guid PositionId { get; set; }
         public string? CitizenIdentificationNumber { get; set; }
         public DateTime? CreatedDateCIN { get; set; }
@@ -30,9 +24,8 @@ namespace hrOT.Application.Employees.Commands.Update
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         //Địa chỉ
-        public string? District { get; set; }
-        public string? Province { get; set; }
-        
+        public string District { get; set; }
+        public string Province { get; set; }
     }
 
     public class UpdateEmployeeRoleEmployeeHandler : IRequestHandler<UpdateEmployeeRoleEmployee, string>
@@ -50,8 +43,6 @@ namespace hrOT.Application.Employees.Commands.Update
             _httpContextAccessor = httpContextAccessor;
         }
 
-
-
         public async Task<string> Handle(UpdateEmployeeRoleEmployee request, CancellationToken cancellationToken)
         {
             var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
@@ -62,13 +53,11 @@ namespace hrOT.Application.Employees.Commands.Update
 
             if (entity == null)
             {
-
                 throw new NotFoundException(nameof(Employee), employeeId);
             }
             else if (entity.IsDeleted == true)
             {
                 return "Nhân viên này đã bị xóa";
-
             }
             entity.CitizenIdentificationNumber = request.CitizenIdentificationNumber;
             entity.CreatedDateCIN = request.CreatedDateCIN;
@@ -89,6 +78,7 @@ namespace hrOT.Application.Employees.Commands.Update
                 entity.ApplicationUser.PhoneNumber = request.PhoneNumber;
             }
 
+            _context.Employees.Update(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
             var user = await userManager.FindByIdAsync(entity.ApplicationUser.Id);
@@ -96,8 +86,6 @@ namespace hrOT.Application.Employees.Commands.Update
             {
                 var userRoles = await userManager.GetRolesAsync(user);
                 await userManager.RemoveFromRolesAsync(user, userRoles);
-
-               
             }
 
             return "Cập nhật thành công";
