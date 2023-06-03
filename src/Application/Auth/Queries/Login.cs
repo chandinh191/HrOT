@@ -70,7 +70,7 @@ namespace hrOT.Application.Auth.Queries
                     response.Cookies.Append("FullName", user.Fullname);
 
                     //Lấy role 
-                    //Sử dụng chính sách (policies) cho xác thực trong identity để phân quyền 
+                    //Sử dụng chính sách (policies) cho xác thực trong identity để phân quyền.
                     // Nó nằm ở Infrastructure/ConfigureServieces
                     foreach (var role in roles)
                     {
