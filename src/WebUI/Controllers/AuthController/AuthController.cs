@@ -64,8 +64,6 @@ namespace WebUI.Controllers
                 var jsonUser = JsonConvert.SerializeObject(usermodel);
                 return Ok(jsonUser);
             }
-
-
         }
         [HttpPost("change-password")]
         
