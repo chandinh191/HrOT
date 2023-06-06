@@ -62,7 +62,7 @@ public class DepartmentController : ApiControllerBase
     {
         try
         {
-            await Mediator.Send(new DeteleDepartmentCommand(id));
+            await Mediator.Send(new DeleteDepartmentCommand(id));
             return Ok("Xóa thành công");
         }
         catch (Exception ex)

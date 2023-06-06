@@ -7,9 +7,9 @@ using MediatR;
 
 namespace hrOT.Application.Departments.Commands.DeleteDepartment;
 
-public record DeteleDepartmentCommand(Guid Id) : IRequest;
+public record DeleteDepartmentCommand(Guid Id) : IRequest;
 
-public class DeteleDepartmentCommandHandler : IRequestHandler<DeteleDepartmentCommand>
+public class DeteleDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand>
 {
     private readonly IApplicationDbContext _context;
 
@@ -18,7 +18,7 @@ public class DeteleDepartmentCommandHandler : IRequestHandler<DeteleDepartmentCo
         _context = context;
     }
 
-    public async Task<Unit> Handle(DeteleDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Departments
             .FindAsync(new object[] { request.Id }, cancellationToken);

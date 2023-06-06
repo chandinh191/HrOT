@@ -29,6 +29,7 @@ public class GetListLevelQueryHandler : IRequestHandler<GetListLevelQuery, List<
     {
         return await _context.Levels
                 .ProjectTo<LevelDTO>(_mapper.ConfigurationProvider)
+                .Where(e => e.IsDeleted == false)
                 .ToListAsync(cancellationToken);
     }
 }
