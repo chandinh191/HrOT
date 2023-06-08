@@ -28,9 +28,9 @@ public class DegreeController : ApiControllerBase
         return await _mediator.Send(new GetAllDegreeQuery());
     }
     [HttpGet("GetListByEmployeeId")]
-    public async Task<ActionResult<List<DegreeDto>>> GetListByEmployeeId()
+    public async Task<ActionResult<List<DegreeDto>>> GetListByEmployeeId(Guid EmployeeId)
     {
-        return await _mediator.Send(new GetListDegreeByEmployeeIdQuery());
+        return await _mediator.Send(new GetListDegreeByEmployeeIdQuery(EmployeeId));
     }
     [HttpPost]
     //[Authorize(Policy = "employee")]

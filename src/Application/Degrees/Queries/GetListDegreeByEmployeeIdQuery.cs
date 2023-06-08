@@ -14,9 +14,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace hrOT.Application.Degrees.Queries;
 
-public record GetListDegreeByEmployeeIdQuery : IRequest<List<DegreeDto>>
+public record GetListDegreeByEmployeeIdQuery(Guid EmployeeId) : IRequest<List<DegreeDto>>
 {
- 
 }
 public class GetListDegreeByEmployeeIdQueryHandler : IRequestHandler<GetListDegreeByEmployeeIdQuery, List<DegreeDto>>
 {
@@ -36,11 +35,11 @@ public class GetListDegreeByEmployeeIdQueryHandler : IRequestHandler<GetListDegr
 
 
         // Lấy Id từ cookie
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-        var employeeId = Guid.Parse(employeeIdCookie);
+        //var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+       // var employeeId = Guid.Parse(employeeIdCookie);
 
         return await _context.Degrees
-            .Where(x => x.EmployeeId == employeeId)
+            .Where(x => x.EmployeeId == request.EmployeeId)
             .ProjectTo<DegreeDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
     }
