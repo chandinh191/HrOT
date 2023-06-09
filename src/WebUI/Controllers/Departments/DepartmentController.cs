@@ -39,13 +39,9 @@ public class DepartmentController : ApiControllerBase
         return BadRequest("Thêm thất bại");
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult> Update(Guid id, UpdateDepartmentCommand command)
+    [HttpPut]
+    public async Task<ActionResult> Update([FromForm] UpdateDepartmentCommand command)
     {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
         try
         {
             var result = await Mediator.Send(command);
@@ -57,7 +53,7 @@ public class DepartmentController : ApiControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<ActionResult> Delete(Guid id)
     {
         try

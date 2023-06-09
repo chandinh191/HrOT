@@ -5,8 +5,8 @@ namespace hrOT.Domain.Entities;
 
 public class Level : BaseAuditableEntity
 {
-    [ForeignKey("Role")]
-    public Guid RoleId { get; set; }
+    [ForeignKey("Position")]
+    public Guid PositionId { get; set; }
 
     [Required]
     public string Name { get; set; }
@@ -14,5 +14,5 @@ public class Level : BaseAuditableEntity
     public string Description { get; set; }
 
     // Relationship
-    public virtual Position? Role { get; set; }
+    public virtual Position? Position { get; set; }
 }

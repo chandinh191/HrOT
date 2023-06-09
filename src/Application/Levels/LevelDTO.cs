@@ -10,11 +10,11 @@ using hrOT.Domain.Entities;
 namespace hrOT.Application.Levels;
 public class LevelDTO: IMapFrom<Level>
 {
-    public Guid RoleId { get; set; }
+    public Guid PositionId { get; set; }
 
     public string Name { get; set; }
 
     public string Description { get; set; }
-    public bool IsDeleted { get; set; }
+    //public bool IsDeleted { get; set; }
 
 }
