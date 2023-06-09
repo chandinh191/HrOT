@@ -180,7 +180,7 @@ namespace WebUI.Controllers
 
         [HttpPost("uploadImage")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> UploadImage(IFormFile imageFile)
+        public async Task<IActionResult> UploadImage(IFormFile imageFile, Guid employeeId)
         {
             try
             {
@@ -194,7 +194,8 @@ namespace WebUI.Controllers
                 }
                 var command = new UpLoadImage
                 {
-                    File = imageFile
+                    File = imageFile,
+                    EmployeeId = employeeId
                 };
 
                 await _mediator.Send(command);

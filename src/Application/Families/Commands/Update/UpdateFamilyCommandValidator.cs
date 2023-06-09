@@ -21,7 +21,7 @@ namespace hrOT.Application.Families.Commands.Update
                 .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("Ngày sinh không hợp lệ.");
 
             RuleFor(x => x.Relationship)
-                .NotEmpty().WithMessage("Quan hệ không được bỏ trống.");
+                .IsInEnum().WithMessage("Loại quan hệ không hợp lệ.");
 
             RuleFor(x => x.HomeTown)
                 .MaximumLength(100).WithMessage("Quê quán không được quá 100 ký tự.");
