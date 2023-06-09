@@ -9,11 +9,11 @@ namespace hrOT.Application.Departments.Commands.DeleteDepartment;
 
 public record DeleteDepartmentCommand(Guid Id) : IRequest;
 
-public class DeteleDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand>
+public class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand>
 {
     private readonly IApplicationDbContext _context;
 
-    public DeteleDepartmentCommandHandler(IApplicationDbContext context)
+    public DeleteDepartmentCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
