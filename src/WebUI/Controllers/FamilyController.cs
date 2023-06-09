@@ -6,7 +6,7 @@ using hrOT.Application.Families;
 using hrOT.WebUI.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 namespace WebUI.Controllers;
 public class FamilyController : ApiControllerBase
 {
@@ -18,7 +18,7 @@ public class FamilyController : ApiControllerBase
         _mediator = mediator;
     }
     [HttpGet]
-    //[Authorize(Policy = "manager")]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult<List<FamilyDto>>> GetAll()
     {
         return await _mediator.Send(new GetAllFamilyQuery());
@@ -28,8 +28,8 @@ public class FamilyController : ApiControllerBase
     {
         return await _mediator.Send(new GetListFamilyByEmployeeIdQuery(EmployeeId));
     }
-    [HttpPost]
-    //[Authorize(Policy = "employee")]
+    [HttpPost("Create")]
+    [Authorize(Policy = "employee")]
     public async Task<ActionResult<Guid>> Create(CreateFamilyCommand command)
     {
         if (ModelState.IsValid && command != null)
@@ -39,7 +39,7 @@ public class FamilyController : ApiControllerBase
         }
         return BadRequest("Thêm thất bại");
     }
-    [HttpPut("{id}")]
+    [HttpPut("Update")]
     public async Task<ActionResult> UpdateStatus(Guid id, UpdateFamilyCommand command)
     {
         if (id != command.Id)
@@ -57,7 +57,7 @@ public class FamilyController : ApiControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpPut("{id}")]
     public async Task<ActionResult> Delete(Guid id, DeleteFamilyCommand command)
     {
         if (id != command.Id)

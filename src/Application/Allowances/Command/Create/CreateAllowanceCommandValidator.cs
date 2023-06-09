@@ -14,7 +14,7 @@ namespace hrOT.Application.Allowances.Command.Create
                 .MaximumLength(50).WithMessage("Tên không được vượt quá 50 kí tự");
 
             RuleFor(x => x.Type)
-                .NotEmpty().WithMessage("Loại không được để trống");
+                .IsInEnum().WithMessage("Trạng thái không hợp lệ.");
 
             RuleFor(x => x.Amount)
                 .NotEmpty().WithMessage("Số lượng không được để trống.")

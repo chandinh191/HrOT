@@ -22,7 +22,7 @@ public class DegreeController : ApiControllerBase
         _mediator = mediator;
     }
     [HttpGet]
-    //[Authorize(Policy = "manager")]
+    [Authorize(Policy = "manager")]
     public async Task<ActionResult<List<DegreeDto>>> GetAll()
     {
         return await _mediator.Send(new GetAllDegreeQuery());
@@ -33,7 +33,7 @@ public class DegreeController : ApiControllerBase
         return await _mediator.Send(new GetListDegreeByEmployeeIdQuery(EmployeeId));
     }
     [HttpPost]
-    //[Authorize(Policy = "employee")]
+    [Authorize(Policy = "employee")]
     public async Task<ActionResult<Guid>> Create(CreateDegreeCommand command)
     {
         if (ModelState.IsValid && command != null)
