@@ -44,6 +44,15 @@ public class Employee_UpdateContractCommandValidator : AbstractValidator<Employe
         RuleFor(v => v.EmployeeContract.Status)
             //.NotNull().WithMessage("Trạng thái hợp đồng không được để trống.")
             .IsInEnum().WithMessage("Trạng thái hợp đồng không hợp lệ.");
+
+        RuleFor(v => v.EmployeeContract.InsuranceType)
+            .IsInEnum().WithMessage("Loại bảo hiểm không hợp lệ.");
+
+        RuleFor(v => v.EmployeeContract.SalaryType)
+           .IsInEnum().WithMessage("Loại lương không hợp lệ.");
+
+        RuleFor(v => v.EmployeeContract.ContractType)
+           .IsInEnum().WithMessage("Loại hợp đồng không hợp lệ.");
     }
 
     

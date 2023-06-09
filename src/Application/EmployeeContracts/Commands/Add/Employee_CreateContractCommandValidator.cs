@@ -9,11 +9,8 @@ using hrOT.Application.Common.Interfaces;
 namespace hrOT.Application.EmployeeContracts.Commands.Add;
 public class Employee_CreateContractCommandValidator : AbstractValidator<Employee_CreateContractCommand>
 {
-    private readonly IApplicationDbContext _context;
-
-    public Employee_CreateContractCommandValidator(IApplicationDbContext context)
+    public Employee_CreateContractCommandValidator()
     {
-        _context = context;
         // Validate File
         RuleFor(v => v.EmployeeContractDTO.File)
             .NotEmpty().WithMessage("File không được để trống.");
@@ -45,6 +42,15 @@ public class Employee_CreateContractCommandValidator : AbstractValidator<Employe
 
         // Validate Status
         RuleFor(v => v.EmployeeContractDTO.Status)
-            .NotNull().WithMessage("Trạng thái hợp đồng không được để trống.");
+            .IsInEnum().WithMessage("Trạng thái hợp đồng không hợp lệ.");
+
+        RuleFor(v => v.EmployeeContractDTO.InsuranceType)
+            .IsInEnum().WithMessage("Loại bảo hiểm không hợp lệ.");
+
+        RuleFor(v => v.EmployeeContractDTO.SalaryType)
+           .IsInEnum().WithMessage("Loại lương không hợp lệ.");
+
+        RuleFor(v => v.EmployeeContractDTO.ContractType)
+           .IsInEnum().WithMessage("Loại hợp đồng không hợp lệ.");
     }
 }
