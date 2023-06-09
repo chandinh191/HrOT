@@ -58,6 +58,16 @@ namespace hrOT.Application.Employees.Commands.Create
 
         public async Task<string> Handle(CreateEmployee request, CancellationToken cancellationToken)
         {
+            if (request.PositionId != null)
+            {
+                var position = await _context.Positions.FindAsync(request.PositionId);
+                if (position == null)
+                {
+                    return "PositionId không tìm thấy !";
+                }
+            }
+            
+
             var user = new ApplicationUser
             {
                 UserName = request.UserName,              
