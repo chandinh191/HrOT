@@ -34,7 +34,7 @@ public class DeleteEmployeeHandler : IRequestHandler<DeleteEmployee, string>
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(Employee), request.Id);
+            return "Employee không tồn tại!";
         }
 
        

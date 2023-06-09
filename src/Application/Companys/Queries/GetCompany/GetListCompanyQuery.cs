@@ -30,6 +30,7 @@ public class GetListCompanyQueryHandler : IRequestHandler<GetListCompanyQuery, L
     {
         return await _context.Companies
                  .ProjectTo<CompanyDTO>(_mapper.ConfigurationProvider)
+                 .Where(e => e.IsDeleted == false)
                  .ToListAsync(cancellationToken);
     }
 }

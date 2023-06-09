@@ -29,6 +29,7 @@ public class GetListJobDescriptionQueryHandler : IRequestHandler<GetListJobDescr
     {
         return await _context.JobDescriptions
                  .ProjectTo<JobDescriptionDTO>(_mapper.ConfigurationProvider)
+                    .Where(e => e.IsDeleted == false)
                  .ToListAsync(cancellationToken);
     }
 }

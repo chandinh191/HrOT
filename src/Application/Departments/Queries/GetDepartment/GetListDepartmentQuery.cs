@@ -33,6 +33,7 @@ public class GetListDepartmentQueryHandler : IRequestHandler<GetListDepartmentQu
     {
         return await _context.Departments
                  .ProjectTo<DepartmentDTO>(_mapper.ConfigurationProvider)
+                  .Where(e => e.IsDeleted == false)
                  .ToListAsync(cancellationToken);
     }
 }

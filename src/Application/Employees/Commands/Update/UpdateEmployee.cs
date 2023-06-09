@@ -11,13 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using AutoMapper.Internal;
 
 
 namespace hrOT.Application.Employees.Commands.Update
 {
     public record UpdateEmployee : IRequest<string>
     {
-       
+       public Guid EmployeeId { get; set; }
         public Guid PositionId { get; set; }
         public string? CitizenIdentificationNumber { get; set; }
         public DateTime? CreatedDateCIN { get; set; }
@@ -32,7 +33,7 @@ namespace hrOT.Application.Employees.Commands.Update
         //Địa chỉ
         public string? District { get; set; }
         public string? Province { get; set; }
-        public string SelectedRole { get; set; } // New property to hold the selected role
+        public string SelectedRole { get; set; } 
     }
 
     public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployee, string>
@@ -54,21 +55,21 @@ namespace hrOT.Application.Employees.Commands.Update
 
         public async Task<string> Handle(UpdateEmployee request, CancellationToken cancellationToken)
         {
-            var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-            var employeeId = Guid.Parse(employeeIdCookie);
+            //Truy vấn lấy EmployeeId
             var entity = await _context.Employees
                 .Include(e => e.ApplicationUser)
-                .FirstOrDefaultAsync(e => e.Id == employeeId, cancellationToken);
-
+                .FirstOrDefaultAsync(e => e.Id == request.EmployeeId, cancellationToken);
+            //Kiểm tra EmployeeId có bị xóa chưa
             if (entity == null)
             {
 
-                throw new NotFoundException(nameof(Employee), employeeId);
+                throw new NotFoundException(nameof(Employee), request.EmployeeId);
             } else if (entity.IsDeleted == true)
             {
                 return "Nhân viên này đã bị xóa!";
 
             }
+            entity.Id = request.EmployeeId;
             entity.CitizenIdentificationNumber = request.CitizenIdentificationNumber;
             entity.CreatedDateCIN = request.CreatedDateCIN;
             entity.PlaceForCIN = request.PlaceForCIN;
@@ -79,7 +80,7 @@ namespace hrOT.Application.Employees.Commands.Update
             entity.BankAccountNumber = request.BankAccountNumber;
             entity.BankAccountName = request.BankAccountName;
             entity.PositionId = request.PositionId;
-
+            //Kiểm tra ApplicationUser có null ko
             if (entity.ApplicationUser != null)
             {
                 entity.ApplicationUser.Fullname = request.Fullname;
@@ -89,13 +90,14 @@ namespace hrOT.Application.Employees.Commands.Update
             }
 
             await _context.SaveChangesAsync(cancellationToken);
-
+            // tìm kiếm người dùng theo Id của ApplicationUser
             var user = await userManager.FindByIdAsync( entity.ApplicationUser.Id);
             if (user != null)
             {
                 var userRoles = await userManager.GetRolesAsync(user);
+                // Xóa role hiện tại
                 await userManager.RemoveFromRolesAsync(user, userRoles);
-
+                //Add role mới vào
                 await userManager.AddToRoleAsync(user, request.SelectedRole);
             }
 

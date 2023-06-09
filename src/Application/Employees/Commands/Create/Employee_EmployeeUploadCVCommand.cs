@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using hrOT.Application.Common.Exceptions;
+﻿using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace hrOT.Application.Employees.Commands.Create;
+
 public class Employee_EmployeeUploadCVCommand : IRequest
 {
     //public Guid Id { get; set; }
     public IFormFile CVFile { get; set; }
-    
+
+    public Guid EmployeeId { get; set; }
 }
 
 public class Employee_EmployeeUploadCVHandler : IRequestHandler<Employee_EmployeeUploadCVCommand>
@@ -34,8 +29,8 @@ public class Employee_EmployeeUploadCVHandler : IRequestHandler<Employee_Employe
 
     public async Task<Unit> Handle(Employee_EmployeeUploadCVCommand request, CancellationToken cancellationToken)
     {
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-        var employeeId = Guid.Parse(employeeIdCookie);
+        //var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = request.EmployeeId;
         var employee = await _context.Employees.FindAsync(employeeId);
 
         if (employee == null || employee.IsDeleted)

@@ -16,10 +16,10 @@ public class Employee_ExperienceController : ApiControllerBase
 {
     // Xuất danh sách
     [HttpGet("GetListExperience")]
-    public async Task<IActionResult> GetListExperience()
+    public async Task<IActionResult> GetListExperience(Guid EmployeeId)
     {
         var result = await Mediator
-            .Send(new Employee_GetListExperienceQuery());
+            .Send(new Employee_GetListExperienceQuery(EmployeeId));
 
         return result.Count > 0
             ? Ok(result)
@@ -28,10 +28,10 @@ public class Employee_ExperienceController : ApiControllerBase
 
     // Khởi tạo
     [HttpPost("CreateExperience")]
-    public async Task<IActionResult> CreateExperience([FromForm] ExperienceCommandDTO experienceDTO)
+    public async Task<IActionResult> CreateExperience([FromForm] ExperienceCommandDTO experienceDTO, Guid EmployeeId)
     {
         var result = await Mediator
-            .Send(new Employee_ExperienceCreateCommand(experienceDTO));
+            .Send(new Employee_ExperienceCreateCommand(EmployeeId, experienceDTO));
 
         return Ok(result);
     }

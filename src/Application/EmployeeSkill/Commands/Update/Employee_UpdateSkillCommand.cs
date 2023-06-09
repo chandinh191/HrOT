@@ -10,10 +10,13 @@ public class Employee_UpdateSkillCommand : IRequest<string>
     public Skills_EmployeeCommandDTO _dto;
     public Guid SkillId { get; set; }
 
-    public Employee_UpdateSkillCommand( Guid SKillID, Skills_EmployeeCommandDTO dto)
+    public Guid EmployeeId { get; set; }
+
+    public Employee_UpdateSkillCommand(Guid EmployeeID, Guid SKillID, Skills_EmployeeCommandDTO dto)
     {
         _dto = dto;
         SkillId = SKillID;
+        EmployeeId = EmployeeID;
     }
 }
 
@@ -21,6 +24,7 @@ public class Employee_UpdateSkillCommandHandler : IRequestHandler<Employee_Updat
 {
     private readonly IApplicationDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
+
     public Employee_UpdateSkillCommandHandler(IApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
@@ -35,8 +39,8 @@ public class Employee_UpdateSkillCommandHandler : IRequestHandler<Employee_Updat
         if (skill == null) { return "Id Kĩ năng không tồn tại!"; }
         if (skill.IsDeleted) { return "Kĩ năng này đã bị xóa!"; }
 
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-        var employeeId = Guid.Parse(employeeIdCookie);
+        //var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = request.EmployeeId;
 
         var empSkill = await _context.Skill_Employees
             .Where(es => es.EmployeeId == employeeId

@@ -1,12 +1,9 @@
-﻿using FluentValidation;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using FluentValidation;
 using hrOT.Application.Common.Interfaces;
 using hrOT.Application.Employees.Commands.Create;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
 {
@@ -56,18 +53,15 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
     .Matches("[0-9]").WithMessage("Mật khẩu phải chứa ít nhất một chữ số.")
     .Matches("[!@#$%^&*(),.?\":{}|<>]").WithMessage("Mật khẩu phải chứa ít nhất một ký tự đặc biệt.");
 
-
         RuleFor(e => e.BankName)
 
            .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
            .MaximumLength(20).WithMessage("Tên Ngân hàng không được vượt quá 20 ký tự.");
 
-
         RuleFor(e => e.BankAccountName)
 
           .NotEmpty().WithMessage("Tên tài khoản không được để trống")
           .MaximumLength(50).WithMessage("Tên tài khoản ngân hàng không được vượt quá 50 ký tự.");
-
 
         RuleFor(e => e.BankAccountNumber)
 
@@ -95,7 +89,6 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
             .MaximumLength(50).WithMessage("PlaceForCIN không quá 50 ký tự.");
         RuleFor(e => e.SelectedRole)
             .NotNull().WithMessage("Quyền không được để trống");
-
     }
 
     public async Task<bool> BeUniqueUserName(string username, CancellationToken cancellationToken)
@@ -126,6 +119,7 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
 
         return isValidFormat;
     }
+
     private bool BeAtLeast18YearsOld(DateTime birthDate)
     {
         // Tính tuổi hiện tại của ngày sinh
@@ -134,6 +128,7 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
         // Kiểm tra nếu tuổi chưa đủ 18 tuổi
         return age >= 18;
     }
+
     public bool BeValidFullName(string fullName)
     {
         // Validate full name logic here
@@ -144,9 +139,9 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
         string vietnamesePattern = @"^[\p{L}\s]+$";
 
         // Check if the full name matches the pattern and does not contain single characters that are not letters
-        return Regex.IsMatch(fullName, vietnamesePattern) &&
-            !Regex.IsMatch(fullName, @"\b\p{L}{1}\b");
+        return fullName != null
+            ? Regex.IsMatch(fullName, vietnamesePattern) &&
+            !Regex.IsMatch(fullName, @"\b\p{L}{1}\b")
+            : false;
     }
-
-
 }

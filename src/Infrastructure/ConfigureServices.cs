@@ -103,8 +103,32 @@ public static class ConfigureServices
         .Build());
 
         });
-
-
+        /*services.AddSwaggerGen(options =>
+        {
+            var jwtSecurityScheme = new OpenApiSecurityScheme
+            {
+                BearerFormat = "JWT",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Scheme = JwtBearerDefaults.AuthenticationScheme,
+                Type = SecuritySchemeType.ApiKey,
+                Description = "Put \"Bearer {token}\" your JWT Bearer token on textbox below!",
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                },
+            };
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, jwtSecurityScheme);
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                {
+                    jwtSecurityScheme,
+                    new List<string>()
+                }
+            });
+        });
+*/
         services.AddSession();
 
         return services;

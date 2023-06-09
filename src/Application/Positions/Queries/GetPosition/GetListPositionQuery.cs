@@ -30,7 +30,7 @@ public class GetListPositionQueryHandler : IRequestHandler<GetListPositionQuery,
     {
         return await _context.Positions
                .Where(x => x.IsDeleted == false)
-               .ProjectTo<PositionDTO>(_mapper.ConfigurationProvider)
+               .ProjectTo<PositionDTO>(_mapper.ConfigurationProvider)          
                 .ToListAsync(cancellationToken);
     }
 }

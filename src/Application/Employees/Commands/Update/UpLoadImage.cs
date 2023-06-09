@@ -19,6 +19,7 @@ namespace hrOT.Application.Employees.Commands.Update
     public record UpLoadImage : IRequest
     {
         public IFormFile File { get; set; }
+        public Guid EmployeeId { get; set; }
     }
 
     public class UpLoadImageHandler : IRequestHandler<UpLoadImage>
@@ -41,8 +42,8 @@ namespace hrOT.Application.Employees.Commands.Update
         public async Task<Unit> Handle(UpLoadImage request, CancellationToken cancellationToken)
         {
             var httpContext = _httpContextAccessor.HttpContext;
-            var employeeIdCookie = httpContext.Request.Cookies["EmployeeId"];
-            var employeeIdGuid = Guid.Parse(employeeIdCookie);
+            //var employeeIdCookie = httpContext.Request.Cookies["EmployeeId"];
+            var employeeIdGuid = request.EmployeeId;
             var entity = await _context.Employees
                 .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(e => e.Id == employeeIdGuid, cancellationToken);

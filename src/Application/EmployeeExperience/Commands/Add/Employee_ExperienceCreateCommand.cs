@@ -11,12 +11,12 @@ public class Employee_ExperienceCreateCommand : IRequest<string>
 {
     public ExperienceCommandDTO Experience { get; set; }
 
+    public Guid EmployeeId { get; set; }
 
-
-    public Employee_ExperienceCreateCommand(ExperienceCommandDTO experience)
+    public Employee_ExperienceCreateCommand(Guid employeeId, ExperienceCommandDTO experience)
     {
         Experience = experience;
-
+        EmployeeId = employeeId;
     }
 }
 
@@ -41,15 +41,15 @@ public class Employee_ExperienceCreateCommandHandler : IRequestHandler<Employee_
         if (request.Experience.StartDate > request.Experience.EndDate) { return "Ngày bắt đầu phải sớm hơn ngày kết thúc."; }
         if (request.Experience.EndDate < request.Experience.StartDate) { return "Ngày kết thúc phải sau ngày bắt đầu."; }
 
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-        var employeeId = Guid.Parse(employeeIdCookie);
+        //var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = request.EmployeeId;
 
-        //var employee = await _context.Employees
-        //    .Include(a => a.ApplicationUser)
-        //    .Where(e => e.Id == request.EmployeeId)
-        //    .FirstOrDefaultAsync();
-        //if (employee == null) { return "Id nhân viên không tồn tại"; }
-        //if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
+        var employee = await _context.Employees
+            .Include(a => a.ApplicationUser)
+            .Where(e => e.Id == request.EmployeeId)
+            .FirstOrDefaultAsync();
+        if (employee == null) { return "Id nhân viên không tồn tại"; }
+        if (employee.IsDeleted) { return "Nhân viên này đã bị xóa"; }
 
 
         var experience = new Experience

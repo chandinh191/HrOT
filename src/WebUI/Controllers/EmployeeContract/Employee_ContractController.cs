@@ -20,7 +20,7 @@ public class Employee_ContractController : ApiControllerBase
     public async Task<IActionResult> GetListContract(Guid EmployeeID)
     {
         //
-        if (EmployeeID.ToString() == null)
+        if (EmployeeID == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }
@@ -61,7 +61,7 @@ public class Employee_ContractController : ApiControllerBase
     [HttpPost("CreateContract")]
     public async Task<IActionResult> CreateContract(Guid EmployeeId, [FromForm] EmployeeContractCommandDTO employeeContractDTO)
     {
-        if (EmployeeId.ToString() == null)
+        if (EmployeeId == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }
@@ -77,7 +77,7 @@ public class Employee_ContractController : ApiControllerBase
     [HttpPut("UpdateContract")]
     public async Task<IActionResult> UpdateContract(Guid ContractId, Guid EmployeeId, [FromForm] EmployeeContractCommandDTO employeeContractDTO)
     {
-        if (EmployeeId.ToString() == null)
+        if (EmployeeId == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }
@@ -91,7 +91,7 @@ public class Employee_ContractController : ApiControllerBase
     [HttpPut("DeleteContract")]
     public async Task<IActionResult> DeleteContract(Guid ContractId, Guid EmployeeId)
     {
-        if (EmployeeId.ToString() == null)
+        if (EmployeeId == Guid.Empty)
         {
             return BadRequest("Vui lòng nhập EmployeeId !");
         }

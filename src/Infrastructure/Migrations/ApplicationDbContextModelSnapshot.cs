@@ -565,9 +565,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -582,8 +579,6 @@ namespace hrOT.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Departments");
 
@@ -2100,13 +2095,6 @@ namespace hrOT.Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("hrOT.Domain.Entities.Department", b =>
-                {
-                    b.HasOne("hrOT.Domain.Entities.Employee", null)
-                        .WithMany("Departments")
-                        .HasForeignKey("EmployeeId");
-                });
-
             modelBuilder.Entity("hrOT.Domain.Entities.DetailTaxIncome", b =>
                 {
                     b.HasOne("hrOT.Domain.Entities.PaySlip", "PaySlip")
@@ -2382,8 +2370,6 @@ namespace hrOT.Infrastructure.Migrations
             modelBuilder.Entity("hrOT.Domain.Entities.Employee", b =>
                 {
                     b.Navigation("Degrees");
-
-                    b.Navigation("Departments");
 
                     b.Navigation("EmployeeContracts");
 

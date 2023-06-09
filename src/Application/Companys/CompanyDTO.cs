@@ -14,4 +14,5 @@ public class CompanyDTO : IMapFrom<Company>
     public string? AccountEmail { get; set; }
     public string? Phone { get; set; }
     public string? HREmail { get; set; }
+    public bool IsDeleted { get; set; }
 }

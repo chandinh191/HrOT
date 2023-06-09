@@ -1,13 +1,9 @@
-﻿using FluentValidation;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using FluentValidation;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Update;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
 {
@@ -26,15 +22,14 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
         RuleFor(e => e.Address)
 
             .NotEmpty().WithMessage("Địa chỉ không được để trống.")
-            .MaximumLength(50).WithMessage("Address must not exceed 50 characters.");
-
-
+            .MaximumLength(50).WithMessage("Địa chỉ không được vượt quá 50 kí tự.");
 
         RuleFor(e => e.PhoneNumber)
 
             .NotEmpty().WithMessage("Số điện thoại không được để trống.")
-            .Matches(@"^(03|05|07|08|09)\d{8}$").WithMessage("Invalid phone number format.")
-            .MaximumLength(10).WithMessage("Phone must not exceed 10 characters.");
+            .Matches(@"^(03|05|07|08|09)\d{8}$").WithMessage("Không đúng định dạng số!")
+            .MinimumLength(10).WithMessage("Số điện thoại phải đủ 10 số.")
+            .MaximumLength(10).WithMessage("Số điện thoại không được vượt quá 10 số.");
 
         /* RuleFor(e => e.UserName)
 
@@ -61,20 +56,18 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
  */
         RuleFor(e => e.BankName)
 
-           .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
-           .MaximumLength(20).WithMessage("Bank Name must not exceed 20 characters.");
-
+          .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
+          .MaximumLength(20).WithMessage("Tên ngân hàng không được vượt quá 20 kí tự");
 
         RuleFor(e => e.BankAccountName)
 
           .NotEmpty().WithMessage("Tên tài khoản không được để trống")
-          .MaximumLength(50).WithMessage("Bank Account Name must not exceed 50 characters.");
-
+          .MaximumLength(50).WithMessage("Tên tài khoản không được vượt quá 50 kí tự");
 
         RuleFor(e => e.BankAccountNumber)
 
           .NotEmpty().WithMessage("Số tài khoản không được để trống.")
-          .MaximumLength(20).WithMessage("Bank Account Number must not exceed 20 characters.");
+          .MaximumLength(20).WithMessage("Số tài khoản không được vượt quá 20 kí tự");
         RuleFor(e => e.District)
            .NotEmpty().WithMessage("Quận/Huyện không được để trống.")
            .MaximumLength(50).WithMessage("Quận/Huyện không quá 50 ký tự.");
@@ -98,10 +91,11 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
         RuleFor(e => e.SelectedRole)
             .NotNull().WithMessage("Quyền không được để trống");
 
-       /* RuleFor(query => query.EmployeeId)
-            .NotEmpty().WithMessage("Id nhân viên không được bỏ trống")
-            .MustAsync(ExistAsync).WithMessage("Id nhân viên không tồn tại");*/
+        /* RuleFor(query => query.EmployeeId)
+             .NotEmpty().WithMessage("Id nhân viên không được bỏ trống")
+             .MustAsync(ExistAsync).WithMessage("Id nhân viên không tồn tại");*/
     }
+
     private bool BeAtLeast18YearsOld(DateTime birthDate)
     {
         // Tính tuổi hiện tại của ngày sinh
@@ -156,9 +150,9 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
         string vietnamesePattern = @"^[\p{L}\s]+$";
 
         // Check if the full name matches the pattern and does not contain single characters that are not letters
-        return Regex.IsMatch(fullName, vietnamesePattern) &&
-            !Regex.IsMatch(fullName, @"\b\p{L}{1}\b");
+        return fullName != null
+            ? Regex.IsMatch(fullName, vietnamesePattern) &&
+            !Regex.IsMatch(fullName, @"\b\p{L}{1}\b")
+            : false;
     }
-
-
 }

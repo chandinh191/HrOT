@@ -1,5 +1,4 @@
 ﻿using hrOT.Application.Common.Exceptions;
-using hrOT.Application.Employees;
 using hrOT.Application.Employees.Commands.Create;
 using hrOT.Application.Employees.Commands.Delete;
 using hrOT.Application.Employees.Commands.Update;
@@ -26,61 +25,47 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
+        //Sử dụng chính sách (policies) cho xác thực trong identity để phân quyền
+        // Nó nằm ở Infrastructure/ConfigureServieces
         [Authorize(Policy = "manager")]
         public async Task<ActionResult<List<EmployeeDTO>>> Get()
         {
-            //var employeeIdCookie = Request.Cookies["EmployeeId"];
             return await _mediator.Send(new GetAllEmployeeQuery());
-
         }
 
         [HttpPost("create")]
         [Authorize(Policy = "manager")]
         public async Task<IActionResult> CreateEmployee([FromForm] CreateEmployee createModel)
         {
+            var entityId = await _mediator.Send(createModel);
 
-          
-                var entityId = await _mediator.Send(createModel);
-
-                return Ok("Thêm thành công");
-            
+            return Ok(entityId);
         }
 
         [HttpPut("EditRoleManager")]
         [Authorize(Policy = "Manager")]
-        public async Task<IActionResult> Edit( [FromForm] UpdateEmployee command)
+        public async Task<IActionResult> Edit([FromForm] UpdateEmployee command)
         {
-           
-            
-                await _mediator.Send(command);
-                return Ok("Cập nhật thành công");
-            
-           
+            await _mediator.Send(command);
+            return Ok("Cập nhật thành công");
         }
+
         [HttpPut("EditRoleEmployee")]
-        [Authorize(Policy = "Employee")]
+        [Authorize(Policy = "ManagerOrStaff")]
         public async Task<IActionResult> Edit([FromForm] UpdateEmployeeRoleEmployee command)
         {
-
-            
-                await _mediator.Send(command);
-                return Ok("Cập nhật thành công");
-            
-         
+            await _mediator.Send(command);
+            return Ok("Cập nhật thành công");
         }
 
         [HttpPut("[action]")]
         [Authorize(Policy = "manager")]
-
-        public async Task<IActionResult> Delete( [FromForm] DeleteEmployee command)
+        public async Task<IActionResult> Delete([FromForm] DeleteEmployee command)
 
         {
-            
+            var result = await _mediator.Send(command);
 
-                await _mediator.Send(command);
-
-                return Ok("Xóa thành công");
-           
+            return Ok(result);
         }
 
         [HttpPost("CreateExcel")]
@@ -114,7 +99,6 @@ namespace WebUI.Controllers
                 {
                     return BadRequest("Định dạng tệp Excel không hợp lệ.");
                 }
-               
             }
 
             return BadRequest("Thêm thất bại");
@@ -128,14 +112,13 @@ namespace WebUI.Controllers
             return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
         }
 
-
         [HttpGet("GetEmployeeById")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> GetEmployee()
+        public async Task<IActionResult> GetEmployee(Guid EmployeeId)
         {
             try
             {
-                var query = new Employee_GetEmployeeQuery {  };
+                var query = new Employee_GetEmployeeQuery(EmployeeId);
                 var employeeVm = await _mediator.Send(query);
 
                 if (employeeVm == null)
@@ -153,7 +136,7 @@ namespace WebUI.Controllers
 
         [HttpPost("uploadCv")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> UploadCV( IFormFile cvFile)
+        public async Task<IActionResult> UploadCV(IFormFile cvFile)
         {
             try
             {
@@ -164,7 +147,6 @@ namespace WebUI.Controllers
 
                 var command = new Employee_EmployeeUploadCVCommand
                 {
-                   
                     CVFile = cvFile
                 };
 
@@ -217,7 +199,6 @@ namespace WebUI.Controllers
                 await _mediator.Send(command);
 
                 return Ok("Cập nhật ảnh đại diện thành công");
-
             }
             catch (Exception ex)
             {
@@ -225,6 +206,7 @@ namespace WebUI.Controllers
                 return BadRequest("Lỗi cập nhật hình ảnh");
             }
         }
+
         private bool IsImageFile(IFormFile file)
         {
             // Kiểm tra phần mở rộng của tệp tin có phải là hình ảnh không
@@ -232,6 +214,7 @@ namespace WebUI.Controllers
             var fileExtension = Path.GetExtension(file.FileName);
             return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
         }
+
         /*[HttpPost("{id}/uploadIdentityImage")]
         [Authorize(Policy = "employee")]
         public async Task<IActionResult> UploadIdentityImage(Guid id, IFormFile imageFile)

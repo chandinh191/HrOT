@@ -4,6 +4,8 @@ using hrOT.WebUI.Filters;
 using hrOT.WebUI.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 //using NSwag;
 //using NSwag.Generation.Processors.Security;
 
@@ -32,19 +34,31 @@ public static class ConfigureServices
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
-        //services.AddOpenApiDocument(configure =>
-        //{
-        //    configure.Title = "hrOT API";
-        //    configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-        //    {
-        //        Type = OpenApiSecuritySchemeType.ApiKey,
-        //        Name = "Authorization",
-        //        In = OpenApiSecurityApiKeyLocation.Header,
-        //        Description = "Type into the textbox: Bearer {your JWT token}."
-        //    });
-
-        //    configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-        //});
+        services.AddSwaggerGen(options =>
+        {
+            var jwtSecurityScheme = new OpenApiSecurityScheme
+            {
+                BearerFormat = "JWT",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Scheme = JwtBearerDefaults.AuthenticationScheme,
+                Type = SecuritySchemeType.ApiKey,
+                Description = "Put \"Bearer {token}\" your JWT Bearer token on textbox below!",
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                },
+            };
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, jwtSecurityScheme);
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                {
+                    jwtSecurityScheme,
+                    new List<string>()
+                }
+            });
+        });
 
         return services;
     }

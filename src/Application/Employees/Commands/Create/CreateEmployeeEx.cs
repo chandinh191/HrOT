@@ -41,7 +41,7 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
     public async Task<string> Handle(CreateEmployeeEx request, CancellationToken cancellationToken)
     {
         var filePath = request.FilePath;
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;//sử dụng để đặt ngữ cảnh giấy phép sử dụng của gói ExcelPackage thành phi thương mại
 
         if (!File.Exists(filePath))
         {
@@ -51,6 +51,7 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
         using (var package = new ExcelPackage(new FileInfo(filePath)))
         {
             var worksheet = package.Workbook.Worksheets[0];
+            //Điếm số hàng có giá trị
             int rowCount = 1;
             int currentRow = 2;
 
@@ -62,9 +63,10 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
 
             var employees = new List<Employee>();
 
-            for (int row = 2; row <= rowCount; row++)
+            for (int row = 2; row <= rowCount; row++)// Bắt đầu từ hàng thứ 2 để bỏ qua tiêu đề
             {
                 var birthDayString = worksheet.Cells[row, 3].Value?.ToString();
+                //Kiểm tra có chuyển ngày được ko
                 if (DateTime.TryParseExact(birthDayString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime birthDay))
                 {
                     var userName = worksheet.Cells[row, 12].Value?.ToString();
@@ -78,7 +80,7 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
                         var user = new ApplicationUser
                         {
                             UserName = userName,
-                            
+                            //Cells[row, 8] vị trí trong Excel
                             Image = worksheet.Cells[row, 8].Value?.ToString(),
                             Email = worksheet.Cells[row, 5].Value?.ToString(),
                             Fullname = worksheet.Cells[row, 1].Value?.ToString(),

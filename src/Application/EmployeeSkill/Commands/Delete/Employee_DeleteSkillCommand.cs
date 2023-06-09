@@ -6,13 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hrOT.Application.EmployeeSkill.Commands.Delete;
 
-public class Employee_DeleteSkillCommand : IRequest<string> { 
-
+public class Employee_DeleteSkillCommand : IRequest<string>
+{
     public Guid SkilLId { get; set; }
+    public Guid EmployeeId { get; set; }
 
-    public Employee_DeleteSkillCommand( Guid SkilLID) { 
-    
+    public Employee_DeleteSkillCommand(Guid EmployeeID, Guid SkilLID)
+    {
         SkilLId = SkilLID;
+        EmployeeId = EmployeeID;
     }
 }
 
@@ -37,8 +39,8 @@ public class Employee_DeleteSkillCommandHandler : IRequestHandler<Employee_Delet
         if (skill == null) { return "Id kĩ năng không tồn tại"; }
         if (skill.IsDeleted) { return "Kĩ năng này đã bị xóa"; }
 
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-        var employeeId = Guid.Parse(employeeIdCookie);
+        //var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = request.EmployeeId;
 
         var empSkill = await _context.Skill_Employees
             .Where(es => es.EmployeeId == employeeId

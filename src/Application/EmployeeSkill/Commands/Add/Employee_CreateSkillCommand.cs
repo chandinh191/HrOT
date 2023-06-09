@@ -11,11 +11,13 @@ public class Employee_CreateSkillCommand : IRequest<string>
 {
     public Guid SkillId { get; set; }
     public Skills_EmployeeCommandDTO Skill_EmployeeDTO { get; set; }
+    public Guid EmployeeId { get; set; }
 
-    public Employee_CreateSkillCommand(Guid SkillID, Skills_EmployeeCommandDTO skill_EmployeeDTO)
+    public Employee_CreateSkillCommand(Guid EmployeeID, Guid SkillID, Skills_EmployeeCommandDTO skill_EmployeeDTO)
     {
         SkillId = SkillID;
         Skill_EmployeeDTO = skill_EmployeeDTO;
+        EmployeeId = EmployeeID;
     }
 }
 
@@ -46,8 +48,8 @@ public class Employee_CreateSkillCommandHandler : IRequestHandler<Employee_Creat
         //if (employee == null) { return "Id nhân viên không tồn tại!"; }
         //if (employee.IsDeleted) { return "Nhân viên này đã bị xóa!"; }
 
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
-        var employeeId = Guid.Parse(employeeIdCookie);
+        //var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        var employeeId = request.EmployeeId;
 
         var empskill = new Skill_Employee
         {
