@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.Metrics;
+using FluentValidation;
 using hrOT.Application.Common.Interfaces;
 
 namespace hrOT.Application.EmployeeContracts.Commands.Update;
@@ -41,6 +42,9 @@ public class Employee_UpdateContractCommandValidator : AbstractValidator<Employe
 
         // Validate Status
         RuleFor(v => v.EmployeeContract.Status)
-            .NotNull().WithMessage("Trạng thái hợp đồng không được để trống.");
+            //.NotNull().WithMessage("Trạng thái hợp đồng không được để trống.")
+            .IsInEnum().WithMessage("Trạng thái hợp đồng không hợp lệ.");
     }
+
+    
 }
