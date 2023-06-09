@@ -10,7 +10,7 @@ using hrOT.Domain.Enums;
 using MediatR;
 
 namespace hrOT.Application.Families.Commands.Create;
-public record CreateFamilyCommand : IRequest<Guid>
+public record CreateFamilyCommand : IRequest<String>
 {
     public Guid EmployeeId { get; init; }
     public string? Name { get; init; }
@@ -19,7 +19,7 @@ public record CreateFamilyCommand : IRequest<Guid>
     public string? HomeTown { get; init; }
 }
 
-public class CreateFamilyCommandHandler : IRequestHandler<CreateFamilyCommand, Guid>
+public class CreateFamilyCommandHandler : IRequestHandler<CreateFamilyCommand, String>
 {
     private readonly IApplicationDbContext _context;
 
@@ -28,8 +28,17 @@ public class CreateFamilyCommandHandler : IRequestHandler<CreateFamilyCommand, G
         _context = context;
     }
 
-    public async Task<Guid> Handle(CreateFamilyCommand request, CancellationToken cancellationToken)
+    public async Task<String> Handle(CreateFamilyCommand request, CancellationToken cancellationToken)
     {
+
+        if (request.EmployeeId != null)
+        {
+            var position = await _context.Employees.FindAsync(request.EmployeeId);
+            if (position == null)
+            {
+                return "EmployeeId không tìm thấy !";
+            }
+        }
         var entity = new Family();
         entity.EmployeeId = request.EmployeeId;
         entity.DateOfBirth = request.DateOfBirth;
@@ -44,6 +53,6 @@ public class CreateFamilyCommandHandler : IRequestHandler<CreateFamilyCommand, G
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id;
+        return "Thêm thành công";
     }
 }

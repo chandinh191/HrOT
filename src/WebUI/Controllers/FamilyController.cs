@@ -30,12 +30,12 @@ public class FamilyController : ApiControllerBase
     }
     [HttpPost("Create")]
     [Authorize(Policy = "employee")]
-    public async Task<ActionResult<Guid>> Create(CreateFamilyCommand command)
+    public async Task<ActionResult<String>> Create(CreateFamilyCommand command)
     {
         if (ModelState.IsValid && command != null)
         {
-            await _mediator.Send(command);
-            return Ok("Thêm thành công");
+            var entityId = await _mediator.Send(command);
+            return entityId;
         }
         return BadRequest("Thêm thất bại");
     }
