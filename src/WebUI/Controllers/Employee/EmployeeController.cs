@@ -136,7 +136,7 @@ namespace WebUI.Controllers
 
         [HttpPost("uploadCv")]
         [Authorize(Policy = "ManagerOrStaff")]
-        public async Task<IActionResult> UploadCV(IFormFile cvFile)
+        public async Task<IActionResult> UploadCV(IFormFile cvFile, Guid employeeId)
         {
             try
             {
@@ -147,7 +147,8 @@ namespace WebUI.Controllers
 
                 var command = new Employee_EmployeeUploadCVCommand
                 {
-                    CVFile = cvFile
+                    CVFile = cvFile,
+                    EmployeeId = employeeId
                 };
 
                 await _mediator.Send(command);

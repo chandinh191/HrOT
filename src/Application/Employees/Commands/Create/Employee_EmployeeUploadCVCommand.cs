@@ -35,7 +35,7 @@ public class Employee_EmployeeUploadCVHandler : IRequestHandler<Employee_Employe
 
         if (employee == null || employee.IsDeleted)
         {
-            throw new NotFoundException("Employee not found");
+            throw new NotFoundException("Không tìm thấy nhân viên");
         }
 
         var file = request.CVFile;
