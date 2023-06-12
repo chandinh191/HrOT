@@ -7,6 +7,8 @@ using hrOT.Application.Allowances.Command.Delete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using hrOT.Application.Common.Exceptions;
+using hrOT.Application.Degrees.Queries;
+using hrOT.Application.Degrees;
 
 namespace WebUI.Controllers.Allowance;
 
@@ -19,16 +21,12 @@ public class AllowanceController : ApiControllerBase
         return await Mediator.Send(new GetListAllowanceQuery());
     }
 
-  /*  [HttpGet("GetListAllowance")]
+    [HttpGet("GetListByEmployeeId")]
     [Authorize(Policy = "Manager")]
-    public async Task<ActionResult<AllowanceList>> GetList(Guid EmployeeContractId)
+    public async Task<ActionResult<List<AllowanceDto>>> GetListByEmployeeId(Guid EmployeeId)
     {
-        if (EmployeeContractId.ToString() == null)
-        {
-            return BadRequest("Vui lòng nhập EmployeeContractId !");
-        }
-        return await Mediator.Send(new GetListAllowanceQuery());
-    }*/
+        return await Mediator.Send(new GetListAllowanceByEmployeeIdQuery(EmployeeId));
+    }
 
 
     [HttpPost("Create")]
