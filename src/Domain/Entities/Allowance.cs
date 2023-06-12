@@ -23,4 +23,5 @@ public class Allowance : BaseAuditableEntity
     // Relationship
     //public virtual CompanyContract? CompanyContract { get; set; }
     public virtual EmployeeContract? EmployeeContract { get; set; }
+    public Guid EmployeeId { get; set; }
 }
