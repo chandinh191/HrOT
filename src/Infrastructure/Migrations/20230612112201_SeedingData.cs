@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace hrOT.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Update1 : Migration
+    public partial class SeedingData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -531,7 +531,7 @@ namespace hrOT.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PositionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -544,8 +544,8 @@ namespace hrOT.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Levels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Levels_Positions_RoleId",
-                        column: x => x.RoleId,
+                        name: "FK_Levels_Positions_PositionId",
+                        column: x => x.PositionId,
                         principalTable: "Positions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -868,7 +868,7 @@ namespace hrOT.Infrastructure.Migrations
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BankName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BankAcountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BankAcountNumber = table.Column<int>(type: "int", nullable: true),
+                    BankAcountNumber = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -984,7 +984,7 @@ namespace hrOT.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "Id", "Created", "CreatedBy", "Description", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
-                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Đảm nhận công việc liên quan phần mềm", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Phòng IT" });
+                values: new object[] { new Guid("a867f81d-2a5a-4403-97bf-af0e11e3d027"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Đảm nhận công việc liên quan phần mềm", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Phòng IT" });
 
             migrationBuilder.InsertData(
                 table: "Exchanges",
@@ -1022,12 +1022,17 @@ namespace hrOT.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Positions",
                 columns: new[] { "Id", "Created", "CreatedBy", "DepartmentId", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
-                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894142"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Nhân viên" });
+                values: new object[] { new Guid("c60082c5-39a0-4dac-a406-6b0bff7f1dbb"), new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new Guid("a867f81d-2a5a-4403-97bf-af0e11e3d027"), false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "Nhân viên" });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "Address", "ApplicationUserId", "BankAccountName", "BankAccountNumber", "BankName", "CVPath", "CitizenIdentificationNumber", "Created", "CreatedBy", "CreatedDateCIN", "District", "IsDeleted", "LastModified", "LastModifiedBy", "PlaceForCIN", "PositionId", "Province" },
-                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "123, Lê Văn Việt, Tăng Nhơn Phú", "fe30e976-2640-4d35-8334-88e7c3b1eac1", "LUONG THE DAN", "123456789", "TECHCOMBANK", null, "0931248141241231", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Quận nine", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "TP HCM", new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894143"), "TP Hồ Chí Minh" });
+                values: new object[] { new Guid("ac69dc8e-f88d-46c2-a861-c9d5ac894141"), "123, Lê Văn Việt, Tăng Nhơn Phú", "fe30e976-2640-4d35-8334-88e7c3b1eac1", "LUONG THE DAN", "123456789", "TECHCOMBANK", null, "0931248141241231", new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Quận nine", false, new DateTime(9999, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test", "TP HCM", new Guid("c60082c5-39a0-4dac-a406-6b0bff7f1dbb"), "TP Hồ Chí Minh" });
+
+            migrationBuilder.InsertData(
+                table: "Levels",
+                columns: new[] { "Id", "Created", "CreatedBy", "Description", "IsDeleted", "LastModified", "LastModifiedBy", "Name", "PositionId" },
+                values: new object[] { new Guid("d2a95c3c-3efa-4352-95a7-b6850b56baef"), new DateTime(2023, 6, 10, 0, 13, 43, 0, DateTimeKind.Unspecified), "Test", "THực tập", false, new DateTime(2023, 6, 10, 0, 20, 22, 0, DateTimeKind.Unspecified), "Test", "Newbie", new Guid("c60082c5-39a0-4dac-a406-6b0bff7f1dbb") });
 
             migrationBuilder.InsertData(
                 table: "Degrees",
@@ -1191,9 +1196,9 @@ namespace hrOT.Infrastructure.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Levels_RoleId",
+                name: "IX_Levels_PositionId",
                 table: "Levels",
-                column: "RoleId");
+                column: "PositionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OvertimeLogs_EmployeeId",

@@ -32,7 +32,7 @@ public class PaySlip : BaseAuditableEntity
     public string? Note { get; set; }
     public string? BankName { get; set; }
     public string? BankAcountName { get; set; }
-    public int? BankAcountNumber { get; set; }
+    public decimal? BankAcountNumber { get; set; }
 
     public virtual EmployeeContract EmployeeContract { get; set; } = null!;
 

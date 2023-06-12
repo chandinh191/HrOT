@@ -11,7 +11,7 @@ namespace hrOT.Application.Levels.Commands.CreateLevel;
 
 public record CreateLevelCommand : IRequest<Guid>
 {
-    public Guid RoleId { get; set; }
+    public Guid PositionId { get; set; }
     public string? Name { get; init; }
     public string? Description { get; init; }
 }
@@ -28,7 +28,7 @@ public class CreateLevelCommandHandler : IRequestHandler<CreateLevelCommand, Gui
     public async Task<Guid> Handle(CreateLevelCommand request, CancellationToken cancellationToken)
     {
         var entity = new Level();
-        entity.RoleId = request.RoleId;
+        entity.PositionId = request.PositionId;
         entity.Name = request.Name;
         entity.Description = request.Description;
 

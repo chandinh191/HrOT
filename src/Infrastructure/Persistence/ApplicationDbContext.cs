@@ -9,7 +9,6 @@ using hrOT.Domain.IdentityModel;
 using hrOT.Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -96,7 +95,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             .HasData(
             new Department
             {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),            
+                Id = Guid.Parse("a867f81d-2a5a-4403-97bf-af0e11e3d027"),
                 Name = "Phòng IT",
                 Description = "Đảm nhận công việc liên quan phần mềm",
                 Created = DateTime.Parse("9/9/9999"),
@@ -111,8 +110,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             .HasData(
             new Position
             {
-                Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
-                DepartmentId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894142"),
+                Id = Guid.Parse("c60082c5-39a0-4dac-a406-6b0bff7f1dbb"),
+                DepartmentId = Guid.Parse("a867f81d-2a5a-4403-97bf-af0e11e3d027"),
                 Name = "Nhân viên",
                 Created = DateTime.Parse("9/9/9999"),
                 CreatedBy = "Test",
@@ -128,7 +127,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             {
                 Id = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894141"),
                 ApplicationUserId = "fe30e976-2640-4d35-8334-88e7c3b1eac1",
-                PositionId = Guid.Parse("ac69dc8e-f88d-46c2-a861-c9d5ac894143"),
+                PositionId = Guid.Parse("c60082c5-39a0-4dac-a406-6b0bff7f1dbb"),
                 CitizenIdentificationNumber = "0931248141241231",
                 CreatedDateCIN = DateTime.Parse("1/1/2023"),
                 PlaceForCIN = "TP HCM",
@@ -222,6 +221,23 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 IsDeleted = false
             }
         );
+
+        builder.Entity<Level>()
+        .HasData(
+            new Level
+            {
+                Id = Guid.Parse("d2a95c3c-3efa-4352-95a7-b6850b56baef"),
+                PositionId = Guid.Parse("c60082c5-39a0-4dac-a406-6b0bff7f1dbb"),
+                Name = "Newbie",
+                Description = "THực tập",
+                Created = DateTime.Parse("2023-06-10 00:13:43"),
+                CreatedBy = "Test",
+                LastModified = DateTime.Parse("2023-06-10 00:20:22"),
+                LastModifiedBy = "Test",
+                IsDeleted = false
+            }
+        );
+
         builder.Entity<Allowance>()
        .HasData(
            new Allowance
@@ -271,59 +287,44 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 IsDeleted = false
             });
 
-       /* builder.Entity<Company>()
+        /* builder.Entity<Company>()
+         .HasData(
+             new Company
+             {
+                 Id = Guid.Parse("6b36c601-4a2b-47a2-b607-3597f3049f75"),
+                 Name = "CÔNG TY A",
+                 Address = "Quận 9, Tp HCM",
+                 AccountEmail = "congtya@gmail.com",
+                 Phone = "0987654321",
+                 HREmail = "HRcongtyA@gmail.com",
+                 IsDeleted = false,
+                 Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                 CreatedBy = "test",
+                 LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                 LastModifiedBy = "test"
+             },
+             new Company
+             {
+                 Id = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                 Name = "CÔNG TY B",
+                 Address = "Quận 10, Tp HCM",
+                 AccountEmail = "congtyb@gmail.com",
+                 Phone = "0123456789",
+                 HREmail = "HRcongtyB@gmail.com",
+                 IsDeleted = false,
+                 Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                 CreatedBy = "test",
+                 LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                 LastModifiedBy = "test"
+             });
+         builder.Entity<JobDescription>()
         .HasData(
-            new Company
-            {
-                Id = Guid.Parse("6b36c601-4a2b-47a2-b607-3597f3049f75"),
-                Name = "CÔNG TY A",
-                Address = "Quận 9, Tp HCM",
-                AccountEmail = "congtya@gmail.com",
-                Phone = "0987654321",
-                HREmail = "HRcongtyA@gmail.com",
-                IsDeleted = false,
-                Created = new DateTime(9999, 9, 9, 0, 0, 0),
-                CreatedBy = "test",
-                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
-                LastModifiedBy = "test"
-            },
-            new Company
-            {
-                Id = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
-                Name = "CÔNG TY B",
-                Address = "Quận 10, Tp HCM",
-                AccountEmail = "congtyb@gmail.com",
-                Phone = "0123456789",
-                HREmail = "HRcongtyB@gmail.com",
-                IsDeleted = false,
-                Created = new DateTime(9999, 9, 9, 0, 0, 0),
-                CreatedBy = "test",
-                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
-                LastModifiedBy = "test"
-            });
-        builder.Entity<JobDescription>()
-       .HasData(
-           new JobDescription
-           {
-               Id = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
-               CompanyId = Guid.Parse("6b36c601-4a2b-47a2-b607-3597f3049f75"),
-               Title = "Job Back-end C#",
-               Description = "Thích thì dô làm",
-               StartDate = new DateTime(9999, 9, 9, 0, 0, 0),
-               EndDate = new DateTime(9999, 9, 9, 0, 0, 0),
-               Status = "Đang tuyển dụng",
-               IsDeleted = false,
-               Created = new DateTime(9999, 9, 9, 0, 0, 0),
-               CreatedBy = "test",
-               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
-               LastModifiedBy = "test"
-           },
             new JobDescription
             {
-                Id = Guid.Parse("06a99eff-b374-4a5e-a3fc-58e8defecfe6"),
-                CompanyId = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
-                Title = "Job Back-end Java",
-                Description = "Doooooooooooooooooooooooo",
+                Id = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                CompanyId = Guid.Parse("6b36c601-4a2b-47a2-b607-3597f3049f75"),
+                Title = "Job Back-end C#",
+                Description = "Thích thì dô làm",
                 StartDate = new DateTime(9999, 9, 9, 0, 0, 0),
                 EndDate = new DateTime(9999, 9, 9, 0, 0, 0),
                 Status = "Đang tuyển dụng",
@@ -332,34 +333,49 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 CreatedBy = "test",
                 LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
                 LastModifiedBy = "test"
-            });
+            },
+             new JobDescription
+             {
+                 Id = Guid.Parse("06a99eff-b374-4a5e-a3fc-58e8defecfe6"),
+                 CompanyId = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                 Title = "Job Back-end Java",
+                 Description = "Doooooooooooooooooooooooo",
+                 StartDate = new DateTime(9999, 9, 9, 0, 0, 0),
+                 EndDate = new DateTime(9999, 9, 9, 0, 0, 0),
+                 Status = "Đang tuyển dụng",
+                 IsDeleted = false,
+                 Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                 CreatedBy = "test",
+                 LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                 LastModifiedBy = "test"
+             });
 
-        builder.Entity<Skill_JD>()
-       .HasData(
-           new Skill_JD
-           {
-               Id = Guid.Parse("bb499b5d-69f1-4a9e-958a-f1c3bebd7350"),
-               SkillId = Guid.Parse("34647606-a482-47e5-a59b-66cfbc5b66ac"),
-               JobDescriptionId = Guid.Parse("06a99eff-b374-4a5e-a3fc-58e8defecfe6"),
-               Level = "Tạm",
-               IsDeleted = false,
-               Created = new DateTime(9999, 9, 9, 0, 0, 0),
-               CreatedBy = "test",
-               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
-               LastModifiedBy = "test"
-           },
-           new Skill_JD
-           {
-               Id = Guid.Parse("318d7891-7119-4543-ab13-e4e61333ea08"),
-               SkillId = Guid.Parse("34647606-a482-47e5-a59b-66cfbc5b66ac"),
-               JobDescriptionId = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
-               Level = "Đỉnh kao",
-               IsDeleted = false,
-               Created = new DateTime(9999, 9, 9, 0, 0, 0),
-               CreatedBy = "test",
-               LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
-               LastModifiedBy = "test"
-           });*/
+         builder.Entity<Skill_JD>()
+        .HasData(
+            new Skill_JD
+            {
+                Id = Guid.Parse("bb499b5d-69f1-4a9e-958a-f1c3bebd7350"),
+                SkillId = Guid.Parse("34647606-a482-47e5-a59b-66cfbc5b66ac"),
+                JobDescriptionId = Guid.Parse("06a99eff-b374-4a5e-a3fc-58e8defecfe6"),
+                Level = "Tạm",
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            },
+            new Skill_JD
+            {
+                Id = Guid.Parse("318d7891-7119-4543-ab13-e4e61333ea08"),
+                SkillId = Guid.Parse("34647606-a482-47e5-a59b-66cfbc5b66ac"),
+                JobDescriptionId = Guid.Parse("441d5aa8-9a63-49f5-9e4c-954c951e369d"),
+                Level = "Đỉnh kao",
+                IsDeleted = false,
+                Created = new DateTime(9999, 9, 9, 0, 0, 0),
+                CreatedBy = "test",
+                LastModified = new DateTime(9999, 9, 9, 0, 0, 0),
+                LastModifiedBy = "test"
+            });*/
 
         builder.Entity<TaxInCome>()
        .HasData(

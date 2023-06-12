@@ -8,7 +8,7 @@ namespace hrOT.Application.Levels.Commands.UpdateLevel;
 public record UpdateLevelCommand : IRequest<string>
 {
     public Guid Id { get; init; }
-    public Guid RoleId { get; set; }
+    public Guid PositionId { get; set; }
     public string? Name { get; init; }
 
     public string? Description { get; init; }
@@ -36,7 +36,7 @@ public class UpdateLevelCommandHandler : IRequestHandler<UpdateLevelCommand, str
         {
             return "Cấp bậc này đã bị xóa";
         }
-        entity.RoleId = request.RoleId;
+        entity.PositionId = request.PositionId;
         entity.Name = request.Name;
         entity.Description = request.Description;
 

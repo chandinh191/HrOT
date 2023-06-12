@@ -1,15 +1,15 @@
-﻿
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using hrOT.Application.Degrees.Queries;
-using hrOT.Application.Degrees;
+﻿using hrOT.Application.Degrees;
 using hrOT.Application.Degrees.Commands.Create;
-using hrOT.Application.Degrees.Commands.Update;
 using hrOT.Application.Degrees.Commands.Delete;
+using hrOT.Application.Degrees.Commands.Update;
+using hrOT.Application.Degrees.Queries;
 using hrOT.WebUI.Controllers;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers.Degree;
+
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Policy = "ManagerOrStaff")]
@@ -21,17 +21,20 @@ public class DegreeController : ApiControllerBase
     {
         _mediator = mediator;
     }
+
     [HttpGet]
     [Authorize(Policy = "manager")]
     public async Task<ActionResult<List<DegreeDto>>> GetAll()
     {
         return await _mediator.Send(new GetAllDegreeQuery());
     }
+
     [HttpGet("GetListByEmployeeId")]
     public async Task<ActionResult<List<DegreeDto>>> GetListByEmployeeId(Guid EmployeeId)
     {
         return await _mediator.Send(new GetListDegreeByEmployeeIdQuery(EmployeeId));
     }
+
     [HttpPost]
     [Authorize(Policy = "employee")]
     public async Task<ActionResult<Guid>> Create(CreateDegreeCommand command)
@@ -43,13 +46,10 @@ public class DegreeController : ApiControllerBase
         }
         return BadRequest("Thêm thất bại");
     }
-    [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateStatus([FromForm]  UpdateDegreeCommand command, Guid id)
-    {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
+
+    [HttpPut]
+    public async Task<ActionResult> UpdateStatus([FromForm] UpdateDegreeCommand command)
+    { 
         try
         {
             var result = await _mediator.Send(command);
@@ -61,18 +61,14 @@ public class DegreeController : ApiControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete([FromForm]  Guid id, DeleteDegreeCommand command)
+    [HttpDelete]
+    public async Task<ActionResult> Delete([FromForm]DeleteDegreeCommand command)
     {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
+
         try
         {
             await _mediator.Send(command);
             return Ok("Xóa thành công");
-
         }
         catch (Exception ex)
         {

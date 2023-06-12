@@ -26,7 +26,7 @@ public class LevelController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(CreateLevelCommand command)
+    public async Task<ActionResult<Guid>> Create([FromForm] CreateLevelCommand command)
     {
         if (ModelState.IsValid && command != null)
         {
@@ -37,13 +37,13 @@ public class LevelController : ApiControllerBase
     }
 
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult> Update(Guid id, UpdateLevelCommand command)
+    [HttpPut]
+    public async Task<ActionResult> Update([FromForm] UpdateLevelCommand command)
     {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
+        //if (id != command.Id)
+        //{
+        //    return BadRequest("Lỗi! Không tìm thấy Id");
+        //}
         try
         {
             var result = await Mediator.Send(command);
@@ -56,8 +56,8 @@ public class LevelController : ApiControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(Guid id)
+    [HttpDelete]
+    public async Task<ActionResult> Delete([FromForm] Guid id)
     {
         try
         {
