@@ -104,9 +104,6 @@ public class CreateEmployeeExHandler : IRequestHandler<CreateEmployeeEx, string>
                                 Address = worksheet.Cells[row, 2].Value?.ToString(),
                                 CreatedDateCIN = DateTime.Parse(worksheet.Cells[row, 7].Value?.ToString()),
                                 PlaceForCIN = worksheet.Cells[row, 6].Value?.ToString(),
-                                BankName = worksheet.Cells[row, 9].Value?.ToString(),
-                                BankAccountNumber = worksheet.Cells[row, 10].Value?.ToString(),
-                                BankAccountName = worksheet.Cells[row, 11].Value?.ToString(),
                             };
 
                             employees.Add(employee);

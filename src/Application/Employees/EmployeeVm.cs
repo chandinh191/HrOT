@@ -12,9 +12,6 @@ public class EmployeeVm : IMapFrom<Employee>
     public Guid Id { get; set; }
     public string IdentityImage { get; set; }
     public DateTime BirthDay { get; set; }
-    public string BankAccountNumber { get; set; }
-    public string BankAccountName { get; set; }
-    public string BankName { get; set; }
     public string Fullname { get; set; }
     public string Address { get; set; }
     public string Image { get; set; }

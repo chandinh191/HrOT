@@ -24,9 +24,6 @@ namespace hrOT.Application.Employees.Commands.Create
         public string? PlaceForCIN { get; set; }
         // Ngân Hàng
         public DateTime BirthDay { get; set; }
-        public string BankAccountNumber { get; set; }
-        public string BankAccountName { get; set; }
-        public string BankName { get; set; }
         public string FullName { get; set; }
         public string UserName { get;  set; }
        
@@ -88,9 +85,6 @@ namespace hrOT.Application.Employees.Commands.Create
                 Address = request.Address,
                 District = request.District,
                 Province = request.Province,              
-                BankName = request.BankName,
-                BankAccountNumber = request.BankAccountNumber,
-                BankAccountName = request.BankAccountName,
             };
 
             _context.Employees.Add(entity);

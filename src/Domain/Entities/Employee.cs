@@ -19,12 +19,6 @@ public class Employee : BaseAuditableEntity
 
     public DateTime? CreatedDateCIN { get; set; }
     public string? PlaceForCIN { get; set; }
-
-    // Ngân Hàng
-    public string BankName { get; set; }
-
-    public string BankAccountNumber { get; set; }
-    public string BankAccountName { get; set; }
     public string? CVPath { get; set; }
 
     //Địa chỉ
@@ -48,6 +42,7 @@ public class Employee : BaseAuditableEntity
     public IList<TimeAttendanceLog> TimeAttendanceLogs { get; private set; }
 
     public IList<Degree> Degrees { get; private set; }
+    public IList<BankAccount> BankAccounts { get; private set; }
     public virtual ApplicationUser ApplicationUser { get; set; }
     public virtual Position Position { get; set; }
 

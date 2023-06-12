@@ -56,24 +56,6 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployee>
     .Matches("[0-9]").WithMessage("Mật khẩu phải chứa ít nhất một chữ số.")
     .Matches("[!@#$%^&*(),.?\":{}|<>]").WithMessage("Mật khẩu phải chứa ít nhất một ký tự đặc biệt.");
 
-
-        RuleFor(e => e.BankName)
-
-           .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
-           .MaximumLength(20).WithMessage("Tên Ngân hàng không được vượt quá 20 ký tự.");
-
-
-        RuleFor(e => e.BankAccountName)
-
-          .NotEmpty().WithMessage("Tên tài khoản không được để trống")
-          .MaximumLength(50).WithMessage("Tên tài khoản ngân hàng không được vượt quá 50 ký tự.");
-
-
-        RuleFor(e => e.BankAccountNumber)
-
-          .NotEmpty().WithMessage("Số tài khoản không được để trống.")
-          .MaximumLength(20).WithMessage("Số Tài Khoản Ngân Hàng không được vượt quá 20 ký tự.");
-
         RuleFor(e => e.District)
             .NotEmpty().WithMessage("Quận/Huyện không được để trống.")
             .MaximumLength(50).WithMessage("Quận/Huyện không quá 50 ký tự.");

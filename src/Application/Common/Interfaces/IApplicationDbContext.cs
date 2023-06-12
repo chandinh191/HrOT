@@ -44,6 +44,8 @@ public interface IApplicationDbContext
 
     DbSet<Degree> Degrees { get; }
     DbSet<Family> Families { get; }
+    DbSet<Bank> Banks { get; }
+    DbSet<BankAccount> BankAccounts { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

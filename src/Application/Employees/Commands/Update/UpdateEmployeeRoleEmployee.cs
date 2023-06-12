@@ -17,9 +17,6 @@ namespace hrOT.Application.Employees.Commands.Update
         public DateTime? CreatedDateCIN { get; set; }
         public string? PlaceForCIN { get; set; }
         public DateTime BirthDay { get; set; }
-        public string BankAccountNumber { get; set; }
-        public string BankAccountName { get; set; }
-        public string BankName { get; set; }
         public string Fullname { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
@@ -65,9 +62,6 @@ namespace hrOT.Application.Employees.Commands.Update
             entity.District = request.District;
             entity.Province = request.Province;
             entity.Address = request.Address;
-            entity.BankName = request.BankName;
-            entity.BankAccountNumber = request.BankAccountNumber;
-            entity.BankAccountName = request.BankAccountName;
             entity.PositionId = request.PositionId;
 
             if (entity.ApplicationUser != null)
