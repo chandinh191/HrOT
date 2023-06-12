@@ -29,7 +29,7 @@ public class GetAllBankAccountQueryHandler : IRequestHandler<GetAllBankAccountQu
 
     public async Task<List<BankAccountDTO>> Handle(GetAllBankAccountQuery request, CancellationToken cancellationToken)
     {
-        var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
+        /*var employeeIdCookie = _httpContextAccessor.HttpContext.Request.Cookies["EmployeeId"];
         var employeeId = Guid.Parse(employeeIdCookie);
         var employee = await _context.Employees.FindAsync(employeeId);
 
@@ -39,6 +39,11 @@ public class GetAllBankAccountQueryHandler : IRequestHandler<GetAllBankAccountQu
             .ProjectTo<BankAccountDTO>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
+        return list;*/
+        var list = await _context.BankAccounts
+            .Where(e => e.IsDeleted == false)
+            .ProjectTo<BankAccountDTO>(_mapper.ConfigurationProvider)
+            .ToListAsync();
         return list;
     }
 }

@@ -27,7 +27,7 @@ public class BankController : ApiControllerBase
         return await _mediator.Send(new GetAllBankQuery());
     }
     [HttpPost]
-    [Authorize(Policy = "manager")]
+    //[Authorize(Policy = "manager")]
     public async Task<ActionResult<Guid>> Create(CreateBankCommand command)
     {
         if (ModelState.IsValid && command != null)
@@ -38,7 +38,7 @@ public class BankController : ApiControllerBase
         return BadRequest("Thêm thất bại");
     }
     [HttpPut("{id}")]
-    [Authorize(Policy = "manager")]
+    //[Authorize(Policy = "manager")]
     public async Task<ActionResult> UpdateStatus([FromForm] UpdateBankCommand command, Guid id)
     {
         if (id != command.Id)
@@ -56,7 +56,7 @@ public class BankController : ApiControllerBase
         }
     }
     [HttpDelete("{id}")]
-    [Authorize(Policy = "manager")]
+    //[Authorize(Policy = "manager")]
     public async Task<ActionResult> Delete([FromForm] Guid id, DeleteBankCommand command)
     {
         if (id != command.Id)
