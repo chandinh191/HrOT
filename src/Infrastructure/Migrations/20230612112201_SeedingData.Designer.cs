@@ -12,7 +12,7 @@ using hrOT.Infrastructure.Persistence;
 namespace hrOT.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230609172257_SeedingData")]
+    [Migration("20230612112201_SeedingData")]
     partial class SeedingData
     {
         /// <inheritdoc />
@@ -1384,8 +1384,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("BankAcountName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("BankAcountNumber")
-                        .HasColumnType("int");
+                    b.Property<decimal?>("BankAcountNumber")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BankName")
                         .HasColumnType("nvarchar(max)");

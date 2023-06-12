@@ -1381,8 +1381,8 @@ namespace hrOT.Infrastructure.Migrations
                     b.Property<string>("BankAcountName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("BankAcountNumber")
-                        .HasColumnType("int");
+                    b.Property<decimal?>("BankAcountNumber")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BankName")
                         .HasColumnType("nvarchar(max)");

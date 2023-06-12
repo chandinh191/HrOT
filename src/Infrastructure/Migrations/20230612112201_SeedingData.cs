@@ -868,7 +868,7 @@ namespace hrOT.Infrastructure.Migrations
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BankName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BankAcountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BankAcountNumber = table.Column<int>(type: "int", nullable: true),
+                    BankAcountNumber = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
