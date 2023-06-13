@@ -98,9 +98,6 @@ namespace hrOT.Application.Employees.Commands.Create
                 Address = request.Address,
                 District = request.District,
                 Province = request.Province,              
-                BankName = request.BankName,
-                BankAccountNumber = request.BankAccountNumber,
-                BankAccountName = request.BankAccountName,
             };
 
             _context.Employees.Add(entity);

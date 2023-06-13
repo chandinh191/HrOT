@@ -66,9 +66,6 @@ namespace hrOT.Application.Employees.Commands.Update
             entity.District = request.District;
             entity.Province = request.Province;
             entity.Address = request.Address;
-            entity.BankName = request.BankName;
-            entity.BankAccountNumber = request.BankAccountNumber;
-            entity.BankAccountName = request.BankAccountName;
             entity.PositionId = request.PositionId;
 
             if (entity.ApplicationUser != null)

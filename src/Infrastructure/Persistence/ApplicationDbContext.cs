@@ -60,6 +60,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<TimeAttendanceLog> TimeAttendanceLogs => Set<TimeAttendanceLog>();
     public DbSet<Family> Families => Set<Family>();
     public DbSet<Degree> Degrees => Set<Degree>();
+    public DbSet<Bank> Banks => Set<Bank>();
+    public DbSet<BankAccount> BankAccounts => Set<BankAccount>();
 
     public DbSet<AnnualWorkingDay> AnnualWorkingDays => Set<AnnualWorkingDay>();
 
@@ -134,9 +136,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
                 Address = "123, Lê Văn Việt, Tăng Nhơn Phú",
                 District = "Quận nine",
                 Province = "TP Hồ Chí Minh",
-                BankAccountNumber = "123456789",
-                BankAccountName = "LUONG THE DAN",
-                BankName = "TECHCOMBANK",
                 Created = DateTime.Parse("9/9/9999"),
                 CreatedBy = "Test",
                 LastModified = DateTime.Parse("9/9/9999"),

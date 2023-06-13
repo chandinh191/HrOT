@@ -56,4 +56,5 @@ public class EmployeeDTO : BaseAuditableEntity, IMapFrom<Employee>
     public IList<TimeAttendanceLog> TimeAttendanceLogs { get; private set; }
 
     public IList<Degree> Degrees { get; private set; }
+    public IList<BankAccount> BankAccounts { get; private set; }
 }
