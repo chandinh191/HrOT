@@ -54,20 +54,6 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmployee>
              .NotEmpty().WithMessage("Mật khẩu không được để trống")
              .MinimumLength(6).WithMessage("Password must have at least 6 characters.");
  */
-        RuleFor(e => e.BankName)
-
-          .NotEmpty().WithMessage("Tên ngân hàng không được để trống.")
-          .MaximumLength(20).WithMessage("Tên ngân hàng không được vượt quá 20 kí tự");
-
-        RuleFor(e => e.BankAccountName)
-
-          .NotEmpty().WithMessage("Tên tài khoản không được để trống")
-          .MaximumLength(50).WithMessage("Tên tài khoản không được vượt quá 50 kí tự");
-
-        RuleFor(e => e.BankAccountNumber)
-
-          .NotEmpty().WithMessage("Số tài khoản không được để trống.")
-          .MaximumLength(20).WithMessage("Số tài khoản không được vượt quá 20 kí tự");
         RuleFor(e => e.District)
            .NotEmpty().WithMessage("Quận/Huyện không được để trống.")
            .MaximumLength(50).WithMessage("Quận/Huyện không quá 50 ký tự.");
