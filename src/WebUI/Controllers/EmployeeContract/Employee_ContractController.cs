@@ -57,6 +57,26 @@ public class Employee_ContractController : ApiControllerBase
         return BadRequest("Không tìm thấy bất kì hợp đồng nào");
     }
 
+    [HttpGet("GetSeniority")]
+    public async Task<IActionResult> GetSeniority(Guid EmployeeID)
+    {
+        //
+        if (EmployeeID == Guid.Empty)
+        {
+            return BadRequest("Vui lòng nhập EmployeeId!");
+        }
+
+        var result = await Mediator
+                .Send(new Employee_GetSeniorityContractQuery(EmployeeID));
+        //
+        if (result != null)
+        {
+            return Ok(result);
+        }
+
+        return BadRequest("Không tìm thấy bất kì hợp đồng nào");
+    }
+
     //Thêm hợp đồng cho nhân viên
     [HttpPost("CreateContract")]
     public async Task<IActionResult> CreateContract(Guid EmployeeId, [FromForm] EmployeeContractCommandDTO employeeContractDTO)
