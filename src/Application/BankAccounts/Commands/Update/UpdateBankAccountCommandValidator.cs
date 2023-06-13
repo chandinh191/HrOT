@@ -12,6 +12,7 @@ public class UpdateBankAccountCommandValidator : AbstractValidator<UpdateBankAcc
     {
         RuleFor(x => x._dto.BankAccountNumber)
             .NotEmpty().WithMessage("Số tài khoản không được bỏ trống.")
+            .Matches(@"^[0-9]*$").WithMessage("Định dạng số tài khoản không đúng.")
             .MaximumLength(14).WithMessage("Số tài khoản không được quá 14 ký tự.");
 
         RuleFor(x => x._dto.BankAccountName)

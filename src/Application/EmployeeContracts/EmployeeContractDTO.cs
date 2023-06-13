@@ -8,8 +8,8 @@ public class EmployeeContractDTO : IMapFrom<EmployeeContract>
 {
     public Guid Id { get; set; }
     public string? File { get; set; }
-    public DateTime? StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
     public string? Job { get; set; }
     public double? Salary { get; set; }
     public double? CustomSalary { get; set; }
@@ -44,5 +44,10 @@ public class EmployeeContractDTO : IMapFrom<EmployeeContract>
     {
         var name = Enum.GetName(typeof(InsuranceType), InsuranceType);
         return name;
+    }
+    public double GetContractLength()
+    {
+        TimeSpan contractlength = this.EndDate.Subtract(this.StartDate);
+        return contractlength.TotalDays;
     }
 }

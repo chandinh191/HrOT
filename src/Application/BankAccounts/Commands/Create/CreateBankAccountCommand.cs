@@ -13,9 +13,9 @@ using Microsoft.EntityFrameworkCore;
 namespace hrOT.Application.BankAccounts.Commands.Create;
 public class CreateBankAccountCommand : IRequest<Guid>
 {
-    public Guid BankId { get; set; }
-    public Guid EmployeeId { get; set; }
-    public BankAccountCommandDTO BankAccountDTO { get; set; }
+    public Guid BankId { get; init; }
+    public Guid EmployeeId { get; init; }
+    public BankAccountCommandDTO BankAccountDTO { get; init; }
 
     public CreateBankAccountCommand(Guid BankID, BankAccountCommandDTO bankAccountDTO)
     {
