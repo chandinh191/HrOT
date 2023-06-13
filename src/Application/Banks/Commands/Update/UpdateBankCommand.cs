@@ -14,7 +14,7 @@ public record UpdateBankCommand : IRequest<string>
     public Guid Id { get; init; }
 
     public string BankName { get; init; }
-    public string Description { get; set; }
+    public string Description { get; init; }
 }
 public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, string>
 {
@@ -36,7 +36,7 @@ public class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, strin
         }
         else if (entity.IsDeleted == true)
         {
-            return "Bằng cấp đã bị xóa!";
+            return "Ngân hàng đã bị xóa!";
         }
         entity.BankName = request.BankName;
         entity.Description = request.Description;

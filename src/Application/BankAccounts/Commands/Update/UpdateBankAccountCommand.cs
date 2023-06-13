@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore;
 namespace hrOT.Application.BankAccounts.Commands.Update;
 public class UpdateBankAccountCommand : IRequest<string>
 {
-    public BankAccountCommandDTO _dto { get; set; }
-    public Guid Id { get; set; }
+    public BankAccountCommandDTO _dto { get; init; }
+    public Guid Id { get; init; }
 
     /*public UpdateBankAccountCommand(Guid BankID, BankAccountCommandDTO dto)
     {
@@ -66,7 +66,7 @@ public class UpdateBankAccountCommandHandler : IRequestHandler<UpdateBankAccount
         }
         else if (entity.IsDeleted == true)
         {
-            return "Bằng cấp đã bị xóa!";
+            return "Tài khoản ngân hàng đã bị xóa!";
         }
         entity.BankAccountNumber = request._dto.BankAccountNumber;
         entity.BankAccountName = request._dto.BankAccountName;

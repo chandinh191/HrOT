@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using hrOT.Application.Common.Exceptions;
 using hrOT.Application.Common.Interfaces;
-using hrOT.Application.Degrees.Commands.Delete;
 using hrOT.Domain.Entities;
 using MediatR;
 
 namespace hrOT.Application.BankAccounts.Commands.Delete;
-public record DeleteBankAccountCommand(Guid Id) : IRequest;
+public record DeleteBankAccountCommand : IRequest
+{
+    public Guid Id { get; init; }
+}
 public class DeleteBankAccountCommandHandler : IRequestHandler<DeleteBankAccountCommand>
 {
     private readonly IApplicationDbContext _context;

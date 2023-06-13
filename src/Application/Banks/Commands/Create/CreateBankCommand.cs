@@ -11,7 +11,7 @@ namespace hrOT.Application.Banks.Commands.Create;
 public record CreateBankCommand : IRequest<Guid>
 {
     public string BankName { get; init; }
-    public string Description { get; set; }
+    public string Description { get; init; }
 }
 public class CreateBankCommandHandler : IRequestHandler<CreateBankCommand, Guid>
 {

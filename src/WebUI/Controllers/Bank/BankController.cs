@@ -36,14 +36,10 @@ public class BankController : ApiControllerBase
         }
         return BadRequest("Thêm thất bại");
     }
-    [HttpPut("{id}")]
+    [HttpPut]
     [Authorize(Policy = "manager")]
-    public async Task<ActionResult> UpdateStatus([FromForm] UpdateBankCommand command, Guid id)
+    public async Task<ActionResult> UpdateStatus([FromForm] UpdateBankCommand command)
     {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
         try
         {
             var result = await _mediator.Send(command);
@@ -54,13 +50,13 @@ public class BankController : ApiControllerBase
             return BadRequest("Cập nhật thất bại");
         }
     }
-    [HttpDelete("{id}")]
+    [HttpDelete]
     [Authorize(Policy = "manager")]
-    public async Task<ActionResult> Delete(Guid id)
+    public async Task<ActionResult> Delete([FromForm] DeleteBankCommand command)
     {
         try
         {
-            await Mediator.Send(new DeleteBankCommand(id));
+            await _mediator.Send(command);
             return Ok("Xóa thành công");
         }
         catch (Exception ex)
