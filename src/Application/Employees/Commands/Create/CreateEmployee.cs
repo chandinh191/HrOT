@@ -22,11 +22,7 @@ namespace hrOT.Application.Employees.Commands.Create
         public string? CitizenIdentificationNumber { get; set; }
         public DateTime? CreatedDateCIN { get; set; }
         public string? PlaceForCIN { get; set; }
-        // Ngân Hàng
         public DateTime BirthDay { get; set; }
-        public string BankAccountNumber { get; set; }
-        public string BankAccountName { get; set; }
-        public string BankName { get; set; }
         public string FullName { get; set; }
         public string UserName { get;  set; }
        
