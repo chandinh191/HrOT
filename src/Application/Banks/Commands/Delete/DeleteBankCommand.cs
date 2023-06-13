@@ -9,10 +9,7 @@ using hrOT.Domain.Entities;
 using MediatR;
 
 namespace hrOT.Application.Banks.Commands.Delete;
-public record DeleteBankCommand : IRequest
-{
-    public Guid Id { get; init; }
-}
+public record DeleteBankCommand(Guid Id) : IRequest;
 public class DeleteBankCommandHandler : IRequestHandler<DeleteBankCommand>
 {
     private readonly IApplicationDbContext _context;

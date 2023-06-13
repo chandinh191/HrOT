@@ -57,17 +57,12 @@ public class BankController : ApiControllerBase
     }
     [HttpDelete("{id}")]
     //[Authorize(Policy = "manager")]
-    public async Task<ActionResult> Delete([FromForm] Guid id, DeleteBankCommand command)
+    public async Task<ActionResult> Delete(Guid id)
     {
-        if (id != command.Id)
-        {
-            return BadRequest("Lỗi! Không tìm thấy Id");
-        }
         try
         {
-            await _mediator.Send(command);
+            await Mediator.Send(new DeleteBankCommand(id));
             return Ok("Xóa thành công");
-
         }
         catch (Exception ex)
         {
